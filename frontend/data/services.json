@@ -1,0 +1,104 @@
+[
+  {
+    "id": 1,
+    "slug": "website-development",
+    "number": "01",
+    "title": "Website Development",
+    "shortDesc": "Custom modern web experiences",
+    "fullDesc": "Pixel-perfect, blazing-fast websites built with security and performance baked in from line one.",
+    "features": [
+      "Core Web Vitals Optimized",
+      "SEO Architecture",
+      "Mobile-First",
+      "CMS Integration",
+      "Custom Design System",
+      "Performance Audit"
+    ],
+    "icon": "Globe"
+  },
+  {
+    "id": 2,
+    "slug": "web-app-development",
+    "number": "02",
+    "title": "Web App Development",
+    "shortDesc": "Scalable full-stack applications",
+    "fullDesc": "From MVPs to enterprise platforms — robust, scalable web applications built for real-world demands.",
+    "features": [
+      "React / Next.js",
+      "Node.js Backend",
+      "REST APIs",
+      "Database Architecture",
+      "Cloud Deployment",
+      "CI/CD Pipeline"
+    ],
+    "icon": "Layers"
+  },
+  {
+    "id": 3,
+    "slug": "cyber-security-assessment",
+    "number": "03",
+    "title": "Cyber Security Assessment",
+    "shortDesc": "Identify threats before they strike",
+    "fullDesc": "Full infrastructure threat analysis with actionable remediation roadmap before attackers find gaps.",
+    "features": [
+      "Threat Modeling",
+      "Risk Assessment",
+      "Compliance Check",
+      "Security Roadmap",
+      "Executive Report",
+      "30-Day Review"
+    ],
+    "icon": "ShieldAlert"
+  },
+  {
+    "id": 4,
+    "slug": "security-testing-analysis",
+    "number": "04",
+    "title": "Security Testing & Analysis",
+    "shortDesc": "Penetration testing & audits",
+    "fullDesc": "Ethical hacking and deep-dive security audits that expose vulnerabilities before they become breaches.",
+    "features": [
+      "Black Box Testing",
+      "White Box Testing",
+      "API Security",
+      "Network Scanning",
+      "Full Report",
+      "Re-testing Included"
+    ],
+    "icon": "Scan"
+  },
+  {
+    "id": 5,
+    "slug": "bug-hunting-vulnerability",
+    "number": "05",
+    "title": "Bug Hunting & Vulnerability",
+    "shortDesc": "Responsible disclosure programs",
+    "fullDesc": "Structured bug bounty and vulnerability disclosure programs with CVE filing and remediation support.",
+    "features": [
+      "Scope Definition",
+      "Ethical Hacking",
+      "CVE Filing",
+      "Proof of Concept",
+      "Remediation Support",
+      "Disclosure Report"
+    ],
+    "icon": "Bug"
+  },
+  {
+    "id": 6,
+    "slug": "social-media-management",
+    "number": "06",
+    "title": "Social Media Management",
+    "shortDesc": "Brand growth & digital presence",
+    "fullDesc": "Algorithm-driven social strategy with content creation, community management and analytics that convert.",
+    "features": [
+      "Content Calendar",
+      "Platform Strategy",
+      "Reel Creation",
+      "Analytics Reports",
+      "Community Management",
+      "Ad Campaigns"
+    ],
+    "icon": "TrendingUp"
+  }
+]

@@ -60,11 +60,11 @@ app.post("/api/contact", (req, res) => {
 });
 
 // Serve static assets from Vite build output directory (dist)
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
 // Catch-all route to serve the Single Page App (index.html) for client-side routing
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 
 // Start Express server
@@ -72,6 +72,6 @@ app.listen(PORT, () => {
   console.log(`==================================================`);
   console.log(`Snortweb Production Express Server is running!`);
   console.log(`Listening on http://localhost:${PORT}`);
-  console.log(`Serving built files from: ${path.join(__dirname, "dist")}`);
+  console.log(`Serving built files from: ${path.join(__dirname, "frontend", "dist")}`);
   console.log(`==================================================`);
 });

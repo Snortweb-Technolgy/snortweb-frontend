@@ -3,6 +3,26 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { services } from "../../data/services";
 
+const LinkedinIcon = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+    <rect x="2" y="9" width="4" height="12"></rect>
+    <circle cx="4" cy="4" r="2"></circle>
+  </svg>
+);
+
+const TwitterIcon = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+  </svg>
+);
+
+const GithubIcon = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.8c0-1.2-.4-2.4-1.2-3.2 3-.3 6-1.5 6-6.8 0-1.5-.5-2.8-1.5-3.8.1-.3.7-1.8-.1-3.8-1.1 0-2.8 1.1-3.8 1.8-1-.3-2-.4-3-.4s-2 .1-3 .4c-1-.7-2.7-1.8-3.8-1.8-.8 2-.2 3.5-.1 3.8-1 1-1.5 2.3-1.5 3.8 0 5.3 3 6.5 6 6.8-.8.8-1.2 2-1.2 3.2V23"></path>
+  </svg>
+);
+
 export default function Footer() {
   const handleLinkClick = () => {
     if (window.lenis) {
@@ -13,9 +33,9 @@ export default function Footer() {
   };
 
   const socialLinks = [
-    { label: "in", url: "https://linkedin.com", aria: "LinkedIn" },
-    { label: "tw", url: "https://twitter.com", aria: "Twitter" },
-    { label: "gh", url: "https://github.com", aria: "GitHub" }
+    { icon: <LinkedinIcon size={16} />, url: "https://linkedin.com", aria: "LinkedIn" },
+    { icon: <TwitterIcon size={16} />, url: "https://twitter.com", aria: "Twitter" },
+    { icon: <GithubIcon size={16} />, url: "https://github.com", aria: "GitHub" }
   ];
 
   return (
@@ -95,10 +115,10 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05, y: -1 }}
                 transition={{ duration: 0.1 }}
-                className="w-[32px] h-[32px] border border-border-subtle flex items-center justify-center font-mono-code font-bold text-[0.72rem] text-text-secondary hover:border-border-main hover:text-[#F7F3EB] dark:hover:text-text-primary hover:bg-[#24211C] dark:hover:bg-bg-elevated rounded-[8px] dark:rounded-md transition-all duration-300"
+                className="w-[32px] h-[32px] border border-border-subtle flex items-center justify-center text-text-secondary hover:border-border-main hover:text-[#F7F3EB] dark:hover:text-text-primary hover:bg-[#24211C] dark:hover:bg-bg-elevated rounded-[8px] dark:rounded-md transition-all duration-300"
                 aria-label={social.aria}
               >
-                {social.label}
+                {social.icon}
               </motion.a>
             ))}
           </div>
