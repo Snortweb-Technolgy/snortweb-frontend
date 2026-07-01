@@ -1,13 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { pillars } from "../../data/pillars";
+import { useApp } from "../../context/AppContext";
 
 export default function Manifesto() {
+  const { t } = useApp();
+  
   const quoteLines = [
-    { text: "Most agencies", type: "bold", gradient: false, dim: false },
-    { text: "build websites.", type: "bold", gradient: false, dim: false },
-    { text: "We build and", type: "regular", gradient: false, dim: true },
-    { text: "secure them.", type: "bold", gradient: true, dim: false }
+    { text: t("manifesto_quote_line1"), type: "bold", gradient: false, dim: false },
+    { text: t("manifesto_quote_line2"), type: "bold", gradient: false, dim: false },
+    { text: t("manifesto_quote_line3"), type: "regular", gradient: false, dim: true },
+    { text: t("manifesto_quote_line4"), type: "bold", gradient: true, dim: false }
   ];
 
   const leftContainer = {
@@ -57,7 +60,7 @@ export default function Manifesto() {
         {/* Left Column: Big Quote */}
         <div className="lg:col-span-6 flex flex-col items-start text-left">
           <span className="font-mono-code font-bold text-[0.68rem] tracking-[0.25em] text-text-primary uppercase mb-6">
-            OUR PHILOSOPHY
+            {t("manifesto_philosophy")}
           </span>
 
           <motion.div
@@ -106,14 +109,14 @@ export default function Manifesto() {
 
           {/* Quote Subtext */}
           <p className="text-sm sm:text-base text-text-secondary leading-[1.8] max-w-[420px]">
-            Snortweb Technology fuses cutting-edge development with enterprise cybersecurity — so your digital presence is fast, beautiful, and impossible to compromise.
+            {t("manifesto_subtext")}
           </p>
         </div>
 
         {/* Right Column: Pillars */}
         <div className="lg:col-span-4 flex flex-col items-start w-full">
           <span className="font-mono-code font-bold text-[0.68rem] tracking-[0.25em] text-text-primary uppercase mb-8">
-            OUR PROMISE
+            {t("manifesto_promise")}
           </span>
 
           <motion.div
@@ -149,7 +152,7 @@ export default function Manifesto() {
 
                   {/* Pillar Label */}
                   <span className="font-sans-heading font-black text-sm md:text-base text-text-primary group-hover:text-text-secondary transition-colors duration-100">
-                    {pillar}
+                    {t(`pillar_${i}`) || pillar}
                   </span>
                 </div>
               </motion.div>

@@ -1,10 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
+import { useApp } from "../../context/AppContext";
 
 export default function CTABanner() {
   const navigate = useNavigate();
   const prefersReduced = useReducedMotion();
+  const { t } = useApp();
 
   return (
     <section
@@ -28,7 +30,7 @@ export default function CTABanner() {
           transition={{ duration: 0.3 }}
           className="font-mono-code font-bold text-[0.68rem] tracking-[0.25em] text-[#ECE9E2]/70 uppercase mb-5"
         >
-          READY TO BUILD?
+          {t("cta_subtitle")}
         </motion.span>
 
         {/* Heading */}
@@ -40,8 +42,8 @@ export default function CTABanner() {
           className="font-sans-heading text-[#ECE9E2] font-black leading-[1.05] tracking-tight uppercase mb-8"
           style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
         >
-          Your website. <br />
-          <span className="font-normal italic">Secured.</span>
+          {t("cta_heading_1")} <br />
+          <span className="font-normal italic">{t("cta_heading_2")}</span>
         </motion.h2>
 
         {/* Body Description */}
@@ -52,7 +54,7 @@ export default function CTABanner() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="font-sans-body font-normal text-[1.05rem] text-[#ECE9E2] max-w-[480px] leading-[1.6] mb-12"
         >
-          Enterprise-grade web development and cybersecurity for businesses that cannot afford to be compromised.
+          {t("cta_desc")}
         </motion.p>
 
         {/* CTA Button */}
@@ -68,7 +70,7 @@ export default function CTABanner() {
             onClick={() => navigate("/contact")}
             className="px-14 py-4.5 bg-[#24211C] dark:bg-brand-indigo text-[#F8F5F0] dark:text-[#161616] font-sans-heading font-extrabold text-[0.9rem] tracking-[0.18em] uppercase rounded-none border border-[#24211C] dark:border-brand-indigo hover:bg-[#C8A15A] hover:text-[#24211C] hover:border-[#C8A15A] dark:hover:bg-transparent dark:hover:text-brand-indigo transition-all duration-300 cursor-pointer"
           >
-            START YOUR PROJECT
+            {t("cta_btn")}
           </Button>
         </motion.div>
 
@@ -80,7 +82,7 @@ export default function CTABanner() {
           transition={{ duration: 0.4, delay: 0.2 }}
           className="font-mono-code font-normal text-[0.7rem] text-[#ECE9E2] tracking-[0.05em] uppercase"
         >
-          No commitment required &middot; Free consultation &middot; Response within 24 hours
+          {t("cta_footer")}
         </motion.span>
 
       </div>

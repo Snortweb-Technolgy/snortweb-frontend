@@ -1,24 +1,27 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useApp } from "../../context/AppContext";
 
 export default function WhyUs() {
+  const { t } = useApp();
+
   const blocks = [
     {
       number: "01",
-      title: "Threat-First Thinking",
-      desc: "We audit before we build. Security posture is designed into your architecture — never patched on later.",
+      title: t("whyus_block_1_title") || "Threat-First Thinking",
+      desc: t("whyus_block_1_desc") || "We audit before we build. Security posture is designed into your architecture — never patched on later.",
       gridSpan: "md:col-span-2"
     },
     {
       number: "02",
-      title: "Full-Stack Ownership",
-      desc: "From pixel to server, we own the entire stack. No handoffs. No gaps. No finger-pointing.",
+      title: t("whyus_block_2_title") || "Full-Stack Ownership",
+      desc: t("whyus_block_2_desc") || "From pixel to server, we own the entire stack. No handoffs. No gaps. No finger-pointing.",
       gridSpan: "md:col-span-1"
     },
     {
       number: "03",
-      title: "Always-On Intelligence",
-      desc: "24/7 monitoring and rapid incident response long after your product launches. We don't disappear.",
+      title: t("whyus_block_3_title") || "Always-On Intelligence",
+      desc: t("whyus_block_3_desc") || "24/7 monitoring and rapid incident response long after your product launches. We don't disappear.",
       gridSpan: "md:col-span-3"
     }
   ];
@@ -52,12 +55,12 @@ export default function WhyUs() {
         {/* Header */}
         <div className="flex flex-col items-start text-left mb-16 md:mb-20 max-w-[600px]">
           <span className="font-mono-code font-bold text-[0.68rem] tracking-[0.3em] text-text-primary uppercase mb-4">
-            WHY SNORTWEB
+            {t("whyus_subtitle")}
           </span>
 
           <h2 className="font-sans-heading text-3xl sm:text-4xl md:text-5xl font-black text-text-primary leading-none uppercase">
-            Security isn't a feature. <br />
-            It's the <span className="font-normal italic">foundation.</span>
+            {t("whyus_heading_1")} <br />
+            {t("whyus_heading_2").split(" ").slice(0, -1).join(" ")} <span className="font-normal italic">{t("whyus_heading_2").split(" ").slice(-1)[0]}</span>
           </h2>
         </div>
 

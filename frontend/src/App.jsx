@@ -8,6 +8,7 @@ import Cursor from "./components/ui/Cursor";
 import Loader from "./components/ui/Loader";
 import Noise from "./components/ui/Noise";
 import { useLenis } from "./hooks/useLenis";
+import Chatbot from "./components/ui/Chatbot";
 
 // Page lazy loading for splitting bundle sizes
 const Home = lazy(() => import("./pages/Home"));
@@ -72,6 +73,9 @@ export default function App() {
 
       {/* Bottom info grid links */}
       <Footer />
+
+      {/* Floating AI chatbot assistant */}
+      <Chatbot />
     </div>
     </HelmetProvider>
   );
