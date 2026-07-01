@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { services } from "../../data/services";
+import { useApp } from "../../context/AppContext";
 
 const LinkedinIcon = ({ size }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -24,6 +25,8 @@ const GithubIcon = ({ size }) => (
 );
 
 export default function Footer() {
+  const { t } = useApp();
+
   const handleLinkClick = () => {
     if (window.lenis) {
       window.lenis.scrollTo(0, { immediate: true });
@@ -63,14 +66,14 @@ export default function Footer() {
           </Link>
 
           <p className="mt-5 font-sans-body font-normal text-[0.875rem] text-text-secondary leading-[1.7] max-w-[260px]">
-            Building secure digital futures for growing businesses worldwide with enterprise standards.
+            {t("footer_brand_desc")}
           </p>
         </div>
 
         {/* Col 2 (30%): Services */}
         <div className="md:col-span-3 flex flex-col items-start text-left">
           <span className="font-mono-code font-bold text-[0.65rem] tracking-[0.2em] text-text-primary uppercase mb-6">
-            SERVICES
+            {t("services")}
           </span>
           <div className="flex flex-col gap-[12px] w-full">
             {services.map((service) => (
@@ -80,7 +83,7 @@ export default function Footer() {
                 onClick={handleLinkClick}
                 className="font-sans-body font-normal text-[0.875rem] text-text-secondary hover:text-text-primary hover:pl-1.5 transition-all duration-100 ease-out nav-link-no-underline w-fit"
               >
-                {service.title}
+                {t(`service_${service.slug.replace(/-/g, "_")}_title`) || service.title}
               </Link>
             ))}
           </div>
@@ -89,7 +92,7 @@ export default function Footer() {
         {/* Col 3 (30%): Connect */}
         <div className="md:col-span-3 flex flex-col items-start text-left">
           <span className="font-mono-code font-bold text-[0.65rem] tracking-[0.2em] text-text-primary uppercase mb-6">
-            CONNECT
+            {t("footer_connect")}
           </span>
           
           <a
@@ -102,7 +105,7 @@ export default function Footer() {
           </a>
           
           <span className="mt-3 font-sans-body font-normal text-[0.8rem] text-text-tertiary">
-            Available 24/7 for security emergencies
+            {t("footer_emergency")}
           </span>
 
           {/* Social Row */}
@@ -129,11 +132,11 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="max-w-[1200px] mx-auto mt-[60px] pt-[24px] border-t border-border-subtle flex flex-col sm:flex-row justify-between items-center gap-4">
         <span className="font-sans-body font-normal text-[0.8rem] text-text-tertiary">
-          &copy; {new Date().getFullYear()} Snortweb Technology. All rights reserved.
+          &copy; {new Date().getFullYear()} Snortweb Technology. {t("footer_rights")}
         </span>
 
         <span className="font-mono-code font-bold text-[0.8rem] text-text-primary tracking-[0.05em] uppercase">
-          Build. Secure. Grow.
+          {t("footer_tagline")}
         </span>
       </div>
 

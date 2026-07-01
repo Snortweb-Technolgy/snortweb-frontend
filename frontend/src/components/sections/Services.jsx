@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { services } from "../../data/services";
+import { useApp } from "../../context/AppContext";
 import { Globe, Layers, ShieldAlert, Scan, Bug, TrendingUp } from "lucide-react";
 
 // Helper to map icon names to Lucide icons
@@ -29,10 +30,13 @@ export function ServiceIcon({ name, className, size = 22 }) {
 // Service Card component with premium design and animations
 export function ServiceCard({ service, index }) {
   const navigate = useNavigate();
+  const { t } = useApp();
 
   const handleCardClick = () => {
     navigate(`/services/${service.slug}`);
   };
+
+  const keySlug = service.slug.replace(/-/g, "_");
 
   return (
     <motion.div
@@ -65,12 +69,12 @@ export function ServiceCard({ service, index }) {
 
         {/* Service Title */}
         <h3 className="font-sans-heading text-xl font-black text-text-primary group-hover:text-brand-indigo mb-2.5 transition-colors duration-100">
-          {service.title}
+          {t(`service_${keySlug}_title`) || service.title}
         </h3>
 
         {/* Short Description */}
         <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-6 font-sans-body transition-colors duration-100">
-          {service.shortDesc}
+          {t(`service_${keySlug}_shortDesc`) || service.shortDesc}
         </p>
 
         {/* Checklist */}
@@ -79,7 +83,7 @@ export function ServiceCard({ service, index }) {
             <div key={i} className="flex items-center gap-3">
               <div className="w-1.5 h-1.5 bg-text-primary group-hover:bg-brand-indigo rounded-none dark:rounded-full transition-all duration-100 flex-shrink-0" />
               <span className="text-[0.875rem] text-text-secondary font-sans-body group-hover:text-text-primary transition-colors duration-100">
-                {feature}
+                {t(`service_${keySlug}_feature_${i}`) || feature}
               </span>
             </div>
           ))}
@@ -88,7 +92,7 @@ export function ServiceCard({ service, index }) {
 
       {/* Sleek Action Link */}
       <div className="flex items-center gap-2 font-mono-code text-[0.7rem] font-bold tracking-[0.2em] uppercase text-text-secondary group-hover:text-brand-indigo transition-colors duration-100 relative z-10">
-        <span>VIEW SERVICE</span>
+        <span>{t("view_service")}</span>
         <span className="text-xs transform group-hover:translate-x-1 transition-transform duration-105">&rarr;</span>
       </div>
     </motion.div>
@@ -96,6 +100,8 @@ export function ServiceCard({ service, index }) {
 }
 
 export default function Services() {
+  const { t } = useApp();
+
   return (
     <section 
       id="services-section" 
@@ -110,13 +116,13 @@ export default function Services() {
         {/* Section Header */}
         <div className="flex flex-col items-start text-left mb-16 md:mb-20 max-w-[800px]">
           <span className="font-mono-code font-bold text-[0.68rem] tracking-[0.3em] text-text-primary uppercase mb-4">
-            WHAT WE DELIVER
+            {t("services_subtitle")}
           </span>
           <h2 className="font-sans-heading text-3xl sm:text-4xl md:text-5xl font-black text-text-primary leading-tight uppercase">
-            Services Built for the <span className="italic font-normal">Precise Professional.</span>
+            {t("services_heading")}
           </h2>
           <p className="mt-6 text-sm text-text-secondary leading-relaxed font-sans-body max-w-[620px]">
-            Every service we offer starts with a security audit. Because a beautiful website that leaks data is just an expensive liability.
+            {t("services_header_desc")}
           </p>
         </div>
 

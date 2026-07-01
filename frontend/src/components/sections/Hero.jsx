@@ -127,11 +127,11 @@ function SecurityFeed() {
 }
 
 export default function Hero() {
-  const { isLoaded, theme } = useApp();
+  const { isLoaded, theme, t } = useApp();
   const navigate = useNavigate();
 
   // Typewriter states
-  const subtextText = "Cybersecurity-first web development for businesses that cannot afford to be compromised.";
+  const subtextText = t("hero_desc");
   const [typedText, setTypedText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
@@ -140,6 +140,7 @@ export default function Hero() {
     
     let timerId = null;
     let index = 0;
+    setTypedText("");
     
     const startTimeout = setTimeout(() => {
       setIsTyping(true);
@@ -163,7 +164,7 @@ export default function Hero() {
         clearTimeout(timerId);
       }
     };
-  }, [isLoaded]);
+  }, [isLoaded, subtextText]);
 
   const handleExplore = () => {
     const el = document.getElementById("services-section");
@@ -179,9 +180,9 @@ export default function Hero() {
   };
 
   // Stagger parameters for words
-  const line1 = "We Build.";
-  const line2 = "We Secure.";
-  const line3 = "They Can't Break It.";
+  const line1 = t("hero_build");
+  const line2 = t("hero_secure");
+  const line3 = t("hero_break");
 
   const wordsLine1 = line1.split(" ");
   const wordsLine2 = line2.split(" ");
@@ -336,7 +337,7 @@ export default function Hero() {
                       className="relative overflow-hidden border-2 border-[#24211C] dark:border-brand-indigo px-8 py-4 rounded-none dark:rounded-md bg-[#24211C] dark:bg-brand-indigo text-[#F8F5F0] dark:text-[#161616] font-mono-code text-xs font-bold tracking-[0.12em] transition-colors duration-300 hover:bg-[#C8A15A] hover:text-[#24211C] hover:border-[#C8A15A] dark:hover:bg-transparent dark:hover:text-brand-indigo"
                     >
                       <span className="flex items-center gap-2">
-                        START A PROJECT <span className="text-sm">→</span>
+                        {t("hero_launch_project")}
                       </span>
                     </Button>
                   </motion.div>
@@ -376,12 +377,13 @@ export default function Hero() {
                 {stats.map((item, idx) => {
                   const icons = [Shield, Lock, Users, Headphones];
                   const Icon = icons[idx] || Shield;
+                  const statKeys = ["hero_stat_projects", "hero_stat_security", "hero_stat_clients", "hero_stat_support"];
                   return (
                     <div key={item.id} className={`${idx > 0 ? "lg:pl-6" : ""}`}>
                       <HeroCounterItem
                         target={item.value}
                         suffix={item.suffix}
-                        label={item.label.split(" ")[0]}
+                        label={t(statKeys[idx])}
                         delay={1500}
                         icon={Icon}
                       />

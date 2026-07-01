@@ -148,7 +148,10 @@ function ProcessVisual({ activeStep }) {
   }
 }
 
+import { useApp } from "../../context/AppContext";
+
 export default function Process() {
+  const { t } = useApp();
   const [isMobile, setIsMobile] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -183,6 +186,13 @@ export default function Process() {
     }
   }, [progress]);
 
+  const stepPhases = [
+    t("process_phase_1") || "PHASE_01 // SECURE_AUDIT",
+    t("process_phase_2") || "PHASE_02 // SYSTEM_ARCH",
+    t("process_phase_3") || "PHASE_03 // SECURE_BUILD",
+    t("process_phase_4") || "PHASE_04 // LIVE_MONITOR"
+  ];
+
   if (isMobile) {
     return (
       <section id="process-section" className="relative py-[80px] bg-bg-primary z-10 px-6 border-b border-border-main select-none">
@@ -194,10 +204,10 @@ export default function Process() {
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-16">
             <span className="font-sans-heading font-semibold text-[0.68rem] tracking-[0.3em] text-accent uppercase mb-4">
-              HOW WE WORK
+              {t("process_subtitle")}
             </span>
             <h2 className="font-sans-heading text-3xl font-black text-text-primary leading-tight uppercase">
-              The Snortweb Method.
+              {t("process_heading")}
             </h2>
           </div>
 
@@ -225,7 +235,7 @@ export default function Process() {
                         {step.number}
                       </span>
                       <span className={`font-sans-heading font-bold text-sm tracking-wide uppercase ${isOpen ? "text-text-primary" : "text-text-secondary"}`}>
-                        {step.title}
+                        {t(`process_step_${step.id}_title`) || step.title}
                       </span>
                     </div>
                     {/* Expand indicator icon */}
@@ -246,7 +256,7 @@ export default function Process() {
                       >
                         <div className="px-5 pb-5 pt-1 border-t border-border-subtle text-left flex flex-col gap-5">
                           <p className="font-sans-body text-xs text-text-secondary leading-relaxed">
-                            {step.desc}
+                            {t(`process_step_${step.id}_desc`) || step.desc}
                           </p>
 
                           {/* Mobile Checklist */}
@@ -256,7 +266,7 @@ export default function Process() {
                                 <svg className="text-accent flex-shrink-0" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                                   <polyline points="20 6 9 17 4 12" />
                                 </svg>
-                                <span>{item}</span>
+                                <span>{t(`process_checklist_${idx}_${key}`) || item}</span>
                               </div>
                             ))}
                           </div>
@@ -293,10 +303,10 @@ export default function Process() {
         {/* Header centered */}
         <div className="flex flex-col items-start text-left mb-20">
           <span className="font-mono-code font-bold text-[0.68rem] tracking-[0.3em] text-text-primary uppercase mb-4">
-            HOW WE WORK
+            {t("process_subtitle")}
           </span>
           <h2 className="font-sans-heading text-3xl sm:text-4xl md:text-5xl font-black text-text-primary leading-tight uppercase">
-            The Snortweb Method.
+            {t("process_heading")}
           </h2>
         </div>
 
@@ -336,11 +346,11 @@ export default function Process() {
                   </span>
                   {/* Title */}
                   <h3 className="font-sans-heading font-black text-xl sm:text-2xl text-text-primary">
-                    {processSteps[activeStep].title}
+                    {t(`process_step_${processSteps[activeStep].id}_title`) || processSteps[activeStep].title}
                   </h3>
                   {/* Desc */}
                   <p className="font-sans-body text-xs sm:text-sm text-text-secondary leading-relaxed mb-6 mt-4">
-                    {processSteps[activeStep].desc}
+                    {t(`process_step_${processSteps[activeStep].id}_desc`) || processSteps[activeStep].desc}
                   </p>
                 </div>
 
@@ -354,7 +364,7 @@ export default function Process() {
                       <svg className="text-text-primary flex-shrink-0" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
-                      <span>{item}</span>
+                      <span>{t(`process_checklist_${activeStep}_${idx}`) || item}</span>
                     </div>
                   ))}
                 </div>
@@ -403,7 +413,7 @@ export default function Process() {
                         isActive ? "text-bg-base" : "text-text-secondary"
                       }`}
                     >
-                      {step.title}
+                      {t(`process_step_${step.id}_title`) || step.title}
                     </div>
                   </div>
 

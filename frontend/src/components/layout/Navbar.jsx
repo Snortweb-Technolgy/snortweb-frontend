@@ -5,7 +5,7 @@ import { useApp } from "../../context/AppContext";
 import { Button } from "../ui/Button";
 
 export default function Navbar() {
-  const { menuOpen, setMenuOpen, theme, setTheme } = useApp();
+  const { menuOpen, setMenuOpen, theme, setTheme, t, language, setLanguage } = useApp();
   const [scrolled, setScrolled] = useState(false);
   const [showBar, setShowBar] = useState(() => {
     if (typeof window !== "undefined") {
@@ -76,13 +76,13 @@ export default function Navbar() {
   }, [location.pathname, activeSection]);
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Services", path: "/services" },
-    { name: "Projects", path: "/#portfolio-section" },
-    { name: "About", path: "/#about-section" },
-    { name: "Process", path: "/#process-section" },
-    { name: "Review", path: "/#reviews-section" },
-    { name: "Contact", path: "/contact" }
+    { name: t("home"), path: "/" },
+    { name: t("services"), path: "/services" },
+    { name: t("projects"), path: "/#portfolio-section" },
+    { name: t("about"), path: "/#about-section" },
+    { name: t("process"), path: "/#process-section" },
+    { name: t("review"), path: "/#reviews-section" },
+    { name: t("contact"), path: "/contact" }
   ];
 
   const handleLinkClick = (path) => {
@@ -189,9 +189,9 @@ export default function Navbar() {
             <div className="flex items-center gap-2 mx-auto font-sans-body text-[0.72rem] md:text-[0.78rem] text-white/70 font-medium">
               {/* White Square Block indicator */}
               <div className="w-[5px] h-[5px] bg-white" />
-              <span>Snortweb Technology — Now Accepting New Projects</span>
+              <span>{t("announcement")}</span>
               <Link to="/contact" className="text-white underline font-semibold hover:text-white/80 nav-link-no-underline ml-1">
-                Get Started →
+                {t("cta_start")} →
               </Link>
             </div>
 
@@ -282,16 +282,33 @@ export default function Navbar() {
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#C8A15A]"></span>
             </span>
             <span className="text-[0.62rem] tracking-[0.22em] font-mono-code uppercase font-bold text-accent">
-              SECURE OPERATIONS PORTAL ACTIVE
+              SECURE PORTAL ACTIVE
             </span>
           </motion.div>
+
+          {/* Bilingual Language Switcher */}
+          <div className="flex items-center border border-border-light rounded-none dark:rounded-md px-2 py-1 text-[10px] font-mono-code bg-[#1A1A1A]/30 text-text-secondary select-none">
+            <button
+              onClick={() => setLanguage("en")}
+              className={`px-1.5 py-0.5 hover:text-white transition-colors cursor-pointer ${language === "en" ? "text-accent font-bold" : ""}`}
+            >
+              EN
+            </button>
+            <span className="text-border-light/40 mx-0.5">|</span>
+            <button
+              onClick={() => setLanguage("hi")}
+              className={`px-1.5 py-0.5 hover:text-white transition-colors cursor-pointer ${language === "hi" ? "text-accent font-bold" : ""}`}
+            >
+              हिं
+            </button>
+          </div>
 
           <Button
             magnetic={true}
             onClick={handleCTA}
             className="border-2 border-[#C8A15A] bg-transparent px-7 py-2.5 text-[0.72rem] font-mono-code font-bold tracking-[0.18em] text-text-primary hover:bg-[rgba(200,161,90,0.08)] transition-all duration-300 rounded-none dark:rounded-md"
           >
-            GET STARTED
+            {t("cta_start")}
           </Button>
         </div>
 
@@ -360,15 +377,37 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 + navLinks.length * 0.04, duration: 0.2 }}
-                className="pt-8"
+                className="pt-8 space-y-4"
               >
                 <Button
                   magnetic={false}
                   onClick={handleCTA}
                   className="w-full border-2 border-white py-4 text-center text-xs font-mono-code font-bold tracking-[0.2em] text-white rounded-none hover:bg-white hover:text-black transition-colors duration-100 bg-transparent"
                 >
-                  GET STARTED
+                  {t("cta_start")}
                 </Button>
+
+                {/* Mobile Language Switcher */}
+                <div className="flex justify-center items-center gap-4 text-xs font-mono-code pt-4 border-t border-white/10">
+                  <button
+                    onClick={() => {
+                      setLanguage("en");
+                      setMenuOpen(false);
+                    }}
+                    className={`px-3 py-1.5 border border-white/20 hover:border-white transition-colors cursor-pointer ${language === "en" ? "text-accent border-accent/30 font-bold" : "text-white/60"}`}
+                  >
+                    ENGLISH
+                  </button>
+                  <button
+                    onClick={() => {
+                      setLanguage("hi");
+                      setMenuOpen(false);
+                    }}
+                    className={`px-3 py-1.5 border border-white/20 hover:border-white transition-colors cursor-pointer ${language === "hi" ? "text-accent border-accent/30 font-bold" : "text-white/60"}`}
+                  >
+                    हिंदी
+                  </button>
+                </div>
               </motion.div>
             </div>
           </motion.div>

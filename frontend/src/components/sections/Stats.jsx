@@ -2,10 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { stats } from "../../data/stats";
 import { useCounter } from "../../hooks/useCounter";
+import { useApp } from "../../context/AppContext";
 
 // Stat Item Component with Glass Card hover and Count Animation
-function StatCard({ item, index }) {
+function StatCard({ item, index, t }) {
   const { ref, count } = useCounter(item.value, 2000);
+  const statTranslationKeys = ["stats_projects", "stats_security", "stats_latency", "stats_uptime"];
 
   return (
     <motion.div
@@ -25,13 +27,15 @@ function StatCard({ item, index }) {
         </span>
       </div>
       <span className="font-mono-code font-bold text-[0.8rem] uppercase text-white/50 mt-3 tracking-wider">
-        {item.label}
+        {t(statTranslationKeys[index]) || item.label}
       </span>
     </motion.div>
   );
 }
 
 export default function Stats() {
+  const { t } = useApp();
+
   return (
     <section
       id="stats-section"
@@ -46,24 +50,24 @@ export default function Stats() {
         {/* Left Column (50%): 2x2 Grid of Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
           {stats.map((item, idx) => (
-            <StatCard key={item.id} item={item} index={idx} />
+            <StatCard key={item.id} item={item} index={idx} t={t} />
           ))}
         </div>
 
         {/* Right Column (50%): Quote and description */}
         <div className="flex flex-col items-start text-left justify-center lg:pl-8">
           <h2 className="font-sans-heading font-black text-3xl sm:text-4xl lg:text-[3rem] leading-[1.1] text-white uppercase">
-            Numbers don't lie.
+            {t("stats_heading")}
           </h2>
           <p className="font-sans-heading font-normal italic text-xl sm:text-2xl lg:text-[1.8rem] text-white/50 mt-2">
-            Our work does the talking.
+            {t("stats_subheading")}
           </p>
           
           {/* horizontal black/white divider rule */}
           <div className="w-[60px] h-[2px] bg-white my-6" />
           
           <p className="font-sans-body font-normal text-[0.95rem] text-white/70 leading-[1.8] max-w-[340px]">
-            Every project is secured, tested, and delivered with enterprise standards regardless of size.
+            {t("stats_desc")}
           </p>
         </div>
 

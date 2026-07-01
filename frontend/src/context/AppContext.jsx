@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useEffect, useContext } from "react";
+import { translations } from "../data/translations";
 
 const AppContext = createContext();
 
@@ -8,6 +9,9 @@ export const AppContextProvider = ({ children }) => {
   const [activeModalService, setActiveModalService] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactSuccess, setContactSuccess] = useState(false);
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("snortweb_lang") || "en";
+  });
   
   const [theme] = useState("dark");
 
@@ -15,6 +19,14 @@ export const AppContextProvider = ({ children }) => {
     const root = window.document.documentElement;
     root.classList.add("dark");
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("snortweb_lang", language);
+  }, [language]);
+
+  const t = (key) => {
+    return translations[language]?.[key] || translations["en"]?.[key] || key;
+  };
 
   return (
     <AppContext.Provider
@@ -28,7 +40,10 @@ export const AppContextProvider = ({ children }) => {
         contactSuccess,
         setContactSuccess,
         theme,
-        setTheme: () => {}
+        setTheme: () => {},
+        language,
+        setLanguage,
+        t
       }}
     >
       {children}
