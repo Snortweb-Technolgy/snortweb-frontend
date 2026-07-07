@@ -2,6 +2,56 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useApp } from "../../context/AppContext";
 
+// Subtle expanding luxury rings behind the logo
+const RippleRings = () => (
+  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+    {[...Array(3)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute w-36 h-36 rounded-full border border-[#C8A15A]"
+        initial={{ opacity: 0.4, scale: 0.8 }}
+        animate={{ opacity: 0, scale: 2.5 }}
+        transition={{
+          repeat: Infinity,
+          duration: 3,
+          delay: i * 1,
+          ease: "easeOut"
+        }}
+      />
+    ))}
+  </div>
+);
+
+// Floating gold dust for a premium feel
+const FloatingDust = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    {[...Array(20)].map((_, i) => {
+      const left = `${Math.random() * 100}%`;
+      const size = Math.random() * 3 + 1;
+      const duration = Math.random() * 3 + 3;
+      const delay = Math.random() * 2;
+      return (
+        <motion.div
+          key={i}
+          className="absolute bottom-[-10%] rounded-full bg-[#C8A15A] opacity-0"
+          style={{ left, width: size, height: size, filter: "blur(1px)" }}
+          animate={{
+            y: ["0vh", "-110vh"],
+            x: ["0px", `${Math.random() * 40 - 20}px`],
+            opacity: [0, 0.5, 0]
+          }}
+          transition={{
+            repeat: Infinity,
+            duration,
+            delay,
+            ease: "linear"
+          }}
+        />
+      );
+    })}
+  </div>
+);
+
 export default function Loader() {
   const { isLoaded, setIsLoaded } = useApp();
   const [progress, setProgress] = useState(0);
@@ -61,23 +111,29 @@ export default function Loader() {
             filter: "blur(12px)",
             transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
           }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070708] select-none pointer-events-none"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#070708] select-none pointer-events-none overflow-hidden"
         >
           {/* Futuristic background patterns */}
           <div className="absolute inset-0 pattern-noise pointer-events-none opacity-[0.22] z-0" />
           
+          {/* Floating Gold Dust */}
+          <FloatingDust />
+
           {/* Glowing central backdrops */}
           <div className="absolute w-[500px] h-[500px] rounded-full bg-[#C8A15A]/[0.025] blur-[150px] pointer-events-none select-none z-0" />
           <div className="absolute w-[300px] h-[300px] rounded-full bg-white/[0.01] blur-[100px] pointer-events-none select-none z-0" />
           
-          <div className="relative z-10 flex flex-col items-center">
+          <div className="relative z-10 flex flex-col items-center mt-[-40px]">
             
             {/* SVG Circular Loader wrapping the Logo */}
             <div className="relative w-36 h-36 flex items-center justify-center mb-6">
               
+              {/* Premium Expanding Ripple Rings */}
+              <RippleRings />
+
               {/* Outer Slow Rotating Dashed Ring */}
               <motion.svg
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full z-10"
                 viewBox="0 0 100 100"
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
@@ -94,7 +150,7 @@ export default function Loader() {
               </motion.svg>
 
               {/* Inner Glowing Active Progress Ring */}
-              <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+              <svg className="absolute inset-0 w-full h-full -rotate-90 z-10" viewBox="0 0 100 100">
                 <motion.circle
                   cx="50"
                   cy="50"
@@ -125,7 +181,7 @@ export default function Loader() {
                   opacity: { repeat: Infinity, duration: 1.6, ease: "easeInOut" },
                   scale: { repeat: Infinity, duration: 1.6, ease: "easeInOut" }
                 }}
-                className="h-16 w-16 object-contain z-10"
+                className="h-16 w-16 object-contain z-20"
               />
             </div>
 
@@ -134,12 +190,18 @@ export default function Loader() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
-              className="flex flex-col items-center mb-8"
+              className="flex flex-col items-center mb-8 relative overflow-hidden px-4"
             >
-              <h1 className="font-sans-heading font-black text-white text-[1.4rem] tracking-[0.25em] uppercase leading-none">
+              <h1 className="font-sans-heading font-black text-white text-[1.4rem] tracking-[0.25em] uppercase leading-none relative z-10">
                 SNORTWEB
+                {/* Premium Text Shimmer Effect */}
+                <motion.div
+                  className="absolute top-0 left-0 w-8 h-full bg-white opacity-20 blur-[6px] -skew-x-12 z-20"
+                  animate={{ left: ["-150%", "250%"] }}
+                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: 0.5 }}
+                />
               </h1>
-              <span className="font-sans-body uppercase font-light tracking-[0.55em] text-[#C8A15A] text-[0.58rem] mt-2.5">
+              <span className="font-sans-body uppercase font-light tracking-[0.55em] text-[#C8A15A] text-[0.58rem] mt-2.5 z-10">
                 TECHNOLOGY
               </span>
             </motion.div>
@@ -149,10 +211,10 @@ export default function Loader() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center mt-4 text-center"
+              className="flex flex-col items-center justify-center mt-4 text-center z-10"
             >
               {/* Elegant percentage */}
-              <span className="font-mono-code font-bold text-3xl tracking-widest text-[#C8A15A] select-none mb-3">
+              <span className="font-mono-code font-bold text-3xl tracking-widest text-[#C8A15A] select-none mb-3" style={{ textShadow: "0 0 15px rgba(200,161,90,0.5)" }}>
                 {progress}%
               </span>
               

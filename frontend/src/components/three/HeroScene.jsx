@@ -766,7 +766,7 @@ export default function HeroScene() {
   return (
     <div className="w-full h-full relative">
       <Canvas
-        camera={{ fov: 45, position: [0, 0, 6.2] }}
+        camera={{ fov: 45, position: [0, 0, 4.8] }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 1.5]}
         shadows={false}
@@ -789,6 +789,7 @@ export default function HeroScene() {
             autoRotateSpeed={1.0}
             maxPolarAngle={Math.PI / 1.8}
             minPolarAngle={Math.PI / 3}
+            target={[0.4, -0.15, 0]}
           />
         </Suspense>
       </Canvas>

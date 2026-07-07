@@ -63,8 +63,8 @@ export default function Navbar() {
 
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
-      rootMargin: "-40% 0px -40% 0px", // triggers when section is in the middle of viewport
-      threshold: 0.1
+      rootMargin: "-50% 0px -50% 0px", // exact middle of the screen
+      threshold: 0
     });
 
     sectionIds.forEach((id) => {
@@ -73,15 +73,15 @@ export default function Navbar() {
     });
 
     return () => observer.disconnect();
-  }, [location.pathname, activeSection]);
+  }, [location.pathname]);
 
   const navLinks = [
     { name: t("home"), path: "/" },
-    { name: t("services"), path: "/services" },
-    { name: t("projects"), path: "/#portfolio-section" },
     { name: t("about"), path: "/#about-section" },
-    { name: t("process"), path: "/#process-section" },
+    { name: t("services"), path: "/#services-section" },
+    { name: t("projects"), path: "/#portfolio-section" },
     { name: t("review"), path: "/#reviews-section" },
+    { name: t("process"), path: "/#process-section" },
     { name: t("contact"), path: "/contact" }
   ];
 
@@ -97,14 +97,8 @@ export default function Navbar() {
           element.scrollIntoView({ behavior: "smooth" });
         }
       } else {
-        navigate("/");
-        setTimeout(() => {
-          const el = document.getElementById(id);
-          if (el) {
-            if (window.lenis) window.lenis.scrollTo(el, { offset: -80 });
-            else el.scrollIntoView({ behavior: "smooth" });
-          }
-        }, 100);
+        // Force explicit navigation to home page with hash
+        navigate({ pathname: "/", hash: id });
       }
     } else {
       if (path === "/" && window.location.pathname === "/") {
@@ -153,23 +147,27 @@ export default function Navbar() {
     }
   };
 
-  const isLinkActive = (link, isActive) => {
-    // If router reports path is active and it's not a hash route
-    if (!link.path.startsWith("/#") && isActive) {
-      if (link.path === "/") {
-        return window.location.pathname === "/" && (activeSection === "hero" || activeSection === "");
-      }
-      return true;
+  const isLinkActive = (link) => {
+    const currentPath = location.pathname;
+    const hash = location.hash;
+
+    // If we are NOT on the homepage
+    if (currentPath !== "/") {
+      if (link.path === "/") return false;
+      if (link.path === currentPath) return true;
+      if (link.path === currentPath + hash) return true;
+      return false;
     }
-    // If on home, override with intersection observer state
-    if (window.location.pathname === "/") {
-      if (link.path === "/services" && activeSection === "services") return true;
-      if (link.path === "/#portfolio-section" && activeSection === "projects") return true;
-      if (link.path === "/#about-section" && activeSection === "about") return true;
-      if (link.path === "/#process-section" && activeSection === "process") return true;
-      if (link.path === "/#reviews-section" && activeSection === "reviews") return true;
-      if (link.path === "/contact" && activeSection === "contact") return true;
-    }
+    
+    // If we ARE on the homepage, use activeSection
+    if (link.path === "/") return activeSection === "hero" || activeSection === "";
+    if (link.path === "/services" || link.path === "/#services-section") return activeSection === "services";
+    if (link.path === "/#portfolio-section") return activeSection === "projects";
+    if (link.path === "/#about-section") return activeSection === "about";
+    if (link.path === "/#process-section") return activeSection === "process";
+    if (link.path === "/#reviews-section") return activeSection === "reviews";
+    if (link.path === "/contact") return activeSection === "contact";
+    
     return false;
   };
 
@@ -209,7 +207,7 @@ export default function Navbar() {
 
       {/* 2. Main Navigation Bar */}
       <nav
-        className={`fixed left-0 right-0 z-[100] h-[72px] flex items-center justify-between px-6 md:px-12 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-50 h-[72px] flex items-center justify-between px-6 md:px-12 transition-all duration-300 ${
           scrolled
             ? "bg-bg-primary border-b border-border-light shadow-hairline"
             : "bg-transparent border-b border-transparent"
@@ -251,8 +249,8 @@ export default function Navbar() {
               onClick={() => handleLinkClick(link.path)}
               className="nav-link-no-underline py-2"
             >
-              {({ isActive }) => {
-                const active = isLinkActive(link, isActive);
+              {() => {
+                const active = isLinkActive(link);
                 return (
                   <span className="relative overflow-hidden group pb-1.5 text-xs font-mono-code font-bold tracking-[0.18em] uppercase transition-colors duration-300 text-text-secondary hover:text-text-primary block">
                     <span className={active ? "text-text-primary" : ""}>{link.name}</span>

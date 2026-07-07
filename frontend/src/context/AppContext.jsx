@@ -14,6 +14,7 @@ export const AppContextProvider = ({ children }) => {
   });
   
   const [theme] = useState("dark");
+  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -23,6 +24,19 @@ export const AppContextProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("snortweb_lang", language);
   }, [language]);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/settings");
+        const data = await res.json();
+        setSettings(data);
+      } catch (error) {
+        console.error("Error fetching settings:", error);
+      }
+    };
+    fetchSettings();
+  }, []);
 
   const t = (key) => {
     return translations[language]?.[key] || translations["en"]?.[key] || key;
@@ -43,7 +57,8 @@ export const AppContextProvider = ({ children }) => {
         setTheme: () => {},
         language,
         setLanguage,
-        t
+        t,
+        settings
       }}
     >
       {children}

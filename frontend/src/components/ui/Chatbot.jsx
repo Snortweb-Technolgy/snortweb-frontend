@@ -17,8 +17,14 @@ export default function Chatbot() {
     setMessages([
       {
         id: "welcome",
-        text: t("chat_welcome"),
+        text: "Namaste! Main Snortweb ka AI assistant hoon 👋 / Welcome to Snortweb Technology! What are you looking for today?",
         isBot: true,
+        options: [
+          "Secure Web Development 🌐",
+          "Cyber Security Audits 🛡️",
+          "Cloud Architectures ☁️",
+          "UI/UX & Branding 🎨"
+        ],
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -31,23 +37,24 @@ export default function Chatbot() {
     }
   }, [messages, isOpen]);
 
-  const handleSend = async (e) => {
+  const handleSend = async (e, textParam = null) => {
     if (e) e.preventDefault();
-    if (inputMsg.trim() === "" || isLoading) return;
+    const messageText = textParam !== null ? textParam : inputMsg;
+    if (messageText.trim() === "" || isLoading) return;
 
     const userMessage = {
       id: `user-${Date.now()}`,
-      text: inputMsg,
+      text: messageText,
       isBot: false,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInputMsg("");
+    if (textParam === null) setInputMsg("");
     setIsLoading(true);
 
     try {
-      const { data } = await axios.post("http://localhost:5050/api/chat", {
+      const { data } = await axios.post("http://localhost:5000/api/chat", {
         message: userMessage.text,
         language: language
       });
@@ -87,6 +94,7 @@ export default function Chatbot() {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        title="snortwebtechnology ai"
         className="w-14 h-14 rounded-full bg-[#C8A15A] hover:bg-[#b08c4b] dark:bg-[#C8A15A] text-slate-950 flex items-center justify-center shadow-[0_4px_24px_rgba(200,161,90,0.4)] cursor-pointer relative"
         aria-label="Open chat assistant"
       >
@@ -181,7 +189,7 @@ export default function Chatbot() {
                   }`}>
                     {msg.isBot ? <Bot className="w-3 h-3" /> : <User className="w-3 h-3" />}
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1 max-w-full">
                     <div className={`p-3 rounded-2xl text-[11.5px] leading-relaxed select-text ${
                       msg.isBot
                         ? "bg-slate-900/60 border border-white/5 text-white/95 rounded-tl-sm"
@@ -189,6 +197,19 @@ export default function Chatbot() {
                     }`}>
                       {msg.text}
                     </div>
+                    {msg.options && (
+                      <div className="flex flex-wrap gap-2 pt-1 pb-1">
+                        {msg.options.map((opt, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleSend(null, opt)}
+                            className="text-[10px] px-3 py-1.5 rounded-full border border-[#C8A15A]/30 bg-black/40 text-white/90 hover:bg-[#C8A15A] hover:text-black transition-colors cursor-pointer whitespace-nowrap"
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                     <span className="text-[8px] text-white/40 font-mono-code block px-1">
                       {msg.time}
                     </span>

@@ -19,15 +19,19 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Viewport restoration utility on path redirects
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (window.lenis) {
-      window.lenis.scrollTo(0, { immediate: true });
-    } else {
-      window.scrollTo(0, 0);
+    // Only scroll to top if there is no hash
+    // (Hashes are handled individually by their respective components like Home.jsx)
+    if (!hash) {
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
     }
-  }, [pathname]);
+  }, [pathname, hash]);
 
   return null;
 }
@@ -57,7 +61,7 @@ export default function App() {
       <Navbar />
 
       {/* Main page segments */}
-      <main className="flex-grow z-10">
+      <main className="flex-grow">
         <Suspense fallback={<div className="h-screen w-full bg-bg-primary flex items-center justify-center text-text-secondary" />}>
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>

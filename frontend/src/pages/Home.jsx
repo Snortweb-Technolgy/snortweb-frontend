@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import SEO from "../components/seo/SEO";
 import Hero from "../components/sections/Hero";
 import Marquee from "../components/sections/Marquee";
@@ -13,6 +14,25 @@ import Process from "../components/sections/Process";
 import CTABanner from "../components/sections/CTABanner";
 
 export default function Home() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const timer = setTimeout(() => {
+        const id = location.hash.replace("#", "");
+        const el = document.getElementById(id);
+        if (el) {
+          if (window.lenis) {
+            window.lenis.scrollTo(el, { offset: -80 });
+          } else {
+            el.scrollIntoView();
+          }
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [location.hash]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}

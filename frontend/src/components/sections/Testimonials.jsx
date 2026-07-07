@@ -9,7 +9,7 @@ export default function Testimonials() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5050/api/reviews");
+        const { data } = await axios.get("http://localhost:5000/api/reviews");
         // Only show approved reviews
         const approved = data ? data.filter((r) => r.approved) : [];
         if (approved.length > 0) {

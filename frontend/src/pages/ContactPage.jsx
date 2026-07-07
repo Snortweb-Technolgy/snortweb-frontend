@@ -96,7 +96,7 @@ export default function ContactPage() {
 
     try {
       // Pass budget default value of "Let's discuss" to comply with backend validation
-      await axios.post("http://localhost:5050/api/inquiries", {
+      await axios.post("http://localhost:5000/api/inquiries", {
         ...data,
         budget: "Let's discuss"
       });
@@ -197,6 +197,24 @@ export default function ContactPage() {
                     className="font-sans-body text-[0.95rem] text-text-primary hover:text-text-secondary transition-colors font-medium"
                   >
                     snortwebtechnology@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex gap-4 items-center">
+                <span className="text-text-primary font-mono-code font-bold text-[1.2rem] select-none">
+                  ✆
+                </span>
+                <div className="flex flex-col text-left">
+                  <span className="font-mono-code font-bold text-[0.6rem] tracking-[0.1em] text-text-tertiary uppercase">
+                    Phone
+                  </span>
+                  <a
+                    href="tel:+919860596829"
+                    className="font-sans-body text-[0.95rem] text-text-primary hover:text-text-secondary transition-colors font-medium"
+                  >
+                    +91 9860596829
                   </a>
                 </div>
               </div>

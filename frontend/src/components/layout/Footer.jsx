@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { services } from "../../data/services";
 import { useApp } from "../../context/AppContext";
-
 const LinkedinIcon = ({ size }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
@@ -24,8 +23,29 @@ const GithubIcon = ({ size }) => (
   </svg>
 );
 
+const FacebookIcon = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+  </svg>
+);
+
+const InstagramIcon = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const YoutubeIcon = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path>
+    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+  </svg>
+);
+
 export default function Footer() {
-  const { t } = useApp();
+  const { t, settings } = useApp();
 
   const handleLinkClick = () => {
     if (window.lenis) {
@@ -36,9 +56,8 @@ export default function Footer() {
   };
 
   const socialLinks = [
-    { icon: <LinkedinIcon size={16} />, url: "https://linkedin.com", aria: "LinkedIn" },
-    { icon: <TwitterIcon size={16} />, url: "https://twitter.com", aria: "Twitter" },
-    { icon: <GithubIcon size={16} />, url: "https://github.com", aria: "GitHub" }
+    { icon: <LinkedinIcon size={16} />, url: "https://www.linkedin.com/company/snortweb-technology/", aria: "LinkedIn", platform: "linkedin" },
+    { icon: <InstagramIcon size={16} />, url: "https://www.instagram.com/snortweb.technology?igsh=bHBicG5jMHA1d28w", aria: "Instagram", platform: "instagram" }
   ];
 
   return (
@@ -103,27 +122,46 @@ export default function Footer() {
           >
             snortwebtechnology@gmail.com
           </a>
+
+          <a
+            href="tel:+919860596829"
+            className="mt-2 font-sans-body font-medium text-[0.875rem] text-text-primary hover:text-text-secondary transition-colors duration-100 hover:underline decoration-1 decoration-text-primary underline-offset-4"
+          >
+            +91 9860596829
+          </a>
           
           <span className="mt-3 font-sans-body font-normal text-[0.8rem] text-text-tertiary">
             {t("footer_emergency")}
           </span>
 
           {/* Social Row */}
-          <div className="flex gap-[10px] mt-6">
-            {socialLinks.map((social, i) => (
-              <motion.a
-                key={i}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05, y: -1 }}
-                transition={{ duration: 0.1 }}
-                className="w-[32px] h-[32px] border border-border-subtle flex items-center justify-center text-text-secondary hover:border-border-main hover:text-[#F7F3EB] dark:hover:text-text-primary hover:bg-[#24211C] dark:hover:bg-bg-elevated rounded-[8px] dark:rounded-md transition-all duration-300"
-                aria-label={social.aria}
-              >
-                {social.icon}
-              </motion.a>
-            ))}
+          <div className="flex flex-wrap gap-[10px] mt-6">
+            {(settings?.socialLinks?.length > 0 ? settings.socialLinks : socialLinks).map((social, i) => {
+              let IconComponent = LinkedinIcon;
+              const iconString = typeof social.icon === 'string' ? social.icon : (social.platform || "");
+              const iconName = iconString.toLowerCase();
+              if (iconName === "twitter") IconComponent = TwitterIcon;
+              else if (iconName === "github") IconComponent = GithubIcon;
+              else if (iconName === "instagram") IconComponent = InstagramIcon;
+              else if (iconName === "facebook") IconComponent = FacebookIcon;
+              else if (iconName === "youtube") IconComponent = YoutubeIcon;
+              // default to Linkedin if not found or if platform has no specific icon
+
+              return (
+                <motion.a
+                  key={i}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05, y: -1 }}
+                  transition={{ duration: 0.1 }}
+                  className="w-[32px] h-[32px] border border-border-subtle flex items-center justify-center text-text-secondary hover:border-border-main hover:text-[#F7F3EB] dark:hover:text-text-primary hover:bg-[#24211C] dark:hover:bg-bg-elevated rounded-[8px] dark:rounded-md transition-all duration-300"
+                  aria-label={social.platform || social.aria}
+                >
+                  {social.icon && typeof social.icon !== 'string' ? social.icon : <IconComponent size={16} strokeWidth={1.5} />}
+                </motion.a>
+              )
+            })}
           </div>
         </div>
 

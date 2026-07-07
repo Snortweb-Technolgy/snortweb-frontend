@@ -53,7 +53,7 @@ export default function Portfolio() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5050/api/projects");
+        const { data } = await axios.get("http://localhost:5000/api/projects");
         if (data && data.length > 0) {
           setProjects(data);
         }

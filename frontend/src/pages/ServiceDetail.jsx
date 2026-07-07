@@ -145,6 +145,16 @@ export default function ServiceDetail() {
                   snortwebtechnology@gmail.com
                 </a>
               </span>
+
+              <span className="block text-center mt-1 font-sans-body font-normal text-[0.8rem] text-text-secondary">
+                or call{" "}
+                <a
+                  href="tel:+919860596829"
+                  className="text-text-primary hover:text-text-secondary font-bold transition-colors"
+                >
+                  +91 9860596829
+                </a>
+              </span>
             </div>
 
             {/* Other Services */}

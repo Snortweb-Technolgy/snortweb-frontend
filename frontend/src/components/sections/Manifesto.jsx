@@ -50,7 +50,7 @@ export default function Manifesto() {
   };
 
   return (
-    <section id="about-section" className="relative py-[140px] bg-bg-primary border-b border-border-main z-10 font-sans-body">
+    <section id="about-section" className="relative py-[140px] bg-bg-primary border-b border-border-main font-sans-body">
       
       {/* Pattern overlays */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
