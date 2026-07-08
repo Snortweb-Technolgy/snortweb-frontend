@@ -34,10 +34,7 @@ export default function Navbar() {
   useEffect(() => {
     if (location.pathname !== "/") {
       if (activeSection !== "") {
-        const timer = setTimeout(() => {
-          setActiveSection("");
-        }, 0);
-        return () => clearTimeout(timer);
+        setActiveSection("");
       }
       return;
     }
@@ -63,16 +60,38 @@ export default function Navbar() {
 
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
-      rootMargin: "-50% 0px -50% 0px", // exact middle of the screen
+      rootMargin: "-20% 0px -75% 0px", // Trigger when section hits the top 20% of screen
       threshold: 0
     });
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    const observed = new Set();
+    
+    // Interval to retry finding elements since they might be lazy-loaded via Suspense
+    const interval = setInterval(() => {
+      let allFound = true;
+      sectionIds.forEach((id) => {
+        if (!observed.has(id)) {
+          const el = document.getElementById(id);
+          if (el) {
+            observer.observe(el);
+            observed.add(id);
+          } else {
+            allFound = false;
+          }
+        }
+      });
+      
+      if (allFound) clearInterval(interval);
+    }, 500);
 
-    return () => observer.disconnect();
+    // Safety fallback to clear interval after 10s if some sections just don't exist
+    const timeout = setTimeout(() => clearInterval(interval), 10000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+      observer.disconnect();
+    };
   }, [location.pathname]);
 
   const navLinks = [

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
+import api from "../../api/axios";
 
 export default function Testimonials() {
   const [reviews, setReviews] = useState([]);
@@ -9,7 +9,7 @@ export default function Testimonials() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/reviews");
+        const { data } = await api.get("/reviews");
         // Only show approved reviews
         const approved = data ? data.filter((r) => r.approved) : [];
         if (approved.length > 0) {

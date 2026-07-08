@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
+import api from "../../api/axios";
 import { ExternalLink, Folder } from "lucide-react";
 
 const GithubIcon = (props) => (
@@ -53,7 +53,7 @@ export default function Portfolio() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/projects");
+        const { data } = await api.get("/projects");
         if (data && data.length > 0) {
           setProjects(data);
         }
@@ -128,6 +128,7 @@ export default function Portfolio() {
                     <img
                       src={project.imageUrl || "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80"}
                       alt={project.title}
+                      loading="lazy"
                       className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.08] ${
                         isProjectLive 
                           ? "filter blur-0 group-hover:blur-0" 

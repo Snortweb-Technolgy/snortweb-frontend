@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useEffect, useContext } from "react";
 import { translations } from "../data/translations";
+import api from "../api/axios";
 
 const AppContext = createContext();
 
@@ -28,8 +29,7 @@ export const AppContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/settings");
-        const data = await res.json();
+        const { data } = await api.get("/settings");
         setSettings(data);
       } catch (error) {
         console.error("Error fetching settings:", error);

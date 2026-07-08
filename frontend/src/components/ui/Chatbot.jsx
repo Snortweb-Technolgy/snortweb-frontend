@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MessageSquare, X, Send, Bot, User, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
+import api from "../../api/axios";
+import DOMPurify from 'dompurify';
 import { useApp } from "../../context/AppContext";
 
 export default function Chatbot() {
@@ -54,14 +55,16 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/chat", {
+      const { data } = await api.post("/chat", {
         message: userMessage.text,
         language: language
       });
 
+      const sanitizedReply = DOMPurify.sanitize(data.reply);
+
       const botMessage = {
         id: `bot-${Date.now()}`,
-        text: data.reply,
+        text: sanitizedReply,
         isBot: true,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };

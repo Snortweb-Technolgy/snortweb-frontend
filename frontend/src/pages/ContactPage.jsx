@@ -5,7 +5,8 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import axios from "axios";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 import { services } from "../data/services";
 import Button from "../components/ui/Button";
 
@@ -50,7 +51,6 @@ export default function ContactPage() {
   const prefersReduced = useReducedMotion();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showErrorToast, setShowErrorToast] = useState(false);
 
   // Grab selected service from router state if present
   const initialService = location.state?.selectedService || "";
@@ -81,30 +81,19 @@ export default function ContactPage() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-    setShowErrorToast(false);
-
-    // If name is "Trigger Error", force error path to demonstrate toast
-    if (data.name.toLowerCase() === "trigger error") {
-      setTimeout(() => {
-        setIsLoading(false);
-        setShowErrorToast(true);
-        // Clear toast after 4s
-        setTimeout(() => setShowErrorToast(false), 4000);
-      }, 1000);
-      return;
-    }
 
     try {
       // Pass budget default value of "Let's discuss" to comply with backend validation
-      await axios.post("http://localhost:5000/api/inquiries", {
+      await api.post("/inquiries", {
         ...data,
         budget: "Let's discuss"
       });
       setIsSuccess(true);
+      toast.success("Message sent successfully!");
     } catch (err) {
-      console.warn("Error posting contact inquiry, falling back to client-side success simulation:", err);
-      // In case backend is down, still simulate success so user doesn't get stuck
-      setIsSuccess(true);
+      console.error("Error posting contact inquiry:", err);
+      // The api interceptor will already show a generic error toast for 500s or network errors,
+      // but we can show a fallback here if needed.
     } finally {
       setIsLoading(false);
     }
@@ -143,25 +132,6 @@ export default function ContactPage() {
       {/* Background visual indicators */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
       <div className="pattern-horizontal-lines absolute inset-0 pointer-events-none z-0" />
-
-      {/* Error Toast Notification */}
-      <AnimatePresence>
-        {showErrorToast && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, x: 20 }}
-            animate={{ opacity: 1, y: 0, x: 0 }}
-            exit={{ opacity: 0, y: -20, x: 20 }}
-            className="fixed top-8 right-8 z-50 p-4 bg-bg-elevated border border-border-main rounded-[16px] dark:rounded-md shadow-card dark:shadow-none max-w-sm"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-none bg-red-600 animate-pulse" />
-              <span className="font-mono-code text-xs font-semibold text-text-primary">
-                Something went wrong. Please try again.
-              </span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Main Grid */}
       <div className="relative pt-[160px] pb-[120px] px-6 md:px-12 max-w-[1200px] mx-auto z-10">
