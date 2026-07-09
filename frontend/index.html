@@ -3,7 +3,17 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://images.unsplash.com; connect-src 'self' http://localhost:* ws://localhost:* https://api.snortweb.com;">
+
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com data:;
+    img-src 'self' data: https://images.unsplash.com;
+    connect-src 'self'
+      http://localhost:*
+      ws://localhost:*
+      https://snortweb-backend.onrender.com;">
+
   <!-- Basic App Config -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/logo-icon.png" />
@@ -16,14 +26,14 @@
   <meta name="description" content="Modern websites with security and performance built-in." />
 
   <!-- Google Analytics Placeholder for GA4 -->
-  <!-- 
+  <!--
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-XXXXXXXXXX');
-  </script> 
+  </script>
   -->
 
   <!-- Google Fonts -->
