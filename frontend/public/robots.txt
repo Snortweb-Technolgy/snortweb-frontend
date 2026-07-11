@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://snortweb.com/sitemap.xml
+Sitemap: https://snortwebtechnology.com/sitemap.xml
