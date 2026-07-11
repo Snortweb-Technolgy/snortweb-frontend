@@ -9,11 +9,14 @@
     script-src 'self' 'unsafe-inline' https://www.googletagmanager.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com data:;
-    img-src 'self' data: https://images.unsplash.com;
+    img-src 'self' data: https://images.unsplash.com https://www.google-analytics.com;
     connect-src 'self'
       http://localhost:*
       ws://localhost:*
-      https://snortweb-backend.onrender.com;">
+      https://snortweb-backend.onrender.com
+      https://www.google-analytics.com
+      https://region1.google-analytics.com
+      https://www.googletagmanager.com;">
 
   <!-- Basic App Config -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
