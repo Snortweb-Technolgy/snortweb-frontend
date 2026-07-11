@@ -126,7 +126,7 @@ export default function ContactPage() {
           "@context": "https://schema.org",
           "@type": "ContactPage",
           "name": "Contact Snortweb Technology",
-          "url": "https://snortweb.com/contact"
+          "url": "https://snortwebtechnology.com/contact"
         }}
       />
       {/* Background visual indicators */}

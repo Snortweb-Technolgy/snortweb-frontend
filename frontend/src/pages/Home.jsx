@@ -49,7 +49,7 @@ export default function Home() {
           "@context": "https://schema.org",
           "@type": "WebSite",
           "name": "Snortweb Technology",
-          "url": "https://snortweb.com"
+          "url": "https://snortwebtechnology.com"
         }}
       />
       <Hero />

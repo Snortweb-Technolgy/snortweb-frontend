@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://snortweb.com/</loc>
+    <loc>https://snortwebtechnology.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/services</loc>
+    <loc>https://snortwebtechnology.com/services</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/services/web-development</loc>
+    <loc>https://snortwebtechnology.com/services/web-development</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/services/cyber-security</loc>
+    <loc>https://snortwebtechnology.com/services/cyber-security</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/services/mobile-app-development</loc>
+    <loc>https://snortwebtechnology.com/services/mobile-app-development</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/services/cloud-solutions</loc>
+    <loc>https://snortwebtechnology.com/services/cloud-solutions</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/services/ui-ux-design</loc>
+    <loc>https://snortwebtechnology.com/services/ui-ux-design</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/services/it-consulting</loc>
+    <loc>https://snortwebtechnology.com/services/it-consulting</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://snortweb.com/contact</loc>
+    <loc>https://snortwebtechnology.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
