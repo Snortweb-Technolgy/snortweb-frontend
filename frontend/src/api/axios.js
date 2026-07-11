@@ -33,9 +33,13 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (axios.isCancel(error)) {
+      return Promise.reject(error);
+    }
+
     // Check if it's a network error or timeout
     if (!error.response) {
-      toast.error("Network error. Please check your connection.");
+      toast.error("Network error. Please check your connection.", { id: 'network-error' });
     } else {
       // Handle specific HTTP status codes
       const { status, data } = error.response;
