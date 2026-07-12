@@ -17,16 +17,23 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Track window scroll
+  // Track window scroll with requestAnimationFrame to prevent layout thrashing
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (window.scrollY > 80) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 80) {
+            setScrolled(true);
+          } else {
+            setScrolled(false);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -245,7 +252,7 @@ export default function Navbar() {
           className="flex items-center gap-3.5 select-none group nav-link-no-underline"
         >
           <img
-            src="/logo-icon.png"
+            src="/logo-icon.webp"
             alt="Snortweb Logo Icon"
             width="40"
             height="40"

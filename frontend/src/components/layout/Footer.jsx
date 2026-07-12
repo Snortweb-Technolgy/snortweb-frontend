@@ -70,7 +70,7 @@ export default function Footer() {
         <div className="md:col-span-4 flex flex-col items-start text-left">
           <Link to="/" onClick={handleLinkClick} className="flex items-center gap-3.5 group nav-link-no-underline">
             <img
-              src="/logo-icon.png"
+              src="/logo-icon.webp"
               alt="Snortweb Logo Icon"
               width="48"
               height="48"

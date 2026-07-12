@@ -35,8 +35,8 @@ export default function Home() {
     }
   }, [location.hash]);
 
-  // Minimal fallback to prevent large layout shifts
-  const SectionFallback = () => <div className="min-h-[200px] w-full" />;
+  // Minimal fallback to prevent large layout shifts for below the fold content
+  const SectionFallback = () => <div className="min-h-[600px] w-full" />;
 
   return (
     <motion.div
