@@ -135,10 +135,18 @@ export default function Hero() {
   const subtextText = t("hero_desc");
   const [typedText, setTypedText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  
+  // Delay mounting heavy 3D engine to completely unblock FCP/LCP
+  const [shouldMount3D, setShouldMount3D] = useState(false);
 
   useEffect(() => {
     if (!isLoaded) return;
     
+    // Mount 3D engine 1.5s after loader disappears, ensuring LCP paints instantly
+    const mountTimer = setTimeout(() => {
+      setShouldMount3D(true);
+    }, 1500);
+
     let timerId = null;
     let index = 0;
     setTypedText("");
@@ -161,6 +169,7 @@ export default function Hero() {
 
     return () => {
       clearTimeout(startTimeout);
+      clearTimeout(mountTimer);
       if (timerId) {
         clearTimeout(timerId);
       }
@@ -357,9 +366,15 @@ export default function Hero() {
                   transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
                   className="w-full h-[360px] lg:h-[550px] relative flex items-center justify-center select-none"
                 >
-                  <Suspense fallback={<div className="w-full h-full flex items-center justify-center opacity-50"><span className="animate-pulse text-xs font-mono-code text-text-tertiary tracking-widest">LOADING 3D ENGINE...</span></div>}>
-                    <HeroScene />
-                  </Suspense>
+                  {shouldMount3D ? (
+                    <Suspense fallback={<div className="w-full h-full flex items-center justify-center opacity-50"><span className="animate-pulse text-xs font-mono-code text-text-tertiary tracking-widest">LOADING 3D ENGINE...</span></div>}>
+                      <HeroScene />
+                    </Suspense>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center opacity-50">
+                      <span className="animate-pulse text-xs font-mono-code text-text-tertiary tracking-widest">INITIALIZING SECURE PROTOCOLS...</span>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
