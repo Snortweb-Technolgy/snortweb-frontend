@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-export default function SEO({ title, description, canonical, type, image, schema, noindex }) {
+export default function SEO({ title, description, canonical, type, image, schema }) {
   const siteUrl = 'https://snortwebtechnology.com';
   const fullUrl = canonical ? `${siteUrl}${canonical}` : siteUrl;
   const imageUrl = image || `${siteUrl}/logo.png`;
@@ -11,7 +11,7 @@ export default function SEO({ title, description, canonical, type, image, schema
       {/* Basic HTML Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
-      {noindex && <meta name="robots" content="noindex, nofollow" />}
+      <meta name="robots" content="index, follow" />
       <link rel="canonical" href={fullUrl} />
 
       {/* Open Graph / Facebook */}

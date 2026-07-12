@@ -18,7 +18,6 @@ export default function NotFound() {
       <SEO 
         title="Page Not Found | Snortweb Technology" 
         description="The page you are looking for does not exist."
-        noindex={true}
       />
       {/* Background visual elements */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
