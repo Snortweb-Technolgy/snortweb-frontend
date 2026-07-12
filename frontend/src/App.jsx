@@ -46,12 +46,79 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <Helmet defaultTitle="Snortweb Technology" titleTemplate="%s | Snortweb Technology">
+      <Helmet defaultTitle="Snortweb Technology | Build. Secure. Grow." titleTemplate="%s | Snortweb Technology">
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Snortweb Technology specializes in secure web development, comprehensive cybersecurity audits & pentesting, zero-trust cloud architectures, and premium UI/UX design." />
-        <meta property="og:type" content="website" />
+        <title>Snortweb Technology | Build. Secure. Grow.</title>
+        
+        {/* Core Meta Tags */}
+        <meta name="description" content="Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization." />
+        <meta name="keywords" content="Website Development, Cybersecurity, Web Applications, Cloud Solutions, Performance Optimization, Snortweb Technology" />
+        <meta name="author" content="Snortweb Technology" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://snortwebtechnology.com" />
+
+        {/* Open Graph Tags */}
         <meta property="og:site_name" content="Snortweb Technology" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Snortweb Technology | Build. Secure. Grow." />
+        <meta property="og:description" content="Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization." />
+        <meta property="og:url" content="https://snortwebtechnology.com" />
+        <meta property="og:image" content="https://snortwebtechnology.com/logo.png" />
+
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Snortweb Technology | Build. Secure. Grow." />
+        <meta name="twitter:description" content="Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization." />
+        <meta name="twitter:image" content="https://snortwebtechnology.com/logo.png" />
+
+        {/* JSON-LD Structured Data */}
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://snortwebtechnology.com/#organization",
+                  "name": "Snortweb Technology",
+                  "url": "https://snortwebtechnology.com",
+                  "logo": "https://snortwebtechnology.com/logo.png",
+                  "email": "snortwebtechnology@gmail.com",
+                  "telephone": "+91 9860596829",
+                  "areaServed": "Worldwide",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "India"
+                  }
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "@id": "https://snortwebtechnology.com/#service",
+                  "name": "Snortweb Technology",
+                  "url": "https://snortwebtechnology.com",
+                  "logo": "https://snortwebtechnology.com/logo.png",
+                  "email": "snortwebtechnology@gmail.com",
+                  "telephone": "+91 9860596829",
+                  "areaServed": "Worldwide",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "India"
+                  }
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://snortwebtechnology.com/#website",
+                  "url": "https://snortwebtechnology.com",
+                  "name": "Snortweb Technology",
+                  "publisher": {
+                    "@id": "https://snortwebtechnology.com/#organization"
+                  }
+                }
+              ]
+            }
+          `}
+        </script>
       </Helmet>
       <div className="relative min-h-screen bg-bg-primary text-text-primary flex flex-col justify-between overflow-x-hidden">
       {/* Scroll manager */}
