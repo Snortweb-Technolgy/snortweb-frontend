@@ -1,19 +1,18 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import SEO from "../components/seo/SEO";
 import Hero from "../components/sections/Hero";
 
-// Lazy load below-the-fold components to reduce initial JS bundle and TBT
-const Marquee = lazy(() => import("../components/sections/Marquee"));
-const Manifesto = lazy(() => import("../components/sections/Manifesto"));
-const Services = lazy(() => import("../components/sections/Services"));
-const Stats = lazy(() => import("../components/sections/Stats"));
-const Testimonials = lazy(() => import("../components/sections/Testimonials"));
-const Portfolio = lazy(() => import("../components/sections/Portfolio"));
-const WhyUs = lazy(() => import("../components/sections/WhyUs"));
-const Process = lazy(() => import("../components/sections/Process"));
-const CTABanner = lazy(() => import("../components/sections/CTABanner"));
+import Marquee from "../components/sections/Marquee";
+import Manifesto from "../components/sections/Manifesto";
+import Services from "../components/sections/Services";
+import Stats from "../components/sections/Stats";
+import Testimonials from "../components/sections/Testimonials";
+import Portfolio from "../components/sections/Portfolio";
+import WhyUs from "../components/sections/WhyUs";
+import Process from "../components/sections/Process";
+import CTABanner from "../components/sections/CTABanner";
 
 export default function Home() {
   const location = useLocation();
@@ -35,8 +34,6 @@ export default function Home() {
     }
   }, [location.hash]);
 
-  // Minimal fallback to prevent large layout shifts for below the fold content
-  const SectionFallback = () => <div className="min-h-[600px] w-full" />;
 
   return (
     <motion.div
@@ -61,8 +58,6 @@ export default function Home() {
       {/* Eagerly loaded LCP Critical Path */}
       <Hero />
       
-      {/* Lazy Loaded Below-the-Fold Sections */}
-      <Suspense fallback={<SectionFallback />}>
         <Marquee />
         <Manifesto />
         <Services />
@@ -72,7 +67,6 @@ export default function Home() {
         <WhyUs />
         <Process />
         <CTABanner />
-      </Suspense>
     </motion.div>
   );
 }
