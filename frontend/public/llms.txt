@@ -1,0 +1,20 @@
+# Snortweb Technology
+
+> Premium Website Development & Cybersecurity Solutions
+
+Snortweb Technology specializes in providing enterprise-grade, highly secure, and performance-optimized web solutions for growing businesses. Our core focus spans comprehensive cybersecurity audits, zero-trust cloud architectures, and stunning, modern UI/UX web development.
+
+## Services
+- Web Application Development (React, Node.js, Next.js)
+- Cybersecurity Assessments & Penetration Testing
+- Zero-Trust Cloud Architecture
+- Mobile App Development
+- IT Consulting
+
+## Contact
+- Website: https://snortwebtechnology.com
+- Email: snortwebtechnology@gmail.com
+- Phone: +91 9860596829
+
+## Mission
+Build. Secure. Grow. We build ultra-secure platforms scaling for modern demands.

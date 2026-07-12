@@ -72,6 +72,10 @@ export default function Footer() {
             <img
               src="/logo-icon.png"
               alt="Snortweb Logo Icon"
+              width="48"
+              height="48"
+              loading="lazy"
+              decoding="async"
               className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-[1.05]"
             />
             <div className="flex flex-col text-left">

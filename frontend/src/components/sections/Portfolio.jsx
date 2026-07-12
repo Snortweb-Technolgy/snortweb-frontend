@@ -130,6 +130,8 @@ export default function Portfolio() {
                       alt={project.title}
                       loading="lazy"
                       decoding="async"
+                      width="800"
+                      height="500"
                       className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.08] ${
                         isProjectLive 
                           ? "filter blur-0 group-hover:blur-0" 

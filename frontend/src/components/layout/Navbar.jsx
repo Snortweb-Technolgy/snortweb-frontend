@@ -247,6 +247,9 @@ export default function Navbar() {
           <img
             src="/logo-icon.png"
             alt="Snortweb Logo Icon"
+            width="40"
+            height="40"
+            fetchpriority="high"
             className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-[1.05]"
           />
           <div className="flex flex-col text-left">
@@ -336,6 +339,8 @@ export default function Navbar() {
             onClick={() => setMenuOpen(!menuOpen)}
             className="flex flex-col justify-center items-center w-6 h-6 relative select-none pointer-events-auto"
             aria-label="Toggle Navigation Menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             <span
               className={`w-5 h-[2px] bg-text-primary transition-transform duration-100 ${

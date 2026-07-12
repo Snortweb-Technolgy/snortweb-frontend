@@ -12,8 +12,9 @@ import { useLenis } from "./hooks/useLenis";
 import Chatbot from "./components/ui/Chatbot";
 import GlobalErrorBoundary from "./components/ui/GlobalErrorBoundary";
 
+import Home from "./pages/Home";
+
 // Page lazy loading for splitting bundle sizes
-const Home = lazy(() => import("./pages/Home"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));

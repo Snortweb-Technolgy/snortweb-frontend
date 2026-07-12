@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useApp } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
-import HeroScene from "../three/HeroScene";
+import { Suspense, lazy } from "react";
+const HeroScene = lazy(() => import("../three/HeroScene"));
 import { stats } from "../../data/stats";
 import { Shield, Lock, Users, Headphones } from "lucide-react";
 
@@ -356,7 +357,9 @@ export default function Hero() {
                   transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
                   className="w-full h-[360px] lg:h-[550px] relative flex items-center justify-center select-none"
                 >
-                  <HeroScene />
+                  <Suspense fallback={<div className="w-full h-full flex items-center justify-center opacity-50"><span className="animate-pulse text-xs font-mono-code text-text-tertiary tracking-widest">LOADING 3D ENGINE...</span></div>}>
+                    <HeroScene />
+                  </Suspense>
                 </motion.div>
               )}
             </AnimatePresence>
