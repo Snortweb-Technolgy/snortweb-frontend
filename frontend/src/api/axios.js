@@ -11,7 +11,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
   },
-  timeout: 10000, // 10 seconds timeout
+  timeout: 60000, // 60 seconds timeout (handles Render cold starts)
 });
 
 // Request Interceptor
@@ -32,14 +32,33 @@ api.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-    if (axios.isCancel(error)) {
+  async (error) => {
+    const config = error.config;
+
+    if (axios.isCancel(error) || !config) {
       return Promise.reject(error);
     }
 
-    // Check if it's a network error or timeout
+    // Check if it's a network error or timeout (!error.response means no HTTP response was received)
     if (!error.response) {
-      toast.error("Network error. Please check your connection.", { id: 'network-error' });
+      config._retryCount = config._retryCount || 0;
+      const maxRetries = 3;
+
+      if (config._retryCount < maxRetries) {
+        config._retryCount += 1;
+        
+        // Exponential backoff: 1s, 2s, 4s
+        const backoff = Math.pow(2, config._retryCount - 1) * 1000;
+        
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(api(config));
+          }, backoff);
+        });
+      } else {
+        // Only show the toast after ALL retries have failed
+        toast.error("Network error. Please check your connection.", { id: 'network-error' });
+      }
     } else {
       // Handle specific HTTP status codes
       const { status, data } = error.response;
