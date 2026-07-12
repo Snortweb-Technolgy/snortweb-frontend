@@ -129,6 +129,7 @@ export default function Portfolio() {
                       src={project.imageUrl || "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80"}
                       alt={project.title}
                       loading="lazy"
+                      decoding="async"
                       className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.08] ${
                         isProjectLive 
                           ? "filter blur-0 group-hover:blur-0" 
