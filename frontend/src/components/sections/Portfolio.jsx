@@ -87,7 +87,7 @@ export default function Portfolio() {
   };
 
   return (
-    <section id="portfolio-section" className="relative py-[100px] md:py-[140px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden text-text-primary">
+    <section id="projects" className="relative py-[100px] md:py-[140px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden text-text-primary">
       {/* Texture overlays */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
       <div className="pattern-horizontal-lines absolute inset-0 pointer-events-none z-0" />

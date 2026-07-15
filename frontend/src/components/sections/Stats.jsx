@@ -38,7 +38,7 @@ export default function Stats() {
 
   return (
     <section
-      id="stats-section"
+      id="stats"
       className="relative w-full bg-black py-[140px] z-10 overflow-hidden text-white"
     >
       {/* Pattern Overlays */}

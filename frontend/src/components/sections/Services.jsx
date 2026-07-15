@@ -104,7 +104,7 @@ export default function Services() {
 
   return (
     <section 
-      id="services-section" 
+      id="services" 
       className="relative py-[100px] md:py-[140px] bg-bg-primary z-10 px-6 md:px-12 select-none border-b border-border-main"
     >
       {/* Pattern overlays */}

@@ -47,21 +47,12 @@ export default function Navbar() {
       return;
     }
 
-    const sectionIds = ["hero", "about-section", "services-section", "portfolio-section", "stats-section", "process-section", "reviews-section", "contact-section"];
+    const sectionIds = ["hero", "about", "services", "projects", "stats", "process", "review", "contact"];
 
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          let sectionName = entry.target.id;
-          if (sectionName === "about-section") sectionName = "about";
-          else if (sectionName === "services-section") sectionName = "services";
-          else if (sectionName === "portfolio-section") sectionName = "projects";
-          else if (sectionName === "stats-section") sectionName = "stats";
-          else if (sectionName === "process-section") sectionName = "process";
-          else if (sectionName === "reviews-section") sectionName = "reviews";
-          else if (sectionName === "contact-section") sectionName = "contact";
-          
-          setActiveSection(sectionName);
+          setActiveSection(entry.target.id);
         }
       });
     };
@@ -104,11 +95,11 @@ export default function Navbar() {
 
   const navLinks = [
     { name: t("home"), path: "/" },
-    { name: t("about"), path: "/#about-section" },
-    { name: t("services"), path: "/#services-section" },
-    { name: t("projects"), path: "/#portfolio-section" },
-    { name: t("review"), path: "/#reviews-section" },
-    { name: t("process"), path: "/#process-section" },
+    { name: t("about"), path: "/#about" },
+    { name: t("services"), path: "/services" },
+    { name: t("projects"), path: "/#projects" },
+    { name: t("review"), path: "/#review" },
+    { name: t("process"), path: "/#process" },
     { name: t("contact"), path: "/contact" }
   ];
 
@@ -188,12 +179,12 @@ export default function Navbar() {
     
     // If we ARE on the homepage, use activeSection
     if (link.path === "/") return activeSection === "hero" || activeSection === "";
-    if (link.path === "/services" || link.path === "/#services-section") return activeSection === "services";
-    if (link.path === "/#portfolio-section") return activeSection === "projects";
-    if (link.path === "/#about-section") return activeSection === "about";
-    if (link.path === "/#process-section") return activeSection === "process";
-    if (link.path === "/#reviews-section") return activeSection === "reviews";
-    if (link.path === "/contact") return activeSection === "contact";
+    if (link.path === "/services") return false; // Handled by currentPath
+    if (link.path === "/#projects") return activeSection === "projects";
+    if (link.path === "/#about") return activeSection === "about";
+    if (link.path === "/#process") return activeSection === "process";
+    if (link.path === "/#review") return activeSection === "review";
+    if (link.path === "/contact") return false; // Handled by currentPath
     
     return false;
   };

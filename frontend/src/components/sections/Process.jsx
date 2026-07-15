@@ -196,7 +196,7 @@ export default function Process() {
 
   if (isMobile) {
     return (
-      <section id="process-section" className="relative py-[80px] bg-bg-primary z-10 px-6 border-b border-border-main select-none">
+      <section id="process" className="relative py-[80px] bg-bg-primary z-10 px-6 border-b border-border-main select-none">
         {/* Visual background decoration */}
         <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-accent/5 rounded-full blur-[80px] pointer-events-none" />
 
@@ -292,7 +292,7 @@ export default function Process() {
 
   return (
     <section
-      id="process-section"
+      id="process"
       className="relative py-[140px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden"
     >
       {/* Pattern Overlays */}

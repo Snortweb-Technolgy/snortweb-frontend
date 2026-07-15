@@ -66,7 +66,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="reviews-section" className="relative py-[100px] md:py-[140px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden">
+    <section id="review" className="relative py-[100px] md:py-[140px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden">
       {/* Texture pattern overlays */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
       <div className="pattern-horizontal-lines absolute inset-0 pointer-events-none z-0" />
