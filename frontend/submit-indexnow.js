@@ -12,9 +12,7 @@ async function submitToIndexNow() {
     urlList: [
       `https://${host}/`,
       `https://${host}/services`,
-      `https://${host}/portfolio`,
-      `https://${host}/contact`,
-      `https://${host}/about`
+      `https://${host}/contact`
     ]
   };
 

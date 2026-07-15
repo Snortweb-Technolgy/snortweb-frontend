@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { AnimatePresence } from "framer-motion";
 import { Toaster } from "react-hot-toast";
@@ -163,6 +163,14 @@ export default function App() {
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/services/:slug" element={<ServiceDetail />} />
                 <Route path="/contact" element={<ContactPage />} />
+                
+                {/* Redirects for non-existent root-level pages to homepage sections */}
+                <Route path="/about" element={<Navigate to="/#about" replace />} />
+                <Route path="/projects" element={<Navigate to="/#projects" replace />} />
+                <Route path="/portfolio" element={<Navigate to="/#projects" replace />} />
+                <Route path="/review" element={<Navigate to="/#review" replace />} />
+                <Route path="/process" element={<Navigate to="/#process" replace />} />
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>
