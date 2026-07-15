@@ -14,7 +14,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
         <p className="text-text-secondary font-sans-body mb-6 text-sm">
           An unexpected error occurred. Our team has been notified.
         </p>
-        {process.env.NODE_ENV !== 'production' && (
+        {!import.meta.env.PROD && (
           <pre className="text-xs text-left bg-black/30 p-4 rounded mb-6 overflow-auto max-w-full text-red-400">
             {error.message}
           </pre>

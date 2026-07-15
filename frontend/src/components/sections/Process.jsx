@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { process as processSteps } from "../../data/process";

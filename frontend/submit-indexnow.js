@@ -1,9 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+/* global process */
 
 async function submitToIndexNow() {
   const key = process.env.INDEXNOW_KEY || 'b56a31993475475685511b5e5c26b9a8';

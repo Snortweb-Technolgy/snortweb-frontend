@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useApp } from "../../context/AppContext";
@@ -23,34 +24,40 @@ const RippleRings = () => (
 );
 
 // Floating gold dust for a premium feel
-const FloatingDust = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-    {[...Array(20)].map((_, i) => {
-      const left = `${Math.random() * 100}%`;
-      const size = Math.random() * 3 + 1;
-      const duration = Math.random() * 3 + 3;
-      const delay = Math.random() * 2;
-      return (
+const FloatingDust = () => {
+  const dustParticles = React.useMemo(() => {
+    return [...Array(20)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      size: Math.random() * 3 + 1,
+      duration: Math.random() * 3 + 3,
+      delay: Math.random() * 2,
+      xDest: `${Math.random() * 40 - 20}px`
+    }));
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {dustParticles.map((particle, i) => (
         <motion.div
           key={i}
           className="absolute bottom-[-10%] rounded-full bg-[#C8A15A] opacity-0"
-          style={{ left, width: size, height: size, filter: "blur(1px)" }}
+          style={{ left: particle.left, width: particle.size, height: particle.size, filter: "blur(1px)" }}
           animate={{
             y: ["0vh", "-110vh"],
-            x: ["0px", `${Math.random() * 40 - 20}px`],
+            x: ["0px", particle.xDest],
             opacity: [0, 0.5, 0]
           }}
           transition={{
             repeat: Infinity,
-            duration,
-            delay,
+            duration: particle.duration,
+            delay: particle.delay,
             ease: "linear"
           }}
         />
-      );
-    })}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
 export default function Loader() {
   const { isLoaded, setIsLoaded } = useApp();

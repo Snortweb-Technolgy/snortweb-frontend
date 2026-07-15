@@ -30,7 +30,7 @@ export const useCounter = (target, duration = 2000) => {
     };
 
     requestAnimationFrame(step);
-  }, [target, duration]);
+  }, [target, duration, hasDecimal]);
 
   useEffect(() => {
     const currentRef = ref.current;

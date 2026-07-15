@@ -6,6 +6,9 @@ import { AppContextProvider } from './context/AppContext'
 import './styles/globals.css'
 import './styles/animations.css'
 import App from './App.jsx'
+import { initClarity } from './utils/clarity.js'
+
+initClarity();
 
 const queryClient = new QueryClient({
   defaultOptions: {
