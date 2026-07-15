@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 export default function SEO({ title, description, canonical, type, image, schema }) {
   const siteUrl = 'https://snortwebtechnology.com';
   const fullUrl = canonical ? `${siteUrl}${canonical}` : siteUrl;
-  const imageUrl = image || `${siteUrl}/logo.png`;
+  const imageUrl = image || `${siteUrl}/og-image.png`;
   
   return (
     <Helmet>
