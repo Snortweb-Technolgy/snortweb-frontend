@@ -51,37 +51,91 @@ export default function Chatbot() {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     if (textParam === null) setInputMsg("");
     setIsLoading(true);
 
+    const botMessageId = `bot-${Date.now()}`;
+    const initialBotMessage = {
+      id: botMessageId,
+      text: "",
+      isBot: true,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
     try {
-      const { data } = await api.post("/chat", {
-        message: userMessage.text,
-        language: language
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/ai/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: newMessages,
+          language: language
+        })
       });
 
-      const sanitizedReply = DOMPurify.sanitize(data.reply);
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
 
-      const botMessage = {
-        id: `bot-${Date.now()}`,
-        text: sanitizedReply,
-        isBot: true,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      
-      setMessages((prev) => [...prev, botMessage]);
+      setMessages((prev) => [...prev, initialBotMessage]);
+      setIsLoading(false); // Done "loading", now "typing"
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let done = false;
+      let streamedText = "";
+
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+          const chunkStr = decoder.decode(value, { stream: true });
+          const events = chunkStr.split("\\n\\n");
+          for (const event of events) {
+            if (event.startsWith("data: ")) {
+              const dataStr = event.substring(6);
+              if (dataStr === "[DONE]") break;
+              try {
+                const data = JSON.parse(dataStr);
+                if (data.error) {
+                  streamedText = data.error;
+                  done = true;
+                } else if (data.text) {
+                  streamedText += data.text;
+                }
+                
+                setMessages((prev) => prev.map(msg => {
+                  if (msg.id === botMessageId) {
+                    return { ...msg, text: DOMPurify.sanitize(streamedText) };
+                  }
+                  return msg;
+                }));
+              } catch (e) {
+                // Incomplete JSON chunk, skip
+              }
+            }
+          }
+        }
+      }
+
     } catch (error) {
       console.error("Chatbot response error:", error);
       const errorMessage = {
         id: `error-${Date.now()}`,
         text: language === "hi" 
           ? "माफ़ कीजिये, सर्वर से कनेक्ट करने में कोई समस्या हुई है। कृपया बाद में प्रयास करें।"
-          : "Sorry, I am having trouble connecting to the server. Please try again later.",
+          : "Sorry, I am having trouble connecting to the AI server. Please try again later.",
         isBot: true,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => {
+        // Remove the empty bot message if it was added before the error
+        const filtered = prev.filter(msg => msg.id !== botMessageId);
+        return [...filtered, errorMessage];
+      });
     } finally {
       setIsLoading(false);
     }
