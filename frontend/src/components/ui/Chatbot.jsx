@@ -14,7 +14,9 @@ export default function Chatbot() {
   const chatContainerRef = useRef(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-  const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(true);
+  
+  const isAutoScroll = useRef(true);
+  const scrollLock = useRef(null);
 
   // Generate simple UUID for session and conversation
 
@@ -47,29 +49,40 @@ export default function Chatbot() {
 
   // Detect manual scrolling
   const handleScroll = () => {
+    // If a programmatic scroll is happening, ignore manual scroll detection
+    if (scrollLock.current) return;
+
     if (!chatContainerRef.current) return;
     const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
-    // If we are within 100px of the bottom, we consider it "near bottom"
-    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-    setIsAutoScrollEnabled(isNearBottom);
+    
+    // If we are within 150px of the bottom, we consider it "near bottom"
+    isAutoScroll.current = scrollHeight - scrollTop - clientHeight < 150;
   };
 
-  // Scroll to bottom helper with requestAnimationFrame
+  // Scroll to bottom helper
   const scrollToBottom = (force = false) => {
-    if (force || isAutoScrollEnabled) {
-      requestAnimationFrame(() => {
-        if (messagesEndRef.current) {
-          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-        } else if (chatContainerRef.current) {
-          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-      });
+    if (force || isAutoScroll.current) {
+      isAutoScroll.current = true; // force it to true
+
+      if (chatContainerRef.current) {
+        // Lock manual scroll detection for 800ms while smooth scroll happens
+        if (scrollLock.current) clearTimeout(scrollLock.current);
+        scrollLock.current = setTimeout(() => {
+          scrollLock.current = null;
+        }, 800);
+
+        // Standard, robust scroll mechanism
+        chatContainerRef.current.scrollTo({
+          top: chatContainerRef.current.scrollHeight,
+          behavior: "smooth"
+        });
+      }
     }
   };
 
   // Scroll to bottom when messages list updates, loading state changes, or window opens
   useEffect(() => {
-    const timeoutId = setTimeout(() => scrollToBottom(), 50);
+    const timeoutId = setTimeout(() => scrollToBottom(), 100);
     return () => clearTimeout(timeoutId);
   }, [messages, isLoading, isOpen]);
 
@@ -84,8 +97,7 @@ export default function Chatbot() {
     setMessages(prev => prev.map(msg => 
       msg.id === msgId ? { ...msg, expanded: true } : msg
     ));
-    setIsAutoScrollEnabled(true);
-    setTimeout(() => scrollToBottom(true), 100);
+    setTimeout(() => scrollToBottom(true), 150);
   };
 
   const handleSend = async (e, textParam = null) => {
@@ -104,8 +116,9 @@ export default function Chatbot() {
     setMessages(newMessages);
     if (textParam === null) setInputMsg("");
     setIsLoading(true);
-    setIsAutoScrollEnabled(true);
-    setTimeout(() => scrollToBottom(true), 0);
+    
+    // Force scroll immediately for the user's message
+    setTimeout(() => scrollToBottom(true), 50);
 
     const botMessageId = `bot-${Date.now()}`;
     const initialBotMessage = {
@@ -148,7 +161,7 @@ export default function Chatbot() {
       };
       
       setMessages((prev) => [...prev, finalBotMessage]);
-      setTimeout(() => scrollToBottom(true), 50);
+      // The useEffect will handle the scroll automatically since messages changed
 
     } catch (error) {
       console.error("Chatbot response error:", error);
