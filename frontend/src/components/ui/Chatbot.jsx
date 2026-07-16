@@ -12,19 +12,24 @@ export default function Chatbot() {
   const [inputMsg, setInputMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Generate simple UUID for session and conversation
+
   const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   const getWelcomeMessage = () => ({
     id: "welcome",
-    text: "Namaste! Main Snortweb ka AI assistant hoon 👋 / Welcome to Snortweb Technology! What are you looking for today?",
+    text: "Namaste 👋\n\nWelcome to Snortweb Technology.\n\nWe're here to help with\n🌐 Website Development\n🛡 Cyber Security\n⚡ Web Applications\n🎨 UI/UX Design\n☁ Cloud Solutions\n\nHow can we help you today?",
     isBot: true,
     options: [
-      "Secure Web Development 🌐",
-      "Cyber Security Audits 🛡️",
-      "Cloud Architectures ☁️",
-      "UI/UX & Branding 🎨"
+      "🌐 Website Development",
+      "🛡 Security Services",
+      "💼 Portfolio",
+      "⚙ Technologies",
+      "📞 Contact Us",
+      "❓ FAQs",
+      "📅 Free Consultation"
     ],
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   });
@@ -38,12 +43,32 @@ export default function Chatbot() {
     setMessages([getWelcomeMessage()]);
   };
 
-  // Scroll to bottom when messages list updates
-  useEffect(() => {
+  // Scroll to bottom helper
+  const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
+  };
+
+  // Scroll to bottom when messages list updates or window opens
+  useEffect(() => {
+    const timeoutId = setTimeout(scrollToBottom, 50);
+    return () => clearTimeout(timeoutId);
   }, [messages, isOpen]);
+
+  // Keep input focused
+  useEffect(() => {
+    if (!isLoading && isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isLoading, isOpen]);
+
+  const handleExpand = (msgId) => {
+    setMessages(prev => prev.map(msg => 
+      msg.id === msgId ? { ...msg, expanded: true } : msg
+    ));
+    setTimeout(scrollToBottom, 100);
+  };
 
   const handleSend = async (e, textParam = null) => {
     if (e) e.preventDefault();
@@ -91,6 +116,13 @@ export default function Chatbot() {
       const finalBotMessage = {
         id: botMessageId,
         text: DOMPurify.sanitize(data.text || data.error || "Sorry, an error occurred."),
+        title: data.title,
+        icon: data.icon,
+        list: data.list,
+        details: data.details ? DOMPurify.sanitize(data.details) : null,
+        actions: data.actions,
+        relatedQuestions: data.relatedQuestions,
+        expanded: false,
         isBot: true,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
@@ -233,13 +265,64 @@ export default function Chatbot() {
                   }`}>
                     {msg.isBot ? <Bot className="w-3 h-3" /> : <User className="w-3 h-3" />}
                   </div>
-                  <div className="space-y-1 max-w-full">
-                    <div className={`p-3 rounded-2xl text-[11.5px] leading-relaxed select-text ${
+                  <div className="space-y-1 max-w-full overflow-hidden">
+                    <div className={`p-3 rounded-2xl text-[11.5px] leading-relaxed select-text whitespace-pre-wrap ${
                       msg.isBot
-                        ? "bg-slate-900/60 border border-white/5 text-white/95 rounded-tl-sm"
-                        : "bg-[#C8A15A] text-slate-950 rounded-tr-sm font-medium"
+                        ? "bg-slate-900/60 border border-white/5 text-white/95 rounded-tl-sm shadow-sm"
+                        : "bg-[#C8A15A] text-slate-950 rounded-tr-sm font-medium shadow-sm"
                     }`}>
-                      {msg.text}
+                      {msg.title && (
+                        <div className="font-bold text-[#C8A15A] text-[12px] mb-2 flex items-center gap-1.5 border-b border-white/10 pb-1.5">
+                          {msg.icon && <span>{msg.icon}</span>}
+                          {msg.title}
+                        </div>
+                      )}
+                      
+                      {msg.text && <div className="mb-2" dangerouslySetInnerHTML={{ __html: msg.text }} />}
+                      
+                      {msg.list && msg.list.length > 0 && (
+                        <ul className="mb-2 space-y-1 text-[11px] text-white/90">
+                          {msg.list.map((item, i) => (
+                            <li key={i} className="flex items-start gap-1.5">
+                              <span className="text-[#C8A15A] font-bold mt-[1px]">✓</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      {msg.details && (
+                        <div className="mt-2">
+                          {msg.expanded ? (
+                            <div className="pt-2 border-t border-white/10 text-white/80 animate-fade-in whitespace-pre-wrap">
+                              <div dangerouslySetInnerHTML={{ __html: msg.details }} />
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handleExpand(msg.id)}
+                              className="text-[#C8A15A] text-[10px] font-bold hover:underline py-1 w-full text-center border border-[#C8A15A]/20 rounded bg-[#C8A15A]/5 mt-1 transition-colors cursor-pointer"
+                            >
+                              [ Show More ]
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {msg.actions && msg.actions.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3 pt-2 border-t border-white/10">
+                          {msg.actions.map((act, i) => (
+                            <a
+                              key={i}
+                              href={act.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-[#C8A15A]/10 text-[#C8A15A] border border-[#C8A15A]/30 hover:bg-[#C8A15A] hover:text-black transition-colors px-3 py-1.5 rounded text-[10px] font-bold inline-flex items-center text-center cursor-pointer"
+                            >
+                              {act.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
                     </div>
                     {msg.options && (
                       <div className="flex flex-wrap gap-2 pt-1 pb-1">
@@ -247,9 +330,23 @@ export default function Chatbot() {
                           <button
                             key={idx}
                             onClick={() => handleSend(null, opt)}
-                            className="text-[10px] px-3 py-1.5 rounded-full border border-[#C8A15A]/30 bg-black/40 text-white/90 hover:bg-[#C8A15A] hover:text-black transition-colors cursor-pointer whitespace-nowrap"
+                            className="text-[10px] px-3 py-1.5 rounded-full border border-[#C8A15A]/30 bg-black/40 text-white/90 hover:bg-[#C8A15A] hover:text-black transition-colors cursor-pointer whitespace-nowrap shadow-sm"
                           >
                             {opt}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {msg.relatedQuestions && msg.relatedQuestions.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1.5 pb-1">
+                        <span className="w-full text-[9px] text-white/50 uppercase tracking-widest font-bold mb-0.5">Related Questions</span>
+                        {msg.relatedQuestions.map((reqQ, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleSend(null, reqQ)}
+                            className="text-[9.5px] px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
+                          >
+                            {reqQ}
                           </button>
                         ))}
                       </div>
@@ -265,10 +362,13 @@ export default function Chatbot() {
                   <div className="w-6 h-6 rounded-full bg-slate-800 text-[#C8A15A] border border-white/5 flex items-center justify-center">
                     <Bot className="w-3 h-3" />
                   </div>
-                  <div className="bg-slate-900/60 border border-white/5 p-3 rounded-2xl rounded-tl-sm text-white/95 flex items-center gap-1.5 py-4 min-w-[50px]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C8A15A] animate-[bounce_1s_infinite_100ms]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C8A15A] animate-[bounce_1s_infinite_200ms]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C8A15A] animate-[bounce_1s_infinite_300ms]" />
+                  <div className="bg-slate-900/60 border border-white/5 p-3 rounded-2xl rounded-tl-sm text-white/60 flex items-center gap-1.5 py-4 min-w-[70px] text-[10px] font-mono-code font-bold uppercase tracking-wider">
+                    Typing
+                    <span className="flex items-center gap-0.5 ml-0.5">
+                      <span className="w-1 h-1 rounded-full bg-[#C8A15A] animate-[bounce_1s_infinite_100ms]" />
+                      <span className="w-1 h-1 rounded-full bg-[#C8A15A] animate-[bounce_1s_infinite_200ms]" />
+                      <span className="w-1 h-1 rounded-full bg-[#C8A15A] animate-[bounce_1s_infinite_300ms]" />
+                    </span>
                   </div>
                 </div>
               )}
@@ -278,6 +378,7 @@ export default function Chatbot() {
             {/* Input Bar Footer */}
             <form onSubmit={handleSend} className="bg-[#1A1B20] border-t border-white/10 p-3 flex gap-2">
               <input
+                ref={inputRef}
                 type="text"
                 value={inputMsg}
                 onChange={(e) => setInputMsg(e.target.value)}
