@@ -11,8 +11,10 @@ export default function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [inputMsg, setInputMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(true);
 
   // Generate simple UUID for session and conversation
 
@@ -43,18 +45,33 @@ export default function Chatbot() {
     setMessages([getWelcomeMessage()]);
   };
 
-  // Scroll to bottom helper
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  // Detect manual scrolling
+  const handleScroll = () => {
+    if (!chatContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    // If we are within 100px of the bottom, we consider it "near bottom"
+    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+    setIsAutoScrollEnabled(isNearBottom);
+  };
+
+  // Scroll to bottom helper with requestAnimationFrame
+  const scrollToBottom = (force = false) => {
+    if (force || isAutoScrollEnabled) {
+      requestAnimationFrame(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        } else if (chatContainerRef.current) {
+          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+      });
     }
   };
 
-  // Scroll to bottom when messages list updates or window opens
+  // Scroll to bottom when messages list updates, loading state changes, or window opens
   useEffect(() => {
-    const timeoutId = setTimeout(scrollToBottom, 50);
+    const timeoutId = setTimeout(() => scrollToBottom(), 50);
     return () => clearTimeout(timeoutId);
-  }, [messages, isOpen]);
+  }, [messages, isLoading, isOpen]);
 
   // Keep input focused
   useEffect(() => {
@@ -67,7 +84,8 @@ export default function Chatbot() {
     setMessages(prev => prev.map(msg => 
       msg.id === msgId ? { ...msg, expanded: true } : msg
     ));
-    setTimeout(scrollToBottom, 100);
+    setIsAutoScrollEnabled(true);
+    setTimeout(() => scrollToBottom(true), 100);
   };
 
   const handleSend = async (e, textParam = null) => {
@@ -86,6 +104,8 @@ export default function Chatbot() {
     setMessages(newMessages);
     if (textParam === null) setInputMsg("");
     setIsLoading(true);
+    setIsAutoScrollEnabled(true);
+    setTimeout(() => scrollToBottom(true), 0);
 
     const botMessageId = `bot-${Date.now()}`;
     const initialBotMessage = {
@@ -128,6 +148,7 @@ export default function Chatbot() {
       };
       
       setMessages((prev) => [...prev, finalBotMessage]);
+      setTimeout(() => scrollToBottom(true), 50);
 
     } catch (error) {
       console.error("Chatbot response error:", error);
@@ -252,7 +273,11 @@ export default function Chatbot() {
             </div>
 
             {/* Message Thread Body */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-[#151619] to-black/40">
+            <div 
+              ref={chatContainerRef}
+              onScroll={handleScroll}
+              className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-[#151619] to-black/40 overscroll-contain"
+            >
               {messages.map((msg) => (
                 <div
                   key={msg.id}
