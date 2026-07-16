@@ -11,8 +11,6 @@ export default function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [inputMsg, setInputMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [sessionId, setSessionId] = useState("");
-  const [conversationId, setConversationId] = useState("");
   const messagesEndRef = useRef(null);
 
   // Generate simple UUID for session and conversation
@@ -33,19 +31,10 @@ export default function Chatbot() {
 
   // Load Initial Welcome Message
   useEffect(() => {
-    let currentSessionId = localStorage.getItem("snortweb_session_id");
-    if (!currentSessionId) {
-      currentSessionId = generateId();
-      localStorage.setItem("snortweb_session_id", currentSessionId);
-    }
-    setSessionId(currentSessionId);
     setMessages([getWelcomeMessage()]);
   }, []);
 
   const handleNewChat = () => {
-    const newConvId = generateId();
-    localStorage.setItem("snortweb_conversation_id", newConvId);
-    setConversationId(newConvId);
     setMessages([getWelcomeMessage()]);
   };
 
@@ -88,10 +77,8 @@ export default function Chatbot() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          messages: newMessages,
-          language: language,
-          sessionId: sessionId,
-          conversationId: conversationId
+          message: messageText,
+          language: language
         })
       });
 
@@ -103,7 +90,7 @@ export default function Chatbot() {
       
       const finalBotMessage = {
         id: botMessageId,
-        text: DOMPurify.sanitize(data.reply || data.error || "Sorry, an error occurred."),
+        text: DOMPurify.sanitize(data.text || data.error || "Sorry, an error occurred."),
         isBot: true,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
