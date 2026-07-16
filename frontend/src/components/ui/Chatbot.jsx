@@ -31,7 +31,7 @@ export default function Chatbot() {
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   });
 
-  // Initialize Session and Conversation
+  // Load Initial Welcome Message
   useEffect(() => {
     let currentSessionId = localStorage.getItem("snortweb_session_id");
     if (!currentSessionId) {
@@ -39,43 +39,8 @@ export default function Chatbot() {
       localStorage.setItem("snortweb_session_id", currentSessionId);
     }
     setSessionId(currentSessionId);
-
-    let currentConvId = localStorage.getItem("snortweb_conversation_id");
-    if (!currentConvId) {
-      currentConvId = generateId();
-      localStorage.setItem("snortweb_conversation_id", currentConvId);
-      setConversationId(currentConvId);
-      setMessages([getWelcomeMessage()]);
-    } else {
-      setConversationId(currentConvId);
-      loadHistory(currentConvId);
-    }
+    setMessages([getWelcomeMessage()]);
   }, []);
-
-  const loadHistory = async (convId) => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/ai/history/${convId}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.history && data.history.length > 0) {
-          const loadedMessages = data.history.map(msg => ({
-            id: msg._id,
-            text: msg.content,
-            isBot: msg.role === 'assistant' || msg.role === 'system',
-            time: new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          }));
-          setMessages(loadedMessages);
-        } else {
-          setMessages([getWelcomeMessage()]);
-        }
-      } else {
-        setMessages([getWelcomeMessage()]);
-      }
-    } catch (err) {
-      console.error("Failed to load history", err);
-      setMessages([getWelcomeMessage()]);
-    }
-  };
 
   const handleNewChat = () => {
     const newConvId = generateId();
@@ -134,46 +99,16 @@ export default function Chatbot() {
         throw new Error(`HTTP Error: ${response.status}`);
       }
 
-      setMessages((prev) => [...prev, initialBotMessage]);
-      setIsLoading(false); 
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder("utf-8");
-      let done = false;
-      let streamedText = "";
-
-      while (!done) {
-        const { value, done: readerDone } = await reader.read();
-        done = readerDone;
-        if (value) {
-          const chunkStr = decoder.decode(value, { stream: true });
-          const events = chunkStr.split("\\n\\n");
-          for (const event of events) {
-            if (event.startsWith("data: ")) {
-              const dataStr = event.substring(6);
-              if (dataStr === "[DONE]") break;
-              try {
-                const data = JSON.parse(dataStr);
-                if (data.error) {
-                  streamedText = data.error;
-                  done = true;
-                } else if (data.text) {
-                  streamedText += data.text;
-                }
-                
-                setMessages((prev) => prev.map(msg => {
-                  if (msg.id === botMessageId) {
-                    return { ...msg, text: DOMPurify.sanitize(streamedText) };
-                  }
-                  return msg;
-                }));
-              } catch (e) {
-                // Incomplete JSON chunk, skip
-              }
-            }
-          }
-        }
-      }
+      const data = await response.json();
+      
+      const finalBotMessage = {
+        id: botMessageId,
+        text: DOMPurify.sanitize(data.reply || data.error || "Sorry, an error occurred."),
+        isBot: true,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      
+      setMessages((prev) => [...prev, finalBotMessage]);
 
     } catch (error) {
       console.error("Chatbot response error:", error);
