@@ -1,8 +1,7 @@
 /* eslint-disable */
 import React, { useState, useEffect, useRef } from "react";
-import { MessageSquare, X, Send, Bot, User, Globe } from "lucide-react";
+import { MessageSquare, X, Send, Bot, User, Globe, PlusCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import api from "../../api/axios";
 import DOMPurify from 'dompurify';
 import { useApp } from "../../context/AppContext";
 
@@ -12,25 +11,78 @@ export default function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [inputMsg, setInputMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState("");
+  const [conversationId, setConversationId] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Load welcome message when language changes or chat is initialized
+  // Generate simple UUID for session and conversation
+  const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+  const getWelcomeMessage = () => ({
+    id: "welcome",
+    text: "Namaste! Main Snortweb ka AI assistant hoon 👋 / Welcome to Snortweb Technology! What are you looking for today?",
+    isBot: true,
+    options: [
+      "Secure Web Development 🌐",
+      "Cyber Security Audits 🛡️",
+      "Cloud Architectures ☁️",
+      "UI/UX & Branding 🎨"
+    ],
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  });
+
+  // Initialize Session and Conversation
   useEffect(() => {
-    setMessages([
-      {
-        id: "welcome",
-        text: "Namaste! Main Snortweb ka AI assistant hoon 👋 / Welcome to Snortweb Technology! What are you looking for today?",
-        isBot: true,
-        options: [
-          "Secure Web Development 🌐",
-          "Cyber Security Audits 🛡️",
-          "Cloud Architectures ☁️",
-          "UI/UX & Branding 🎨"
-        ],
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    let currentSessionId = localStorage.getItem("snortweb_session_id");
+    if (!currentSessionId) {
+      currentSessionId = generateId();
+      localStorage.setItem("snortweb_session_id", currentSessionId);
+    }
+    setSessionId(currentSessionId);
+
+    let currentConvId = localStorage.getItem("snortweb_conversation_id");
+    if (!currentConvId) {
+      currentConvId = generateId();
+      localStorage.setItem("snortweb_conversation_id", currentConvId);
+      setConversationId(currentConvId);
+      setMessages([getWelcomeMessage()]);
+    } else {
+      setConversationId(currentConvId);
+      loadHistory(currentConvId);
+    }
+  }, []);
+
+  const loadHistory = async (convId) => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/ai/history/${convId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.history && data.history.length > 0) {
+          const loadedMessages = data.history.map(msg => ({
+            id: msg._id,
+            text: msg.content,
+            isBot: msg.role === 'assistant' || msg.role === 'system',
+            time: new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }));
+          setMessages(loadedMessages);
+        } else {
+          setMessages([getWelcomeMessage()]);
+        }
+      } else {
+        setMessages([getWelcomeMessage()]);
       }
-    ]);
-  }, [language]);
+    } catch (err) {
+      console.error("Failed to load history", err);
+      setMessages([getWelcomeMessage()]);
+    }
+  };
+
+  const handleNewChat = () => {
+    const newConvId = generateId();
+    localStorage.setItem("snortweb_conversation_id", newConvId);
+    setConversationId(newConvId);
+    setMessages([getWelcomeMessage()]);
+  };
 
   // Scroll to bottom when messages list updates
   useEffect(() => {
@@ -72,7 +124,9 @@ export default function Chatbot() {
         },
         body: JSON.stringify({
           messages: newMessages,
-          language: language
+          language: language,
+          sessionId: sessionId,
+          conversationId: conversationId
         })
       });
 
@@ -81,7 +135,7 @@ export default function Chatbot() {
       }
 
       setMessages((prev) => [...prev, initialBotMessage]);
-      setIsLoading(false); // Done "loading", now "typing"
+      setIsLoading(false); 
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
@@ -132,7 +186,6 @@ export default function Chatbot() {
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages((prev) => {
-        // Remove the empty bot message if it was added before the error
         const filtered = prev.filter(msg => msg.id !== botMessageId);
         return [...filtered, errorMessage];
       });
@@ -214,22 +267,33 @@ export default function Chatbot() {
                 </div>
               </div>
 
-              {/* Chat language selector widget */}
-              <div className="flex items-center gap-1 bg-black/35 border border-white/5 rounded px-1.5 py-0.5 text-[9px] font-mono-code text-white/50 select-none">
-                <Globe className="w-3 h-3" />
+              <div className="flex items-center gap-2">
+                {/* New Chat Button */}
                 <button
-                  onClick={() => handleLangToggle("en")}
-                  className={`px-1 rounded-sm transition-colors cursor-pointer ${language === "en" ? "text-[#C8A15A] font-bold bg-white/5" : ""}`}
+                  onClick={handleNewChat}
+                  title="Start New Chat"
+                  className="text-white/50 hover:text-[#C8A15A] transition-colors cursor-pointer"
                 >
-                  EN
+                  <PlusCircle className="w-4 h-4" />
                 </button>
-                <span>|</span>
-                <button
-                  onClick={() => handleLangToggle("hi")}
-                  className={`px-1 rounded-sm transition-colors cursor-pointer ${language === "hi" ? "text-[#C8A15A] font-bold bg-white/5" : ""}`}
-                >
-                  हिं
-                </button>
+                
+                {/* Chat language selector widget */}
+                <div className="flex items-center gap-1 bg-black/35 border border-white/5 rounded px-1.5 py-0.5 text-[9px] font-mono-code text-white/50 select-none">
+                  <Globe className="w-3 h-3" />
+                  <button
+                    onClick={() => handleLangToggle("en")}
+                    className={`px-1 rounded-sm transition-colors cursor-pointer ${language === "en" ? "text-[#C8A15A] font-bold bg-white/5" : ""}`}
+                  >
+                    EN
+                  </button>
+                  <span>|</span>
+                  <button
+                    onClick={() => handleLangToggle("hi")}
+                    className={`px-1 rounded-sm transition-colors cursor-pointer ${language === "hi" ? "text-[#C8A15A] font-bold bg-white/5" : ""}`}
+                  >
+                    हिं
+                  </button>
+                </div>
               </div>
             </div>
 
