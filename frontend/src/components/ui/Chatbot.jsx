@@ -93,6 +93,72 @@ export default function Chatbot() {
     }
   }, [isLoading, isOpen]);
 
+  // Lock body scroll when chat is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Stop Lenis smooth scroll if it's running
+    if (window.lenis) {
+      window.lenis.stop();
+    }
+
+    // Save original styles
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    
+    // Calculate scrollbar width to prevent layout shift
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    const preventScroll = (e) => {
+      // Allow scroll if target is inside the chat messages container
+      if (chatContainerRef.current && chatContainerRef.current.contains(e.target)) {
+        return;
+      }
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+    };
+
+    const preventKeyboardScroll = (e) => {
+      const keys = ["Space", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"];
+      if (keys.includes(e.code)) {
+        // Allow if typing in input
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+          return;
+        }
+        // Allow if focused inside chat container
+        if (chatContainerRef.current && chatContainerRef.current.contains(e.target)) {
+          return;
+        }
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
+    window.addEventListener("keydown", preventKeyboardScroll, { passive: false });
+
+    return () => {
+      // Restart Lenis smooth scroll
+      if (window.lenis) {
+        window.lenis.start();
+      }
+
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+      window.removeEventListener("wheel", preventScroll);
+      window.removeEventListener("touchmove", preventScroll);
+      window.removeEventListener("keydown", preventKeyboardScroll);
+    };
+  }, [isOpen]);
+
   const handleExpand = (msgId) => {
     setMessages(prev => prev.map(msg => 
       msg.id === msgId ? { ...msg, expanded: true } : msg
@@ -289,6 +355,7 @@ export default function Chatbot() {
             <div 
               ref={chatContainerRef}
               onScroll={handleScroll}
+              data-lenis-prevent="true"
               className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-[#151619] to-black/40 overscroll-contain"
             >
               {messages.map((msg) => (
