@@ -132,10 +132,8 @@ export default function Hero() {
   const { isLoaded, theme, t } = useApp();
   const navigate = useNavigate();
 
-  // Typewriter states
+  // Subtext content
   const subtextText = t("hero_desc");
-  const [typedText, setTypedText] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   
   // Delay mounting heavy 3D engine to completely unblock FCP/LCP
   const [shouldMount3D, setShouldMount3D] = useState(false);
@@ -143,39 +141,14 @@ export default function Hero() {
   useEffect(() => {
     if (!isLoaded) return;
     
-    // Mount 3D engine 1.5s after loader disappears, ensuring LCP paints instantly
     const mountTimer = setTimeout(() => {
       setShouldMount3D(true);
-    }, 1500);
-
-    let timerId = null;
-    let index = 0;
-    setTypedText("");
-    
-    const startTimeout = setTimeout(() => {
-      setIsTyping(true);
-      
-      const tick = () => {
-        setTypedText(subtextText.substring(0, index + 1));
-        index++;
-        if (index < subtextText.length) {
-          timerId = setTimeout(tick, 28);
-        } else {
-          setIsTyping(false);
-        }
-      };
-      
-      tick();
-    }, 1200);
+    }, 2000);
 
     return () => {
-      clearTimeout(startTimeout);
       clearTimeout(mountTimer);
-      if (timerId) {
-        clearTimeout(timerId);
-      }
     };
-  }, [isLoaded, subtextText]);
+  }, [isLoaded]);
 
   const handleExplore = () => {
     const el = document.getElementById("services-section");
@@ -321,13 +294,10 @@ export default function Hero() {
                     <div className="w-[6px] h-[6px] border border-border-main dark:border-brand-indigo/80 bg-bg-primary dark:bg-brand-indigo/20 dark:shadow-[0_0_8px_rgba(94,106,210,0.6)]" />
                   </div>
 
-                  {/* Subtext with Typewriter Effect */}
-                  <div className="h-[72px] sm:h-auto overflow-hidden">
-                    <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-[480px] leading-relaxed font-sans-body min-h-[3em]">
-                      {typedText}
-                      {isTyping && (
-                        <span className="inline-block w-[2px] h-[1em] bg-text-primary dark:bg-brand-indigo dark:shadow-[0_0_8px_#5e6ad2] ml-1 animate-[blink_0.8s_step-end_infinite]" />
-                      )}
+                  {/* Subtext */}
+                  <div className="min-h-[60px]">
+                    <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-[480px] leading-relaxed font-sans-body">
+                      {subtextText}
                     </p>
                   </div>
 

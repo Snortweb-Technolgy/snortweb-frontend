@@ -37,7 +37,6 @@ export default function Testimonials() {
           setReviews([]);
         }
       } catch (error) {
-        console.warn("Could not fetch live reviews:", error.message);
         setReviews([]);
       } finally {
         setLoading(false);

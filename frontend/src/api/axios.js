@@ -1,8 +1,8 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// Get API URL from env, fallback to localhost for dev if missing
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Get API URL from env, fallback to live backend for production previews
+const baseURL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://snortweb-backend.onrender.com/api' : 'http://localhost:5000/api');
 
 const api = axios.create({
   baseURL,
@@ -11,7 +11,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
   },
-  timeout: 60000, // 60 seconds timeout (handles Render cold starts)
+  timeout: 5000, // 5 seconds fast timeout for instant UI responsiveness
 });
 
 // Request Interceptor
@@ -39,39 +39,54 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    // Sanitized diagnostic logger for background observability without toast noise
+    const isBackgroundFetch = config.url && (config.url.includes('/settings') || config.url.includes('/projects') || config.url.includes('/reviews'));
+    
+    const logDiagnostic = (type, details) => {
+      if (import.meta.env.DEV || isBackgroundFetch) {
+        console.warn(`[API Diagnostic] ${type} | Endpoint: ${config.method?.toUpperCase()} ${config.url}`, {
+          timestamp: new Date().toISOString(),
+          status: error.response?.status || "NETWORK_FAIL",
+          ...details
+        });
+      }
+    };
+
     // Check if it's a network error or timeout (!error.response means no HTTP response was received)
     if (!error.response) {
       config._retryCount = config._retryCount || 0;
-      const maxRetries = 3;
+      const maxRetries = isBackgroundFetch ? 0 : 2;
 
       if (config._retryCount < maxRetries) {
         config._retryCount += 1;
-        
-        // Exponential backoff: 1s, 2s, 4s
         const backoff = Math.pow(2, config._retryCount - 1) * 1000;
-        
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve(api(config));
           }, backoff);
         });
       } else {
-        // Only show the toast after ALL retries have failed
-        toast.error("Network error. Please check your connection.", { id: 'network-error' });
+        logDiagnostic("Network/Timeout Error", { isBackgroundFetch });
+        if (!isBackgroundFetch && config.method !== 'get') {
+          toast.error("Network error. Please check your connection.", { id: 'network-error' });
+        }
       }
     } else {
       // Handle specific HTTP status codes
       const { status, data } = error.response;
       
+      logDiagnostic(`HTTP ${status} Response`, { message: data?.error || error.message });
+
       if (status === 401) {
-        // Handle unauthorized access (e.g., redirect to login or clear auth state)
         console.warn("Unauthorized access");
       } else if (status === 403) {
-        toast.error(data.error || "Access denied. You don't have permission.");
+        toast.error(data?.error || "Access denied. You don't have permission.");
       } else if (status === 429) {
-        toast.error(data.error || "Too many requests. Please try again later.");
+        toast.error(data?.error || "Too many requests. Please try again later.");
       } else if (status >= 500) {
-        toast.error("Server error. We are working on it.");
+        if (!isBackgroundFetch) {
+          toast.error("Server error. We are working on it.");
+        }
       }
     }
     

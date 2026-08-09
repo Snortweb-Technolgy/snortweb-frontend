@@ -9,8 +9,9 @@ import Cursor from "./components/ui/Cursor";
 import Loader from "./components/ui/Loader";
 import Noise from "./components/ui/Noise";
 import { useLenis } from "./hooks/useLenis";
-import Chatbot from "./components/ui/Chatbot";
 import GlobalErrorBoundary from "./components/ui/GlobalErrorBoundary";
+
+const Chatbot = lazy(() => import("./components/ui/Chatbot"));
 
 import Home from "./pages/Home";
 
@@ -182,7 +183,9 @@ export default function App() {
       <Footer />
 
       {/* Floating AI chatbot assistant */}
-      <Chatbot />
+      <Suspense fallback={null}>
+        <Chatbot />
+      </Suspense>
     </div>
     </HelmetProvider>
   );

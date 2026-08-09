@@ -59,7 +59,7 @@ export default function Portfolio() {
           setProjects(data);
         }
       } catch (error) {
-        console.warn("Could not fetch live projects, using static fallback projects:", error.message);
+        // Silently use static fallback projects when backend is unreachable
       } finally {
         setLoading(false);
       }

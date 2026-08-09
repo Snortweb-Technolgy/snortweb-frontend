@@ -32,7 +32,7 @@ export const AppContextProvider = ({ children }) => {
         const { data } = await api.get("/settings");
         setSettings(data);
       } catch (error) {
-        console.error("Error fetching settings:", error);
+        // Quietly failover to static default settings context
       }
     };
     fetchSettings();

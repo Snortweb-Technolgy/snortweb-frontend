@@ -10,12 +10,13 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('three') || id.includes('@react-three')) return 'three';
+            if (id.includes('three') || id.includes('@react-three')) return 'three-engine';
             if (id.includes('framer-motion')) return 'framer-motion';
-            if (id.includes('react-router-dom') || id.includes('react-router') || id.includes('@remix-run')) return 'react-router';
-            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) return 'react-core';
-            if (id.includes('lucide-react')) return 'lucide';
-            return 'vendor';
+            if (id.includes('lucide-react')) return 'icons';
+            if (id.includes('axios') || id.includes('@tanstack')) return 'network';
+            if (id.includes('react-router')) return 'router';
+            if (id.includes('react') || id.includes('react-dom')) return 'react-core';
+            return 'vendor-utils';
           }
         }
       }

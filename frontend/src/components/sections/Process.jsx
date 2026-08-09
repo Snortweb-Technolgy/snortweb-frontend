@@ -69,6 +69,8 @@ function ProcessVisual({ activeStep }) {
             <path d="M 30,50 L 100,20 M 30,50 L 100,80 M 100,20 L 170,50 M 100,80 L 170,50" stroke="#C8A15A" strokeOpacity={0.3} strokeWidth="1" />
             {/* Active signal pulses */}
             <motion.circle 
+              cx={30}
+              cy={50}
               r="2.5" 
               fill="#C8A15A"
               animate={{
@@ -78,6 +80,8 @@ function ProcessVisual({ activeStep }) {
               transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
             />
             <motion.circle 
+              cx={30}
+              cy={50}
               r="2.5" 
               fill="#8B857B"
               animate={{

@@ -66,7 +66,7 @@ export default function Loader() {
 
   useEffect(() => {
     let start = null;
-    const duration = 2800; // time to reach 100%
+    const duration = 1400; // Fast loader transition duration (1.4s)
     let animationFrame;
 
     const animateProgress = (timestamp) => {
@@ -234,7 +234,7 @@ export default function Loader() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="font-mono-code text-[0.58rem] tracking-[0.35em] text-[#8B857B] uppercase select-none"
+                    className="font-mono-code text-[0.62rem] font-medium tracking-[0.3em] text-[#D6C7B2] uppercase select-none"
                   >
                     {status}
                   </motion.span>

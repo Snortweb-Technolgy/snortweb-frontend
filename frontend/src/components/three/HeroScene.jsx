@@ -224,13 +224,13 @@ function NetworkCore({ theme, prefersReduced }) {
             />
           </bufferGeometry>
           <pointsMaterial
-            size={0.03}
+            size={0.045}
             vertexColors
             transparent
-            opacity={0.9}
+            opacity={0.95}
             sizeAttenuation={true}
             depthWrite={false}
-            blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
+            blending={THREE.AdditiveBlending}
           />
         </points>
       </group>
@@ -247,6 +247,9 @@ function DataPackets({ userPositions, prefersReduced }) {
     return new Float32Array(packetsCount * 3);
   }, [packetsCount]);
 
+  const tempStart = useMemo(() => new THREE.Vector3(), []);
+  const tempRes = useMemo(() => new THREE.Vector3(), []);
+
   useFrame((state) => {
     if (prefersReduced) return;
     const time = state.clock.getElapsedTime();
@@ -257,25 +260,18 @@ function DataPackets({ userPositions, prefersReduced }) {
       userPositions.forEach((pos, idx) => {
         // Packet 1: moving from globe to user node
         const t1 = (time * 0.45 + idx * 0.2) % 1.0;
-        const p1 = new THREE.Vector3().lerpVectors(
-          pos.clone().multiplyScalar(0.43), // globe surface boundary
-          pos,
-          t1
-        );
-        posArr[idx * 6] = p1.x;
-        posArr[idx * 6 + 1] = p1.y;
-        posArr[idx * 6 + 2] = p1.z;
+        tempStart.copy(pos).multiplyScalar(0.43);
+        tempRes.lerpVectors(tempStart, pos, t1);
+        posArr[idx * 6] = tempRes.x;
+        posArr[idx * 6 + 1] = tempRes.y;
+        posArr[idx * 6 + 2] = tempRes.z;
 
         // Packet 2: moving from user node to globe surface
         const t2 = (time * 0.4 + idx * 0.2 + 0.5) % 1.0;
-        const p2 = new THREE.Vector3().lerpVectors(
-          pos,
-          pos.clone().multiplyScalar(0.43),
-          t2
-        );
-        posArr[idx * 6 + 3] = p2.x;
-        posArr[idx * 6 + 4] = p2.y;
-        posArr[idx * 6 + 5] = p2.z;
+        tempRes.lerpVectors(pos, tempStart, t2);
+        posArr[idx * 6 + 3] = tempRes.x;
+        posArr[idx * 6 + 4] = tempRes.y;
+        posArr[idx * 6 + 5] = tempRes.z;
       });
 
       posAttr.needsUpdate = true;
@@ -549,71 +545,76 @@ function ProjectorOrbits({ theme, prefersReduced }) {
   );
 }
 
-// High-fidelity geographical continent boundary checker
+// Ultra High Precision Geographical Continent Detector
 function isEarthLand(lat, lon) {
-  // 1. Antarctica
+  // Antarctica
   if (lat < -60) return true;
-
-  // 2. Greenland
+  // Greenland
   if (lat >= 60 && lat <= 83 && lon >= -75 && lon <= -15) return true;
 
-  // 3. North America
+  // North America
   if (lat >= 15 && lat < 75 && lon >= -168 && lon <= -50) {
-    if (lat < 30 && lon > -90) return false;
+    if (lat < 30 && lon > -90) return false; // Gulf of Mexico
+    if (lat > 50 && lon < -125 && lat < 60) return true; // Alaska / West Canada
     return true;
   }
-  if (lat >= 7 && lat < 15 && lon >= -90 && lon <= -77) return true;
+  // Central America
+  if (lat >= 7 && lat < 15 && lon >= -92 && lon <= -77) return true;
 
-  // 4. South America
+  // South America
   if (lat >= -56 && lat < 13 && lon >= -82 && lon <= -34) {
     if (lat < -20 && lon > -50 - (lat + 20) * 0.5) return false;
     if (lat < -20 && lon < -75 + (lat + 20) * 0.1) return false;
     return true;
   }
 
-  // 5. Africa
-  if (lat >= -35 && lat < 38 && lon >= -18 && lon <= 52) {
+  // Africa
+  if (lat >= -35 && lat < 37 && lon >= -18 && lon <= 51) {
     if (lat < 12 && lat > -5 && lon > 42 + (lat + 5) * 1.5) return false;
-    if (lat > 15 && lon > 32 + (lat - 15) * 0.6 && lon < 43) return false;
-    if (lat >= -26 && lat <= -12 && lon >= 43 && lon <= 51) return true;
+    if (lat > 15 && lon > 32 + (lat - 15) * 0.6 && lon < 43) return false; // Red Sea
+    if (lat >= -26 && lat <= -12 && lon >= 43 && lon <= 51) return true; // Madagascar
     if (lat > 5) return lon >= -18 && lon <= 40;
     return lon >= 10 && lon <= 40;
   }
 
-  // 6. Europe & Asia (Eurasia)
-  if (lat >= 1 && lat <= 78 && lon >= -10 && lon <= 180) {
-    if (lon < 40) {
-      if (lat < 36) return false;
-      if (lat > 55 && lon < 5) return false;
-      return true;
-    }
-    if (lat >= 12 && lat < 35 && lon >= 35 && lon <= 60) {
-      if (lat < 30 && lon > 50 + (lat - 12) * 0.8) return false;
-      return true;
-    }
-    if (lat >= 8 && lat < 30 && lon >= 68 && lon <= 90) {
-      if (lat < 22 && lon < 68 + (22 - lat) * 0.7) return false;
-      if (lat < 22 && lon > 90 - (22 - lat) * 0.7) return false;
-      return true;
-    }
-    if (lat >= 1 && lat < 22 && lon >= 95 && lon <= 110) return true;
-    if (lat >= -10 && lat < 8 && lon >= 95 && lon <= 141) return true;
-    if (lat >= 30 && lat <= 46 && lon >= 130 && lon <= 146) return true;
-    if (lat >= 20) return true;
+  // Europe
+  if (lat >= 36 && lat <= 71 && lon >= -10 && lon <= 40) {
+    if (lat > 55 && lon < 5) return false;
+    if (lat < 42 && lon > 12 && lon < 20) return true; // Italy
+    if (lat >= 50 && lat <= 60 && lon >= -10 && lon <= 2) return true; // UK
+    return true;
   }
 
-  // 7. Australia & New Zealand
+  // Asia & India & Middle East & SE Asia
+  if (lat >= 1 && lat <= 75 && lon >= 35 && lon <= 180) {
+    // Middle East / Arabian Peninsula
+    if (lat >= 12 && lat < 32 && lon >= 35 && lon <= 60) {
+      if (lat < 28 && lon > 55) return false; // Persian Gulf edge
+      return true;
+    }
+    // India Subcontinent
+    if (lat >= 8 && lat < 35 && lon >= 68 && lon <= 92) {
+      if (lat < 22 && lon < 68 + (22 - lat) * 0.7) return false; // Arabian Sea
+      if (lat < 22 && lon > 90 - (22 - lat) * 0.7) return false; // Bay of Bengal
+      return true;
+    }
+    // China / East Asia / Siberia
+    if (lat >= 18 && lon >= 90) return true;
+    // SE Asia / Indonesia / Philippines
+    if (lat >= -10 && lat < 18 && lon >= 95 && lon <= 150) return true;
+    // Japan
+    if (lat >= 30 && lat <= 46 && lon >= 129 && lon <= 146) return true;
+  }
+
+  // Australia & New Zealand
   if (lat >= -39 && lat <= -10 && lon >= 113 && lon <= 154) return true;
   if (lat >= -47 && lat <= -34 && lon >= 165 && lon <= 179) return true;
-
-  // 8. United Kingdom
-  if (lat >= 50 && lat <= 60 && lon >= -10 && lon <= 2) return true;
 
   return false;
 }
 
-// Earth Continent Point-Cloud generator (3500 points for dense map layouts)
-const EARTH_POINTS_COUNT = 3500;
+// Earth Continent Point-Cloud generator (2000 points optimized for high Performance score & crisp map visual)
+const EARTH_POINTS_COUNT = 2000;
 const [earthPositions, earthColors] = (() => {
   const pos = new Float32Array(EARTH_POINTS_COUNT * 3);
   const col = new Float32Array(EARTH_POINTS_COUNT * 3);
@@ -639,20 +640,22 @@ const [earthPositions, earthColors] = (() => {
 
     const isLand = isEarthLand(lat, lon);
     if (isLand) {
-      col[i * 3] = 0.88;
-      col[i * 3 + 1] = 0.76;
-      col[i * 3 + 2] = 0.48;
+      // Vibrant Glowing Amber Gold for Continents (Landmasses)
+      col[i * 3] = 0.98;
+      col[i * 3 + 1] = 0.82;
+      col[i * 3 + 2] = 0.38;
     } else {
-      col[i * 3] = 0.20;
-      col[i * 3 + 1] = 0.17;
-      col[i * 3 + 2] = 0.10;
+      // Subtle Dark Graphite Dots for Oceans (makes Earth Grid visible while continents stand out)
+      col[i * 3] = 0.12;
+      col[i * 3 + 1] = 0.12;
+      col[i * 3 + 2] = 0.14;
     }
   }
   return [pos, col];
 })();
 
 // Background slow drift particles (floating gold dust)
-const DUST_COUNT = 180;
+const DUST_COUNT = 50;
 const [dustPositions, dustColors] = (() => {
   const pos = new Float32Array(DUST_COUNT * 3);
   const col = new Float32Array(DUST_COUNT * 3);
