@@ -51,6 +51,7 @@ export default function ContactPage() {
   const prefersReduced = useReducedMotion();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("Sending...");
 
   // Grab selected service from router state if present
   const initialService = location.state?.selectedService || "";
@@ -72,6 +73,11 @@ export default function ContactPage() {
     }
   });
 
+  // Pre-warm backend server when contact page loads so submission is instant
+  useEffect(() => {
+    api.get("/health").catch(() => {});
+  }, []);
+
   // Keep service select synchronized if routed with state
   useEffect(() => {
     if (location.state?.selectedService) {
@@ -81,6 +87,12 @@ export default function ContactPage() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setLoadingText("Sending...");
+
+    // Update status message if backend cold start takes longer than 2.5s
+    const coldStartTimer = setTimeout(() => {
+      setLoadingText("Connecting to server...");
+    }, 2500);
 
     try {
       // Pass budget default value of "Let's discuss" to comply with backend validation
@@ -92,10 +104,11 @@ export default function ContactPage() {
       toast.success("Message sent successfully!");
     } catch (err) {
       console.error("Error posting contact inquiry:", err);
-      // The api interceptor will already show a generic error toast for 500s or network errors,
-      // but we can show a fallback here if needed.
+      toast.error(err.response?.data?.error || "Failed to send message. Please try again.");
     } finally {
+      clearTimeout(coldStartTimer);
       setIsLoading(false);
+      setLoadingText("Sending...");
     }
   };
 
@@ -393,7 +406,7 @@ export default function ContactPage() {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                           </svg>
-                          <span>Sending...</span>
+                          <span>{loadingText}</span>
                         </>
                       ) : (
                         <span>SEND MESSAGE</span>
