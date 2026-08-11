@@ -771,11 +771,19 @@ export default function HeroScene() {
     <div className="w-full h-full relative">
       <Canvas
         camera={{ fov: 45, position: [0, 0, 4.8] }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         dpr={[1, 1.5]}
         shadows={false}
         className="w-full h-full"
         style={{ background: "transparent" }}
+        onCreated={({ gl }) => {
+          const canvas = gl?.domElement;
+          if (canvas) {
+            canvas.addEventListener("webglcontextlost", (event) => {
+              event.preventDefault();
+            }, false);
+          }
+        }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={theme === "dark" ? 0.7 : 0.95} color="white" />

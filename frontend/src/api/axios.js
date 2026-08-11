@@ -11,7 +11,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
   },
-  timeout: 5000, // 5 seconds fast timeout for instant UI responsiveness
+  timeout: 20000, // 20 seconds timeout to accommodate Render backend cold starts
 });
 
 // Request Interceptor
@@ -43,7 +43,7 @@ api.interceptors.response.use(
     const isBackgroundFetch = config.url && (config.url.includes('/settings') || config.url.includes('/projects') || config.url.includes('/reviews'));
     
     const logDiagnostic = (type, details) => {
-      if (import.meta.env.DEV || isBackgroundFetch) {
+      if (import.meta.env.DEV) {
         console.warn(`[API Diagnostic] ${type} | Endpoint: ${config.method?.toUpperCase()} ${config.url}`, {
           timestamp: new Date().toISOString(),
           status: error.response?.status || "NETWORK_FAIL",
@@ -55,7 +55,7 @@ api.interceptors.response.use(
     // Check if it's a network error or timeout (!error.response means no HTTP response was received)
     if (!error.response) {
       config._retryCount = config._retryCount || 0;
-      const maxRetries = isBackgroundFetch ? 0 : 2;
+      const maxRetries = isBackgroundFetch ? 1 : 2;
 
       if (config._retryCount < maxRetries) {
         config._retryCount += 1;
