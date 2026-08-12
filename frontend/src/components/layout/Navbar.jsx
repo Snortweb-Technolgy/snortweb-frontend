@@ -98,8 +98,8 @@ export default function Navbar() {
     { name: t("about"), path: "/#about" },
     { name: t("services"), path: "/services" },
     { name: t("projects"), path: "/#projects" },
-    { name: t("review"), path: "/#review" },
     { name: t("process"), path: "/#process" },
+    { name: "Blogs", path: "/blogs" },
     { name: t("contact"), path: "/contact" }
   ];
 
@@ -248,12 +248,12 @@ export default function Navbar() {
             alt="Snortweb Logo Icon"
             width="40"
             height="40"
-            fetchpriority="high"
+            fetchPriority="high"
             className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-[1.05]"
           />
           <div className="flex flex-col text-left">
             <span className="font-sans-heading font-black text-[1.1rem] tracking-[0.2em] text-[#F5F3EF] uppercase leading-none transition-colors duration-300 group-hover:text-white">
-              SNORTWEB
+              SNORT<span className="text-[#C8A15A]">WEB</span>
             </span>
             <span className="font-sans-body font-light text-[0.55rem] tracking-[0.4em] text-text-tertiary leading-none uppercase mt-1 transition-colors duration-300 group-hover:text-text-secondary">
               TECHNOLOGY

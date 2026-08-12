@@ -9,6 +9,7 @@ import api from "../api/axios";
 import toast from "react-hot-toast";
 import { services } from "../data/services";
 import Button from "../components/ui/Button";
+import { useApp } from "../context/AppContext";
 
 const blockedDomains = [
   "example.com",
@@ -47,6 +48,7 @@ const contactSchema = z.object({
 });
 
 export default function ContactPage() {
+  const { settings } = useApp();
   const location = useLocation();
   const prefersReduced = useReducedMotion();
   const [isSuccess, setIsSuccess] = useState(false);
@@ -174,12 +176,12 @@ export default function ContactPage() {
                     Email
                   </span>
                   <a
-                    href="https://mail.google.com/mail/?view=cm&fs=1&to=snortwebtechnology@gmail.com"
+                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings?.contact?.email || "snortwebtechnology@gmail.com")}&su=${encodeURIComponent("Project Inquiry - Snortweb Technology")}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-sans-body text-[0.95rem] text-text-primary hover:text-text-secondary transition-colors font-medium"
+                    className="hover:text-accent transition-colors block font-sans-body text-[0.95rem] text-text-primary hover:text-text-secondary font-medium font-mono"
                   >
-                    snortwebtechnology@gmail.com
+                    {settings?.contact?.email || "snortwebtechnology@gmail.com"}
                   </a>
                 </div>
               </div>
@@ -194,10 +196,10 @@ export default function ContactPage() {
                     Phone
                   </span>
                   <a
-                    href="tel:+919860596829"
-                    className="font-sans-body text-[0.95rem] text-text-primary hover:text-text-secondary transition-colors font-medium"
+                    href={`tel:${(settings?.contact?.phone || "9860596829").replace(/\s+/g, '')}`}
+                    className="font-sans-body text-[0.95rem] text-text-primary hover:text-text-secondary transition-colors font-medium font-mono"
                   >
-                    +91 9860596829
+                    {settings?.contact?.phone || "9860596829"}
                   </a>
                 </div>
               </div>

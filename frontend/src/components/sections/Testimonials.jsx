@@ -30,6 +30,8 @@ export default function Testimonials() {
                 ? `${r.clientDesignation} at ${r.clientCompany || "Freelance"}`
                 : r.clientCompany || "Client",
               avatarText: initials,
+              profileImage: r.profileImage || "",
+              rating: r.rating || 5,
             };
           });
           setReviews(mappedReviews);
@@ -65,7 +67,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="review" className="relative py-[100px] md:py-[140px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden">
+    <section id="review" className="relative py-[70px] md:py-[95px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden">
       {/* Texture pattern overlays */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
       <div className="pattern-horizontal-lines absolute inset-0 pointer-events-none z-0" />
@@ -109,16 +111,38 @@ export default function Testimonials() {
                   “
                 </div>
 
-                {/* Quote Text */}
-                <p className="font-sans-body text-text-secondary text-[0.95rem] leading-[1.8] mb-8 relative z-10 italic group-hover:text-white/90 dark:group-hover:text-text-primary transition-colors duration-100">
-                  "{item.quote}"
-                </p>
+                <div>
+                  {/* Rating Stars */}
+                  {item.rating > 0 && (
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className={`text-xs ${i < item.rating ? "text-amber-400" : "text-border-main"}`}>
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Quote Text */}
+                  <p className="font-sans-body text-text-secondary text-[0.95rem] leading-[1.8] mb-8 relative z-10 italic group-hover:text-white/90 dark:group-hover:text-text-primary transition-colors duration-100">
+                    "{item.quote}"
+                  </p>
+                </div>
 
                 {/* User info */}
                 <div className="flex items-center gap-4 border-t border-border-subtle group-hover:border-white/10 pt-5 transition-colors duration-100">
-                  <div className="w-10 h-10 rounded-[12px] dark:rounded-md bg-bg-elevated border border-border-subtle flex items-center justify-center font-mono-code font-bold text-xs text-text-primary group-hover:bg-white/10 group-hover:border-white/20 group-hover:text-white dark:group-hover:text-brand-indigo transition-colors duration-300">
-                    {item.avatarText}
-                  </div>
+                  {item.profileImage ? (
+                    <img
+                      src={item.profileImage}
+                      alt={item.author}
+                      className="w-10 h-10 rounded-[12px] dark:rounded-md object-cover border border-border-subtle shrink-0"
+                      onError={(e) => { e.target.style.display = "none"; }}
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-[12px] dark:rounded-md bg-bg-elevated border border-border-subtle flex items-center justify-center font-mono-code font-bold text-xs text-text-primary group-hover:bg-white/10 group-hover:border-white/20 group-hover:text-white dark:group-hover:text-brand-indigo transition-colors duration-300 shrink-0">
+                      {item.avatarText}
+                    </div>
+                  )}
                   <div className="flex flex-col items-start text-left">
                     <span className="font-sans-heading font-black text-[0.9rem] text-text-primary group-hover:text-white dark:group-hover:text-text-primary transition-colors duration-100">
                       {item.author}

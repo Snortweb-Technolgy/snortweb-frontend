@@ -45,7 +45,7 @@ export default function WhyUs() {
   };
 
   return (
-    <section className="relative py-[100px] md:py-[140px] bg-bg-primary border-b border-border-main z-10 select-none">
+    <section className="relative py-[70px] md:py-[95px] bg-bg-primary border-b border-border-main z-10 select-none">
       {/* Texture pattern overlays */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
       <div className="pattern-horizontal-lines absolute inset-0 pointer-events-none z-0" />

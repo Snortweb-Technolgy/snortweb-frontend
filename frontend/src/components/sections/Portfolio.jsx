@@ -87,7 +87,7 @@ export default function Portfolio() {
   };
 
   return (
-    <section id="projects" className="relative py-[100px] md:py-[140px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden text-text-primary">
+    <section id="projects" className="relative py-[70px] md:py-[95px] bg-bg-primary border-b border-border-main z-10 select-none overflow-hidden text-text-primary">
       {/* Texture overlays */}
       <div className="pattern-noise absolute inset-0 pointer-events-none z-0" />
       <div className="pattern-horizontal-lines absolute inset-0 pointer-events-none z-0" />
@@ -106,15 +106,11 @@ export default function Portfolio() {
         </div>
 
         {/* Projects Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+        <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {projects.map((project) => {
-            const isProjectLive = project.isLive || project.liveUrl || project.title === "Packzivo Packaging";
+            const isProjectLive = project.isLive !== undefined ? Boolean(project.isLive) : Boolean(project.liveUrl);
             return (
               <motion.div
                 key={project._id}
@@ -205,7 +201,7 @@ export default function Portfolio() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
       </div>
     </section>

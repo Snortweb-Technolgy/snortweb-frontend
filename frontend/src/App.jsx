@@ -10,6 +10,7 @@ import Loader from "./components/ui/Loader";
 import Noise from "./components/ui/Noise";
 import { useLenis } from "./hooks/useLenis";
 import GlobalErrorBoundary from "./components/ui/GlobalErrorBoundary";
+import MaintenanceGate from "./components/MaintenanceGate";
 
 const Chatbot = lazy(() => import("./components/ui/Chatbot"));
 
@@ -19,6 +20,8 @@ import Home from "./pages/Home";
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
+const BlogListPage = lazy(() => import("./pages/BlogListPage"));
+const BlogDetailPage = lazy(() => import("./pages/BlogDetailPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Viewport restoration utility on path redirects
@@ -73,120 +76,77 @@ export default function App() {
         <meta name="twitter:title" content="Snortweb Technology | Build. Secure. Grow." />
         <meta name="twitter:description" content="Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization." />
         <meta name="twitter:image" content="https://snortwebtechnology.com/logo.png" />
-
-        {/* JSON-LD Structured Data */}
-        <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": "https://snortwebtechnology.com/#organization",
-                  "name": "Snortweb Technology",
-                  "url": "https://snortwebtechnology.com",
-                  "logo": "https://snortwebtechnology.com/logo.webp",
-                  "email": "snortwebtechnology@gmail.com",
-                  "telephone": "+91 9860596829",
-                  "areaServed": "Worldwide",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressCountry": "India"
-                  }
-                },
-                {
-                  "@type": "ProfessionalService",
-                  "@id": "https://snortwebtechnology.com/#service",
-                  "name": "Snortweb Technology",
-                  "url": "https://snortwebtechnology.com",
-                  "logo": "https://snortwebtechnology.com/logo.webp",
-                  "email": "snortwebtechnology@gmail.com",
-                  "telephone": "+91 9860596829",
-                  "areaServed": "Worldwide",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressCountry": "India"
-                  }
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": "https://snortwebtechnology.com/#website",
-                  "url": "https://snortwebtechnology.com",
-                  "name": "Snortweb Technology",
-                  "publisher": {
-                    "@id": "https://snortwebtechnology.com/#organization"
-                  }
-                }
-              ]
-            }
-          `}
-        </script>
       </Helmet>
-      <div className="relative min-h-screen bg-bg-primary text-text-primary flex flex-col justify-between overflow-x-hidden">
-      {/* Scroll manager */}
-      <ScrollToTop />
 
-      {/* Cinematic Film grain filter */}
-      <Noise />
+      <MaintenanceGate>
+        <div className="relative min-h-screen bg-bg-primary text-text-primary flex flex-col justify-between overflow-x-hidden">
+          {/* Scroll manager */}
+          <ScrollToTop />
 
-      {/* Lag ring mouse pointer feedback */}
-      <Cursor />
+          {/* Cinematic Film grain filter */}
+          <Noise />
 
-      {/* Corporate Stagger reveal entry overlay */}
-      <Loader />
+          {/* Lag ring mouse pointer feedback */}
+          <Cursor />
 
-      {/* Global Toast Notifications */}
-      <Toaster 
-        position="top-right" 
-        toastOptions={{
-          style: {
-            background: '#151619',
-            color: '#fff',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '8px',
-          },
-          success: {
-            iconTheme: { primary: '#C8A15A', secondary: '#151619' },
-          },
-        }}
-      />
+          {/* Corporate Stagger reveal entry overlay */}
+          <Loader />
 
-      {/* Fixed top header */}
-      <Navbar />
+          {/* Global Toast Notifications */}
+          <Toaster 
+            position="top-right" 
+            toastOptions={{
+              style: {
+                background: '#151619',
+                color: '#fff',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '8px',
+              },
+              success: {
+                iconTheme: { primary: '#C8A15A', secondary: '#151619' },
+              },
+            }}
+          />
 
-      {/* Main page segments */}
-      <main className="flex-grow">
-        <GlobalErrorBoundary>
-          <Suspense fallback={<div className="h-screen w-full bg-bg-primary flex items-center justify-center text-text-secondary" />}>
-            <AnimatePresence mode="wait">
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/services" element={<ServicesPage />} />
-                <Route path="/services/:slug" element={<ServiceDetail />} />
-                <Route path="/contact" element={<ContactPage />} />
-                
-                {/* Redirects for non-existent root-level pages to homepage sections */}
-                <Route path="/about" element={<Navigate to="/#about" replace />} />
-                <Route path="/projects" element={<Navigate to="/#projects" replace />} />
-                <Route path="/portfolio" element={<Navigate to="/#projects" replace />} />
-                <Route path="/review" element={<Navigate to="/#review" replace />} />
-                <Route path="/process" element={<Navigate to="/#process" replace />} />
+          {/* Fixed top header */}
+          <Navbar />
 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </AnimatePresence>
+          {/* Main page segments */}
+          <main className="flex-grow">
+            <GlobalErrorBoundary>
+              <Suspense fallback={<div className="h-screen w-full bg-bg-primary flex items-center justify-center text-text-secondary" />}>
+                <AnimatePresence mode="wait">
+                  <Routes location={location} key={location.pathname}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/services" element={<ServicesPage />} />
+                    <Route path="/services/:slug" element={<ServiceDetail />} />
+                    <Route path="/blogs" element={<BlogListPage />} />
+                    <Route path="/blogs/:slug" element={<BlogDetailPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    
+                    {/* Redirects for non-existent root-level pages to homepage sections */}
+                    <Route path="/about" element={<Navigate to="/#about" replace />} />
+                    <Route path="/projects" element={<Navigate to="/#projects" replace />} />
+                    <Route path="/portfolio" element={<Navigate to="/#projects" replace />} />
+                    <Route path="/review" element={<Navigate to="/#review" replace />} />
+                    <Route path="/process" element={<Navigate to="/#process" replace />} />
+
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </AnimatePresence>
+              </Suspense>
+            </GlobalErrorBoundary>
+          </main>
+
+          {/* Bottom info grid links */}
+          <Footer />
+
+          {/* Floating AI chatbot assistant */}
+          <Suspense fallback={null}>
+            <Chatbot />
           </Suspense>
-        </GlobalErrorBoundary>
-      </main>
-
-      {/* Bottom info grid links */}
-      <Footer />
-
-      {/* Floating AI chatbot assistant */}
-      <Suspense fallback={null}>
-        <Chatbot />
-      </Suspense>
-    </div>
+        </div>
+      </MaintenanceGate>
     </HelmetProvider>
   );
 }

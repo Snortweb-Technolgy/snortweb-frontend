@@ -60,9 +60,16 @@ const FloatingDust = () => {
 };
 
 export default function Loader() {
-  const { isLoaded, setIsLoaded } = useApp();
+  const { isLoaded, setIsLoaded, settings } = useApp();
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("ESTABLISHING SECURE PROTOCOLS...");
+
+  // If maintenance mode is active, dismiss initial intro loader immediately
+  useEffect(() => {
+    if (settings?.maintenanceMode) {
+      setIsLoaded(true);
+    }
+  }, [settings?.maintenanceMode, setIsLoaded]);
 
   useEffect(() => {
     let start = null;
@@ -200,7 +207,7 @@ export default function Loader() {
               className="flex flex-col items-center mb-8 relative overflow-hidden px-4"
             >
               <h1 className="font-sans-heading font-black text-white text-[1.4rem] tracking-[0.25em] uppercase leading-none relative z-10">
-                SNORTWEB
+                SNORT<span className="text-[#C8A15A]">WEB</span>
                 {/* Premium Text Shimmer Effect */}
                 <motion.div
                   className="absolute top-0 left-0 w-8 h-full bg-white opacity-20 blur-[6px] -skew-x-12 z-20"

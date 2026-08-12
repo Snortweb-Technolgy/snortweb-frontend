@@ -80,7 +80,7 @@ export default function Footer() {
             />
             <div className="flex flex-col text-left">
               <span className="font-sans-heading font-black text-[1.4rem] tracking-[0.2em] text-[#F5F3EF] uppercase leading-none">
-                SNORTWEB
+                SNORT<span className="text-[#C8A15A]">WEB</span>
               </span>
               <span className="font-sans-body font-light text-[0.65rem] tracking-[0.4em] text-text-tertiary leading-none uppercase mt-1.5">
                 TECHNOLOGY
@@ -109,6 +109,13 @@ export default function Footer() {
                 {t(`service_${service.slug.replace(/-/g, "_")}_title`) || service.title}
               </Link>
             ))}
+            <Link
+              to="/blogs"
+              onClick={handleLinkClick}
+              className="font-sans-body font-normal text-[0.875rem] text-[#C8A15A] hover:text-text-primary hover:pl-1.5 transition-all duration-100 ease-out nav-link-no-underline w-fit"
+            >
+              Latest Tech Blogs &rarr;
+            </Link>
           </div>
         </div>
 
@@ -118,54 +125,59 @@ export default function Footer() {
             {t("footer_connect")}
           </span>
           
+          {/* Email with Mail Icon & Direct Mailto Compose */}
           <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=snortwebtechnology@gmail.com"
+            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings?.contact?.email || "snortwebtechnology@gmail.com")}&su=${encodeURIComponent("Project Inquiry - Snortweb Technology")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-sans-body font-medium text-[0.875rem] text-text-primary hover:text-text-secondary transition-colors duration-100 hover:underline decoration-1 decoration-text-primary underline-offset-4"
+            className="flex items-center gap-2.5 font-sans-body font-medium text-[0.875rem] text-text-primary hover:text-accent transition-colors duration-100 font-mono group no-underline outline-none focus:outline-none focus:ring-0"
           >
-            snortwebtechnology@gmail.com
+            <div className="w-7 h-7 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent group-hover:text-black transition-all duration-300">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent group-hover:text-black transition-colors">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+            </div>
+            <span className="no-underline">
+              {settings?.contact?.email || "snortwebtechnology@gmail.com"}
+            </span>
           </a>
 
+          {/* Phone with Phone Icon */}
           <a
-            href="tel:+919860596829"
-            className="mt-2 font-sans-body font-medium text-[0.875rem] text-text-primary hover:text-text-secondary transition-colors duration-100 hover:underline decoration-1 decoration-text-primary underline-offset-4"
+            href={`tel:${(settings?.contact?.phone || "9860596829").replace(/\s+/g, '')}`}
+            className="mt-3 flex items-center gap-2.5 font-sans-body font-medium text-[0.875rem] text-text-primary hover:text-accent transition-colors duration-100 font-mono group no-underline outline-none focus:outline-none focus:ring-0"
           >
-            +91 9860596829
+            <div className="w-7 h-7 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent group-hover:text-black transition-all duration-300">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent group-hover:text-black transition-colors">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <span className="no-underline">
+              {settings?.contact?.phone || "9860596829"}
+            </span>
           </a>
           
-          <span className="mt-3 font-sans-body font-normal text-[0.8rem] text-text-tertiary">
-            {t("footer_emergency")}
+          <span className="mt-3.5 font-sans-body font-normal text-[0.8rem] text-text-tertiary pl-9">
+            {settings?.contact?.workingHours || t("footer_emergency")}
           </span>
 
-          {/* Social Row */}
-          <div className="flex flex-wrap gap-[10px] mt-6">
-            {(settings?.socialLinks?.length > 0 ? settings.socialLinks : socialLinks).map((social, i) => {
-              let IconComponent = LinkedinIcon;
-              const iconString = typeof social.icon === 'string' ? social.icon : (social.platform || "");
-              const iconName = iconString.toLowerCase();
-              if (iconName === "twitter") IconComponent = TwitterIcon;
-              else if (iconName === "github") IconComponent = GithubIcon;
-              else if (iconName === "instagram") IconComponent = InstagramIcon;
-              else if (iconName === "facebook") IconComponent = FacebookIcon;
-              else if (iconName === "youtube") IconComponent = YoutubeIcon;
-              // default to Linkedin if not found or if platform has no specific icon
-
-              return (
-                <motion.a
-                  key={i}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05, y: -1 }}
-                  transition={{ duration: 0.1 }}
-                  className="w-[32px] h-[32px] border border-border-subtle flex items-center justify-center text-text-secondary hover:border-border-main hover:text-[#F7F3EB] dark:hover:text-text-primary hover:bg-[#24211C] dark:hover:bg-bg-elevated rounded-[8px] dark:rounded-md transition-all duration-300"
-                  aria-label={social.platform || social.aria}
-                >
-                  {social.icon && typeof social.icon !== 'string' ? social.icon : <IconComponent size={16} strokeWidth={1.5} />}
-                </motion.a>
-              )
-            })}
+          {/* Social Row: Strictly LinkedIn and Instagram Only */}
+          <div className="flex flex-wrap gap-[10px] mt-5">
+            {socialLinks.map((social, i) => (
+              <motion.a
+                key={i}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05, y: -1 }}
+                transition={{ duration: 0.1 }}
+                className="w-[36px] h-[36px] border border-border-subtle flex items-center justify-center text-text-secondary hover:border-accent hover:text-[#F7F3EB] dark:hover:text-text-primary hover:bg-[#24211C] dark:hover:bg-bg-elevated rounded-[8px] dark:rounded-md transition-all duration-300"
+                aria-label={social.aria}
+              >
+                {social.icon}
+              </motion.a>
+            ))}
           </div>
         </div>
 

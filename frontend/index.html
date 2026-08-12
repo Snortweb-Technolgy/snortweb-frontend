@@ -77,6 +77,87 @@
 </head>
 
 <body class="bg-bg-primary text-text-primary font-sans-body antialiased overflow-x-hidden">
+  <div id="maintenance-overlay" style="display:none; position:fixed; inset:0; z-index:999999; background:#050608; font-family:sans-serif; color:#F8FAFC; flex-direction:column; justify-content:space-between; padding:1.25rem; overflow-y:auto; min-height:100vh; box-sizing:border-box;">
+    <style>
+      @keyframes streamLaser { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
+    </style>
+    
+    <!-- Background Glow Orbs -->
+    <div style="position:absolute; top:50%; left:50%; width:600px; height:600px; background:rgba(200,161,90,0.18); border-radius:50%; filter:blur(150px); transform:translate(-50%,-50%); pointer-events:none;"></div>
+    
+    <!-- Header -->
+    <div style="position:relative; z-index:10; width:100%; max-width:64rem; margin:0 auto; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(200,161,90,0.3); padding-bottom:0.75rem;">
+      <div style="display:flex; align-items:center;">
+        <img src="/logo.webp" alt="Snortweb Technology" style="height:4rem; width:auto; object-fit:contain; filter:drop-shadow(0 0 15px rgba(200,161,90,0.5));" />
+      </div>
+      <div style="padding:0.25rem 0.75rem; background:rgba(200,161,90,0.1); border:1px solid rgba(200,161,90,0.3); border-radius:99px; font-family:monospace; font-size:0.6rem; font-weight:bold; color:#C8A15A; text-transform:uppercase; letter-spacing:0.15em;">
+        ● SCHEDULED UPGRADE
+      </div>
+    </div>
+
+    <!-- Center Hero -->
+    <div style="position:relative; z-index:10; max-width:36rem; width:100%; margin:auto auto; text-align:center; padding:1rem 0;">
+      <span style="font-family:monospace; font-size:0.65rem; font-weight:bold; letter-spacing:0.3em; color:#C8A15A; text-transform:uppercase; display:block; margin-bottom:0.5rem;">CRAFTING DIGITAL EXCELLENCE</span>
+      <h1 style="font-size:2.2rem; font-weight:900; color:#F8FAFC; text-transform:uppercase; letter-spacing:-0.02em; line-height:1.15; margin-bottom:0.75rem;">
+        SOMETHING EXTRAORDINARY <br />
+        <span style="color:#C8A15A; font-style:italic; font-weight:400;">IS IN THE WORKS.</span>
+      </h1>
+      <p style="color:#94A3B8; font-size:0.85rem; line-height:1.5; max-width:28rem; margin:0 auto 1.25rem auto;">
+        Our platform is undergoing scheduled enhancements to deliver unmatched speed, security, and aesthetics.
+      </p>
+
+      <!-- Cyber Server Hardware Blade Engine -->
+      <div style="background:#0B0D12; border:1px solid rgba(200,161,90,0.3); border-radius:0.85rem; padding:1rem; box-shadow:0 10px 25px rgba(0,0,0,0.5); display:flex; flex-direction:column; align-items:center; gap:0.6rem; margin-bottom:1.25rem;">
+        <div style="width:100%; max-width:20rem; background:#06070A; border:1px solid #1E293B; border-radius:0.65rem; padding:0.65rem; display:flex; flex-direction:column; gap:0.5rem;">
+          
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#0E1017; border:1px solid rgba(200,161,90,0.4); padding:0.4rem 0.65rem; border-radius:0.4rem; font-family:monospace; font-size:0.6rem;">
+            <span style="color:#F8FAFC; font-weight:bold;">⚡ CORE HARDWARE RACK 01</span>
+            <span style="color:#34D399; font-weight:bold;">● ONLINE</span>
+          </div>
+
+          <div style="width:100%; height:0.4rem; background:#0F172A; border-radius:99px; overflow:hidden; border:1px solid #1E293B; position:relative;">
+            <div style="width:35%; height:100%; background:linear-gradient(90deg, transparent, #C8A15A, transparent); animation: streamLaser 2s ease-in-out infinite;"></div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#0E1017; border:1px solid #1E293B; padding:0.4rem 0.65rem; border-radius:0.4rem; font-family:monospace; font-size:0.6rem;">
+            <span style="color:#CBD5E1; font-weight:bold;">🖥️ ENCRYPTION NODE</span>
+            <span style="color:#C8A15A; font-weight:bold;">OPTIMIZING 98%</span>
+          </div>
+
+        </div>
+
+        <span style="font-family:monospace; font-size:0.6rem; font-weight:bold; letter-spacing:0.2em; color:#C8A15A; text-transform:uppercase;">
+          SYSTEM UNDER MAINTENANCE
+        </span>
+      </div>
+
+      <button onclick="window.location.reload()" style="padding:0.75rem 2rem; background:linear-gradient(90deg, #C8A15A, #FFD98A, #C8A15A); border:none; border-radius:0.65rem; color:#0B0C0E; font-family:monospace; font-weight:900; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.18em; cursor:pointer; box-shadow:0 0 25px rgba(200,161,90,0.35);">RE-CHECK SYSTEM ACCESS</button>
+    </div>
+
+    <!-- Footer -->
+    <div style="position:relative; z-index:10; width:100%; max-width:64rem; margin:0 auto; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(200,161,90,0.2); padding-top:0.75rem; font-family:monospace; font-size:0.65rem;">
+      <span style="color:#64748B;">&copy; 2026 SNORTWEB TECHNOLOGY. ALL RIGHTS RESERVED.</span>
+      <div style="display:flex; gap:1.25rem; color:#CBD5E1;">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=snortwebtechnology@gmail.com&su=Inquiry%20regarding%20Snortweb%20Technology%20Maintenance" target="_blank" rel="noopener noreferrer" style="color:#CBD5E1; text-decoration:none;">snortwebtechnology@gmail.com</a>
+        <a href="tel:9860596829" style="color:#CBD5E1; text-decoration:none;">+91 9860596829</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      try {
+        var apiHost = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        fetch(apiHost + '/api/settings')
+          .then(function(r){ return r.json(); })
+          .then(function(d){
+            if(d && d.maintenanceMode === true){
+              document.getElementById('root').style.display = 'none';
+              document.getElementById('maintenance-overlay').style.display = 'flex';
+            }
+          }).catch(function(){});
+      } catch(e){}
+    })();
+  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

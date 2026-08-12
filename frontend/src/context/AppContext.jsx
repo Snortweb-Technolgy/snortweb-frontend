@@ -16,6 +16,7 @@ export const AppContextProvider = ({ children }) => {
   
   const [theme] = useState("dark");
   const [settings, setSettings] = useState(null);
+  const [isSettingsLoading, setIsSettingsLoading] = useState(true);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -28,11 +29,14 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchSettings = async () => {
+      setIsSettingsLoading(true);
       try {
         const { data } = await api.get("/settings");
         setSettings(data);
       } catch (error) {
         // Quietly failover to static default settings context
+      } finally {
+        setIsSettingsLoading(false);
       }
     };
     fetchSettings();
@@ -58,7 +62,8 @@ export const AppContextProvider = ({ children }) => {
         language,
         setLanguage,
         t,
-        settings
+        settings,
+        isSettingsLoading
       }}
     >
       {children}

@@ -135,20 +135,8 @@ export default function Hero() {
   // Subtext content
   const subtextText = t("hero_desc");
   
-  // Delay mounting heavy 3D engine to completely unblock FCP/LCP
-  const [shouldMount3D, setShouldMount3D] = useState(false);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    
-    const mountTimer = setTimeout(() => {
-      setShouldMount3D(true);
-    }, 2000);
-
-    return () => {
-      clearTimeout(mountTimer);
-    };
-  }, [isLoaded]);
+  // Mount HeroScene instantly to avoid 2000ms artificial load delay
+  const [shouldMount3D, setShouldMount3D] = useState(true);
 
   const handleExplore = () => {
     const el = document.getElementById("services-section");
@@ -332,20 +320,16 @@ export default function Hero() {
             <AnimatePresence>
               {isLoaded && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-                  className="w-full h-[360px] lg:h-[550px] relative flex items-center justify-center select-none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="w-full h-[360px] lg:h-[550px] relative flex items-center justify-center select-none bg-transparent"
                 >
                   {shouldMount3D ? (
-                    <Suspense fallback={<div className="w-full h-full flex items-center justify-center opacity-50"><span className="animate-pulse text-xs font-mono-code text-text-tertiary tracking-widest">LOADING 3D ENGINE...</span></div>}>
+                    <Suspense fallback={null}>
                       <HeroScene />
                     </Suspense>
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center opacity-50">
-                      <span className="animate-pulse text-xs font-mono-code text-text-tertiary tracking-widest">INITIALIZING SECURE PROTOCOLS...</span>
-                    </div>
-                  )}
+                  ) : null}
                 </motion.div>
               )}
             </AnimatePresence>

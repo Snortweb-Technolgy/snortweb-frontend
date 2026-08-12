@@ -768,7 +768,7 @@ export default function HeroScene() {
   const palette = themeColors[theme] || themeColors.light;
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative bg-transparent overflow-hidden">
       <Canvas
         camera={{ fov: 45, position: [0, 0, 4.8] }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
@@ -777,8 +777,10 @@ export default function HeroScene() {
         className="w-full h-full"
         style={{ background: "transparent" }}
         onCreated={({ gl }) => {
+          gl.setClearColor(0x000000, 0); // Pure transparent clear color
           const canvas = gl?.domElement;
           if (canvas) {
+            canvas.style.background = "transparent";
             canvas.addEventListener("webglcontextlost", (event) => {
               event.preventDefault();
             }, false);
