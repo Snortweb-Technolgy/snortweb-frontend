@@ -73,7 +73,7 @@ export default function Loader() {
 
   useEffect(() => {
     let start = null;
-    const duration = 1400; // Fast loader transition duration (1.4s)
+    const duration = 300; // Ultra-fast loader transition duration (300ms)
     let animationFrame;
 
     const animateProgress = (timestamp) => {
@@ -100,12 +100,7 @@ export default function Loader() {
       } else {
         setProgress(100);
         setStatus("WELCOME TO SNORTWEB TECHNOLOGY");
-        
-        // Wait a brief moment at 100% before dismissing loader
-        const dismissTimer = setTimeout(() => {
-          setIsLoaded(true);
-        }, 600);
-        return () => clearTimeout(dismissTimer);
+        setIsLoaded(true);
       }
     };
 
@@ -153,9 +148,9 @@ export default function Loader() {
                 transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
               >
                 <circle
-                  cx="50"
-                  cy="50"
-                  r="44"
+                  cx={50}
+                  cy={50}
+                  r={44}
                   stroke="rgba(200, 161, 90, 0.12)"
                   strokeWidth="1.5"
                   strokeDasharray="4 6"
@@ -166,9 +161,9 @@ export default function Loader() {
               {/* Inner Glowing Active Progress Ring */}
               <svg className="absolute inset-0 w-full h-full -rotate-90 z-10" viewBox="0 0 100 100">
                 <motion.circle
-                  cx="50"
-                  cy="50"
-                  r="44"
+                  cx={50}
+                  cy={50}
+                  r={44}
                   stroke="#C8A15A"
                   strokeWidth="2.5"
                   strokeLinecap="round"
@@ -184,7 +179,7 @@ export default function Loader() {
 
               {/* Inner Pulsing Logo */}
               <motion.img
-                src="/logo-icon.png"
+                src="/logo-icon.webp"
                 alt="Snortweb Logo Icon"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ 

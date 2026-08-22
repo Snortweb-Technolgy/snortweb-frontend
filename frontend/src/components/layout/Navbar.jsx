@@ -227,8 +227,8 @@ export default function Navbar() {
       <nav
         className={`fixed left-0 right-0 z-50 h-[72px] flex items-center justify-between px-6 md:px-12 transition-all duration-300 ${
           scrolled
-            ? "bg-bg-primary border-b border-border-light shadow-hairline"
-            : "bg-transparent border-b border-transparent"
+            ? "bg-bg-primary/95 backdrop-blur-md border-b border-border-light shadow-hairline"
+            : "bg-[#161616]/85 backdrop-blur-md border-b border-border-light/30"
         }`}
         style={{
           top: showBar ? "36px" : "0px"

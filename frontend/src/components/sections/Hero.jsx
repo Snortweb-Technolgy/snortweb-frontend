@@ -210,191 +210,173 @@ export default function Hero() {
           
           {/* Left Column: Headlines & Actions */}
           <div className="lg:col-span-6 flex flex-col items-start text-left z-20">
-            <AnimatePresence>
-              {isLoaded && (
-                <>
-                  {/* Staggered Word Headlines */}
-                  <div className="space-y-1 sm:space-y-2">
-                    {/* Line 1: We Build */}
-                    <div className="overflow-hidden flex flex-wrap gap-x-3">
-                      {wordsLine1.map((word, i) => {
-                        const idx = getGlobalIndex(1, i);
-                        return (
-                          <div key={idx} className="overflow-hidden">
-                            <motion.h1
-                              variants={wordVariants(idx)}
-                              initial="hidden"
-                              animate="visible"
-                              className="font-sans-heading text-hero font-black text-text-primary leading-[0.95] tracking-tight uppercase"
-                            >
-                              {word}
-                            </motion.h1>
-                          </div>
-                        );
-                      })}
+            {/* Staggered Word Headlines */}
+            <div className="space-y-1 sm:space-y-2">
+              {/* Line 1: We Build */}
+              <div className="overflow-hidden flex flex-wrap gap-x-3">
+                {wordsLine1.map((word, i) => {
+                  const idx = getGlobalIndex(1, i);
+                  return (
+                    <div key={idx} className="overflow-hidden">
+                      <motion.h1
+                        variants={wordVariants(idx)}
+                        initial="hidden"
+                        animate="visible"
+                        className="font-sans-heading text-hero font-black text-text-primary leading-[0.95] tracking-tight uppercase"
+                      >
+                        {word}
+                      </motion.h1>
                     </div>
+                  );
+                })}
+              </div>
 
-                    {/* Line 2: We Secure */}
-                    <div className="overflow-hidden flex flex-wrap gap-x-3">
-                      {wordsLine2.map((word, i) => {
-                        const idx = getGlobalIndex(2, i);
-                        return (
-                          <div key={idx} className="overflow-hidden">
-                            <motion.h1
-                              variants={wordVariants(idx)}
-                              initial="hidden"
-                              animate="visible"
-                              className="font-sans-heading text-hero font-black leading-[0.95] tracking-tight text-text-primary pb-1 uppercase"
-                            >
-                              {word}
-                            </motion.h1>
-                          </div>
-                        );
-                      })}
+              {/* Line 2: We Secure */}
+              <div className="overflow-hidden flex flex-wrap gap-x-3">
+                {wordsLine2.map((word, i) => {
+                  const idx = getGlobalIndex(2, i);
+                  return (
+                    <div key={idx} className="overflow-hidden">
+                      <motion.h1
+                        variants={wordVariants(idx)}
+                        initial="hidden"
+                        animate="visible"
+                        className="font-sans-heading text-hero font-black leading-[0.95] tracking-tight text-text-primary pb-1 uppercase"
+                      >
+                        {word}
+                      </motion.h1>
                     </div>
+                  );
+                })}
+              </div>
 
-                    {/* Line 3: They Can't Break It */}
-                    <div className="overflow-hidden flex flex-wrap gap-x-2">
-                      {wordsLine3.map((word, i) => {
-                        const idx = getGlobalIndex(3, i);
-                        return (
-                          <div key={idx} className="overflow-hidden">
-                            <motion.p
-                              variants={wordVariants(idx)}
-                              initial="hidden"
-                              animate="visible"
-                              className="font-sans-heading font-normal italic pt-1.5 text-accent dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-brand-indigo dark:to-[#F5F3EF]"
-                              style={{
-                                fontSize: "clamp(1.4rem, 2.2vw, 2rem)"
-                              }}
-                            >
-                              {word}
-                            </motion.p>
-                          </div>
-                        );
-                      })}
+              {/* Line 3: They Can't Break It */}
+              <div className="overflow-hidden flex flex-wrap gap-x-2">
+                {wordsLine3.map((word, i) => {
+                  const idx = getGlobalIndex(3, i);
+                  return (
+                    <div key={idx} className="overflow-hidden">
+                      <motion.p
+                        variants={wordVariants(idx)}
+                        initial="hidden"
+                        animate="visible"
+                        className="font-sans-heading font-normal italic pt-1.5 text-accent dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-brand-indigo dark:to-[#F5F3EF]"
+                        style={{
+                          fontSize: "clamp(1.4rem, 2.2vw, 2rem)"
+                        }}
+                      >
+                        {word}
+                      </motion.p>
                     </div>
-                  </div>
+                  );
+                })}
+              </div>
+            </div>
 
-                  {/* Decorative Line Punctuation */}
-                  <div className="flex items-center gap-3 my-3 w-full max-w-[280px]">
-                    <div className="h-[1px] bg-border-main dark:bg-gradient-to-r dark:from-brand-indigo/50 dark:to-transparent flex-grow" />
-                    <div className="w-[6px] h-[6px] border border-border-main dark:border-brand-indigo/80 bg-bg-primary dark:bg-brand-indigo/20 dark:shadow-[0_0_8px_rgba(94,106,210,0.6)]" />
-                  </div>
+            {/* Decorative Line Punctuation */}
+            <div className="flex items-center gap-3 my-3 w-full max-w-[280px]">
+              <div className="h-[1px] bg-border-main dark:bg-gradient-to-r dark:from-brand-indigo/50 dark:to-transparent flex-grow" />
+              <div className="w-[6px] h-[6px] border border-border-main dark:border-brand-indigo/80 bg-bg-primary dark:bg-brand-indigo/20 dark:shadow-[0_0_8px_rgba(94,106,210,0.6)]" />
+            </div>
 
-                  {/* Subtext */}
-                  <div className="min-h-[60px]">
-                    <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-[480px] leading-relaxed font-sans-body">
-                      {subtextText}
-                    </p>
-                  </div>
+            {/* Subtext */}
+            <div className="min-h-[60px]">
+              <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-[480px] leading-relaxed font-sans-body">
+                {subtextText}
+              </p>
+            </div>
 
-                  {/* Real-time Security Log Monitor */}
-                  <SecurityFeed />
+            {/* Real-time Security Log Monitor */}
+            <SecurityFeed />
 
-                  {/* CTA Buttons */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 1.1 }}
-                    className="mt-4 flex flex-row gap-4 w-full sm:w-auto"
-                  >
-                    {/* Button 1: Start a Project */}
-                    <Button
-                      magnetic={true}
-                      onClick={() => navigate("/contact")}
-                      className="relative overflow-hidden border-2 border-[#24211C] dark:border-brand-indigo px-8 py-4 rounded-none dark:rounded-md bg-[#24211C] dark:bg-brand-indigo text-[#F8F5F0] dark:text-[#161616] font-mono-code text-xs font-bold tracking-[0.12em] transition-colors duration-300 hover:bg-[#C8A15A] hover:text-[#24211C] hover:border-[#C8A15A] dark:hover:bg-transparent dark:hover:text-brand-indigo"
-                    >
-                      <span className="flex items-center gap-2">
-                        {t("hero_launch_project")}
-                      </span>
-                    </Button>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.15 }}
+              className="mt-4 flex flex-row gap-4 w-full sm:w-auto"
+            >
+              {/* Button 1: Start a Project */}
+              <Button
+                magnetic={true}
+                onClick={() => navigate("/contact")}
+                className="relative overflow-hidden border-2 border-[#24211C] dark:border-brand-indigo px-8 py-4 rounded-none dark:rounded-md bg-[#24211C] dark:bg-brand-indigo text-[#F8F5F0] dark:text-[#161616] font-mono-code text-xs font-bold tracking-[0.12em] transition-colors duration-300 hover:bg-[#C8A15A] hover:text-[#24211C] hover:border-[#C8A15A] dark:hover:bg-transparent dark:hover:text-brand-indigo"
+              >
+                <span className="flex items-center gap-2">
+                  {t("hero_launch_project")}
+                </span>
+              </Button>
+            </motion.div>
           </div>
 
           {/* Right Column: Three.js Canvas Scene */}
           <div className="lg:col-span-6 relative flex items-center justify-center mt-8 lg:mt-0 z-10">
-            <AnimatePresence>
-              {isLoaded && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="w-full h-[360px] lg:h-[550px] relative flex items-center justify-center select-none bg-transparent"
-                >
-                  {shouldMount3D ? (
-                    <Suspense fallback={null}>
-                      <HeroScene />
-                    </Suspense>
-                  ) : null}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+              className="w-full h-[360px] lg:h-[550px] relative flex items-center justify-center select-none bg-transparent"
+            >
+              {shouldMount3D ? (
+                <Suspense fallback={<div className="w-full h-full bg-transparent" />}>
+                  <HeroScene />
+                </Suspense>
+              ) : null}
+            </motion.div>
           </div>
 
         </div>
 
         {/* Counter bar (Fills full width below the grid columns) */}
-        <AnimatePresence>
-          {isLoaded && (
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 1.25 }}
-              className="mt-12 w-full bg-[#FBF8F2] dark:bg-[#1E1E1E] border border-border-light rounded-[24px] py-5 px-8 z-20 shadow-card dark:shadow-none"
-            >
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-2 lg:divide-x divide-border-light">
-                {stats.map((item, idx) => {
-                  const icons = [Shield, Lock, Users, Headphones];
-                  const Icon = icons[idx] || Shield;
-                  const statKeys = ["hero_stat_projects", "hero_stat_security", "hero_stat_clients", "hero_stat_support"];
-                  return (
-                    <div key={item.id} className={`${idx > 0 ? "lg:pl-6" : ""}`}>
-                      <HeroCounterItem
-                        target={item.value}
-                        suffix={item.suffix}
-                        label={t(statKeys[idx])}
-                        delay={1500}
-                        icon={Icon}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mt-12 w-full bg-[#FBF8F2] dark:bg-[#1E1E1E] border border-border-light rounded-[24px] py-5 px-8 z-20 shadow-card dark:shadow-none"
+        >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-2 lg:divide-x divide-border-light">
+            {stats.map((item, idx) => {
+              const icons = [Shield, Lock, Users, Headphones];
+              const Icon = icons[idx] || Shield;
+              const statKeys = ["hero_stat_projects", "hero_stat_security", "hero_stat_clients", "hero_stat_support"];
+              return (
+                <div key={item.id} className={`${idx > 0 ? "lg:pl-6" : ""}`}>
+                  <HeroCounterItem
+                    target={item.value}
+                    suffix={item.suffix}
+                    label={t(statKeys[idx])}
+                    delay={300}
+                    icon={Icon}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
 
       </div>
 
       {/* Scroll indicator */}
-      <AnimatePresence>
-        {isLoaded && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.6 }}
-            transition={{ delay: 1.4 }}
-            onClick={handleExplore}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer hidden lg:flex flex-col items-center gap-2 z-10"
-          >
-            <div className="relative w-6 h-9 border-[1.5px] border-border-main rounded-none">
-              <div 
-                className="absolute top-1.5 left-1/2 w-[3px] h-1.5 bg-text-secondary"
-                style={{
-                  transform: "translateX(-50%)",
-                  animation: "wheelScroll 1.5s ease-out infinite"
-                }}
-              />
-            </div>
-            <span className="font-mono-code font-light text-[0.6rem] tracking-[0.2em] text-text-tertiary uppercase mt-1">
-              scroll to explore
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.6 }}
+        transition={{ delay: 0.3 }}
+        onClick={handleExplore}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer hidden lg:flex flex-col items-center gap-2 z-10"
+      >
+        <div className="relative w-6 h-9 border-[1.5px] border-border-main rounded-none">
+          <div 
+            className="absolute top-1.5 left-1/2 w-[3px] h-1.5 bg-text-secondary"
+            style={{
+              transform: "translateX(-50%)",
+              animation: "wheelScroll 1.5s ease-out infinite"
+            }}
+          />
+        </div>
+        <span className="font-mono-code font-light text-[0.6rem] tracking-[0.2em] text-text-tertiary uppercase mt-1">
+          scroll to explore
+        </span>
+      </motion.div>
     </section>
   );
 }
