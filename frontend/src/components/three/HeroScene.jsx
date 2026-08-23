@@ -1,9 +1,15 @@
 /* eslint-disable */
 import { Suspense, useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei/core/OrbitControls.js";
 import { useReducedMotion } from "framer-motion";
-import * as THREE from "three";
+import {
+  Vector3,
+  IcosahedronGeometry,
+  AdditiveBlending,
+  NormalBlending,
+  MathUtils
+} from "three";
 import { useApp } from "../../context/AppContext";
 
 const themeColors = {
@@ -86,7 +92,7 @@ function OrbitalRing({ radius, tubeRadius = 0.006, color, speed, rotation, parti
           emissiveIntensity={isDark ? 2.5 : 0.3}
           transparent
           opacity={isDark ? 0.35 : 0.65}
-          blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
+          blending={isDark ? AdditiveBlending : NormalBlending}
           depthWrite={false}
         />
       </mesh>
@@ -101,7 +107,7 @@ function OrbitalRing({ radius, tubeRadius = 0.006, color, speed, rotation, parti
           opacity={isDark ? 0.85 : 0.8}
           sizeAttenuation
           depthWrite={false}
-          blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
+          blending={isDark ? AdditiveBlending : NormalBlending}
         />
       </points>
     </group>
@@ -119,7 +125,7 @@ function NetworkCore({ theme, prefersReduced }) {
 
   // Compute vertices of outer icosahedron (detail 2) to draw clean junction points
   const outerVertices = useMemo(() => {
-    const tempGeo = new THREE.IcosahedronGeometry(1.2, 2);
+    const tempGeo = new IcosahedronGeometry(1.2, 2);
     const posAttr = tempGeo.attributes.position;
     const verts = [];
     const seen = new Set();
@@ -130,7 +136,7 @@ function NetworkCore({ theme, prefersReduced }) {
       const key = `${x},${y},${z}`;
       if (!seen.has(key)) {
         seen.add(key);
-        verts.push(new THREE.Vector3(x, y, z));
+        verts.push(new Vector3(x, y, z));
       }
     }
     tempGeo.dispose();
@@ -178,7 +184,7 @@ function NetworkCore({ theme, prefersReduced }) {
             metalness={1.0}
             transparent
             opacity={0.35}
-            blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
+            blending={isDark ? AdditiveBlending : NormalBlending}
           />
         </mesh>
         <points>
@@ -195,7 +201,7 @@ function NetworkCore({ theme, prefersReduced }) {
             transparent
             opacity={0.85}
             sizeAttenuation
-            blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
+            blending={isDark ? AdditiveBlending : NormalBlending}
           />
         </points>
       </group>
@@ -230,7 +236,7 @@ function NetworkCore({ theme, prefersReduced }) {
             opacity={0.95}
             sizeAttenuation={true}
             depthWrite={false}
-            blending={THREE.AdditiveBlending}
+            blending={AdditiveBlending}
           />
         </points>
       </group>
@@ -247,8 +253,8 @@ function DataPackets({ userPositions, prefersReduced }) {
     return new Float32Array(packetsCount * 3);
   }, [packetsCount]);
 
-  const tempStart = useMemo(() => new THREE.Vector3(), []);
-  const tempRes = useMemo(() => new THREE.Vector3(), []);
+  const tempStart = useMemo(() => new Vector3(), []);
+  const tempRes = useMemo(() => new Vector3(), []);
 
   useFrame((state) => {
     if (prefersReduced) return;
@@ -290,7 +296,7 @@ function DataPackets({ userPositions, prefersReduced }) {
         opacity={0.8}
         sizeAttenuation
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
       />
     </points>
   );
@@ -311,7 +317,7 @@ function ConnectedUsers({ theme, prefersReduced }) {
       const x = Math.cos(angle) * R;
       const z = Math.sin(angle) * R;
       const y = Math.sin(angle * 2) * 0.2; // slight wave pattern height
-      pos.push(new THREE.Vector3(x, y, z));
+      pos.push(new Vector3(x, y, z));
     }
     return pos;
   }, []);
@@ -494,7 +500,7 @@ function ProjectorParticles({ theme, prefersReduced }) {
         opacity={isDark ? 0.75 : 0.45}
         sizeAttenuation
         depthWrite={false}
-        blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
+        blending={isDark ? AdditiveBlending : NormalBlending}
       />
     </points>
   );
@@ -712,7 +718,7 @@ function FloatingGoldDust({ theme, prefersReduced }) {
         opacity={0.35}
         sizeAttenuation
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
       />
     </points>
   );
@@ -732,8 +738,8 @@ function SceneContent({ theme }) {
       groupRef.current.position.y = Math.sin(time * (Math.PI / 4.0)) * 0.08;
 
       const pointer = state.pointer;
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, -0.26 + pointer.x * 0.15, 0.05);
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0.26 + pointer.y * -0.1, 0.05);
+      groupRef.current.rotation.y = MathUtils.lerp(groupRef.current.rotation.y, -0.26 + pointer.x * 0.15, 0.05);
+      groupRef.current.rotation.x = MathUtils.lerp(groupRef.current.rotation.x, 0.26 + pointer.y * -0.1, 0.05);
     }
   });
 
