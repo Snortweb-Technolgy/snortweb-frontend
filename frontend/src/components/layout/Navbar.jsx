@@ -6,7 +6,7 @@ import { useApp } from "../../context/AppContext";
 import { Button } from "../ui/Button";
 
 export default function Navbar() {
-  const { menuOpen, setMenuOpen, theme, setTheme, t, language, setLanguage } = useApp();
+  const { menuOpen, setMenuOpen, theme, setTheme, t, language, setLanguage, careersEnabled } = useApp();
   const [scrolled, setScrolled] = useState(false);
   const [showBar, setShowBar] = useState(() => {
     if (typeof window !== "undefined") {
@@ -93,15 +93,21 @@ export default function Navbar() {
     };
   }, [location.pathname]);
 
-  const navLinks = [
+  const baseNavLinks = [
     { name: t("home"), path: "/" },
     { name: t("about"), path: "/#about" },
     { name: t("services"), path: "/services" },
     { name: t("projects"), path: "/#projects" },
     { name: t("process"), path: "/#process" },
     { name: "Blogs", path: "/blogs" },
+    { name: "Careers", path: "/careers" },
     { name: t("contact"), path: "/contact" }
   ];
+
+  const navLinks = baseNavLinks.filter((link) => {
+    if (link.path === "/careers") return careersEnabled;
+    return true;
+  });
 
   const handleLinkClick = (path) => {
     setMenuOpen(false);
@@ -305,22 +311,7 @@ export default function Navbar() {
             </span>
           </motion.div>
 
-          {/* Bilingual Language Switcher */}
-          <div className="flex items-center border border-border-light rounded-none dark:rounded-md px-2 py-1 text-[10px] font-mono-code bg-[#1A1A1A]/30 text-text-secondary select-none">
-            <button
-              onClick={() => setLanguage("en")}
-              className={`px-1.5 py-0.5 hover:text-white transition-colors cursor-pointer ${language === "en" ? "text-accent font-bold" : ""}`}
-            >
-              EN
-            </button>
-            <span className="text-border-light/40 mx-0.5">|</span>
-            <button
-              onClick={() => setLanguage("hi")}
-              className={`px-1.5 py-0.5 hover:text-white transition-colors cursor-pointer ${language === "hi" ? "text-accent font-bold" : ""}`}
-            >
-              हिं
-            </button>
-          </div>
+
 
           <Button
             magnetic={true}
@@ -408,27 +399,7 @@ export default function Navbar() {
                   {t("cta_start")}
                 </Button>
 
-                {/* Mobile Language Switcher */}
-                <div className="flex justify-center items-center gap-4 text-xs font-mono-code pt-4 border-t border-white/10">
-                  <button
-                    onClick={() => {
-                      setLanguage("en");
-                      setMenuOpen(false);
-                    }}
-                    className={`px-3 py-1.5 border border-white/20 hover:border-white transition-colors cursor-pointer ${language === "en" ? "text-accent border-accent/30 font-bold" : "text-white/60"}`}
-                  >
-                    ENGLISH
-                  </button>
-                  <button
-                    onClick={() => {
-                      setLanguage("hi");
-                      setMenuOpen(false);
-                    }}
-                    className={`px-3 py-1.5 border border-white/20 hover:border-white transition-colors cursor-pointer ${language === "hi" ? "text-accent border-accent/30 font-bold" : "text-white/60"}`}
-                  >
-                    हिंदी
-                  </button>
-                </div>
+
               </motion.div>
             </div>
           </motion.div>

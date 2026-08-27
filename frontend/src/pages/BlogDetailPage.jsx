@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import DOMPurify from "dompurify";
 import SEO from "../components/seo/SEO";
 import api from "../api/axios";
 import { ArrowLeft, Calendar, User, Share2, Check, ArrowRight, Clock, Tag, List, Shield, ExternalLink } from "lucide-react";
@@ -73,6 +74,7 @@ const formatArticleContent = (rawText) => {
       }
       let itemText = trimmed.replace(/^[-*]\s*/, "");
       itemText = itemText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-text-primary font-bold">$1</strong>');
+      itemText = itemText.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-[#C8A15A] hover:underline font-bold">$1</a>');
       html += `<li class="flex items-start gap-3 text-text-secondary text-[0.95rem] leading-relaxed"><span class="text-[#C8A15A] font-bold text-base leading-none select-none mt-1">•</span><div>${itemText}</div></li>`;
       return;
     }
@@ -84,6 +86,7 @@ const formatArticleContent = (rawText) => {
     }
 
     let pText = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong class="text-text-primary font-bold">$1</strong>');
+    pText = pText.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-[#C8A15A] hover:underline font-bold">$1</a>');
     html += `<p class="text-text-secondary text-[0.98rem] leading-relaxed my-3">${pText}</p>`;
   });
 
@@ -592,7 +595,10 @@ export default function BlogDetailPage() {
           <div
             className="space-y-4"
             dangerouslySetInnerHTML={{
-              __html: formatArticleContent(blog.content)
+              __html: DOMPurify.sanitize(formatArticleContent(blog.content), {
+                USE_PROFILES: { html: true },
+                ADD_ATTR: ["target", "rel", "id", "class"],
+              })
             }}
           />
         </div>

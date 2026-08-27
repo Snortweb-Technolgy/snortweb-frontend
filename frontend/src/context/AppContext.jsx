@@ -17,6 +17,23 @@ export const AppContextProvider = ({ children }) => {
   const [theme] = useState("dark");
   const [settings, setSettings] = useState(null);
   const [isSettingsLoading, setIsSettingsLoading] = useState(true);
+  const [careersEnabled, setCareersEnabled] = useState(true);
+
+  useEffect(() => {
+    const checkCareers = async () => {
+      try {
+        const { data } = await api.get("/careers/status");
+        if (data && data.enabled) {
+          setCareersEnabled(true);
+        } else {
+          setCareersEnabled(false);
+        }
+      } catch (err) {
+        setCareersEnabled(false);
+      }
+    };
+    checkCareers();
+  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -63,7 +80,9 @@ export const AppContextProvider = ({ children }) => {
         setLanguage,
         t,
         settings,
-        isSettingsLoading
+        isSettingsLoading,
+        careersEnabled,
+        setCareersEnabled
       }}
     >
       {children}

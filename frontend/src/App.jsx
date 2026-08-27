@@ -22,6 +22,7 @@ const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const BlogListPage = lazy(() => import("./pages/BlogListPage"));
 const BlogDetailPage = lazy(() => import("./pages/BlogDetailPage"));
+const CareersPage = lazy(() => import("./pages/CareersPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Viewport restoration utility on path redirects
@@ -122,6 +123,7 @@ export default function App() {
                     <Route path="/services/:slug" element={<ServiceDetail />} />
                     <Route path="/blogs" element={<BlogListPage />} />
                     <Route path="/blogs/:slug" element={<BlogDetailPage />} />
+                    <Route path="/careers" element={<CareersPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     
                     {/* Redirects for non-existent root-level pages to homepage sections */}

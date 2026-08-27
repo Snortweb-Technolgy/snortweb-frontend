@@ -45,7 +45,7 @@ const YoutubeIcon = ({ size }) => (
 );
 
 export default function Footer() {
-  const { t, settings } = useApp();
+  const { t, settings, careersEnabled } = useApp();
 
   const handleLinkClick = () => {
     if (window.lenis) {
@@ -116,6 +116,15 @@ export default function Footer() {
             >
               Latest Tech Blogs &rarr;
             </Link>
+            {careersEnabled && (
+              <Link
+                to="/careers"
+                onClick={handleLinkClick}
+                className="font-sans-body font-normal text-[0.875rem] text-[#C8A15A] hover:text-text-primary hover:pl-1.5 transition-all duration-100 ease-out nav-link-no-underline w-fit"
+              >
+                Careers & Hiring &rarr;
+              </Link>
+            )}
           </div>
         </div>
 

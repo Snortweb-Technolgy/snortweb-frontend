@@ -383,7 +383,13 @@ export default function Chatbot() {
                         </div>
                       )}
                       
-                      {msg.text && <div className="mb-2" dangerouslySetInnerHTML={{ __html: msg.text }} />}
+                      {msg.text && (
+                        msg.isBot ? (
+                          <div className="mb-2" dangerouslySetInnerHTML={{ __html: msg.text }} />
+                        ) : (
+                          <div className="mb-2">{msg.text}</div>
+                        )
+                      )}
                       
                       {msg.list && msg.list.length > 0 && (
                         <ul className="mb-2 space-y-1 text-[11px] text-white/90">
