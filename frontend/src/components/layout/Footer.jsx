@@ -193,10 +193,15 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="max-w-[1200px] mx-auto mt-[60px] pt-[24px] border-t border-border-subtle flex flex-col sm:flex-row justify-between items-center gap-4">
-        <span className="font-sans-body font-normal text-[0.8rem] text-text-tertiary">
-          &copy; {new Date().getFullYear()} Snortweb Technology. {t("footer_rights")}
-        </span>
+      <div className="max-w-[1200px] mx-auto mt-[60px] pt-[24px] border-t border-border-subtle flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+        <div className="flex flex-col gap-1 items-center sm:items-start">
+          <span className="font-sans-body font-normal text-[0.8rem] text-text-tertiary">
+            &copy; {new Date().getFullYear()} Snortweb Technology. {t("footer_rights")}
+          </span>
+          <span className="font-sans-body font-normal text-[0.75rem] text-text-tertiary tracking-wide">
+            {t("footer_msme")}
+          </span>
+        </div>
 
         <span className="font-mono-code font-bold text-[0.8rem] text-text-primary tracking-[0.05em] uppercase">
           {t("footer_tagline")}

@@ -188,6 +188,7 @@ export const translations = {
     footer_emergency: "Available 24/7 for security emergencies",
     footer_tagline: "Build. Secure. Grow.",
     footer_rights: "All rights reserved.",
+    footer_msme: "MSME Registered Enterprise | Udyam Reg. No. UDYAM-MH-17-0253206",
   },
   hi: {
     // Navbar
@@ -378,5 +379,6 @@ export const translations = {
     footer_emergency: "सुरक्षा आपात स्थितियों के लिए 24/7 उपलब्ध",
     footer_tagline: "बनाएं। सुरक्षित करें। बढ़ाएं।",
     footer_rights: "सर्वाधिकार सुरक्षित।",
+    footer_msme: "MSME Registered Enterprise | Udyam Reg. No. UDYAM-MH-17-0253206",
   }
 };
