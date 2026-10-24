@@ -52,7 +52,7 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <Helmet defaultTitle="Snortweb Technology | Build. Secure. Grow." titleTemplate="%s | Snortweb Technology">
+      <Helmet defaultTitle="Snortweb Technology | Build. Secure. Grow." titleTemplate="%s">
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Snortweb Technology | Build. Secure. Grow.</title>
@@ -62,14 +62,14 @@ export default function App() {
         <meta name="keywords" content="Website Development, Cybersecurity, Web Applications, Cloud Solutions, Performance Optimization, Snortweb Technology" />
         <meta name="author" content="Snortweb Technology" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://snortwebtechnology.com" />
+        <link rel="canonical" href="https://snortwebtechnology.com/" />
 
         {/* Open Graph Tags */}
         <meta property="og:site_name" content="Snortweb Technology" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Snortweb Technology | Build. Secure. Grow." />
         <meta property="og:description" content="Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization." />
-        <meta property="og:url" content="https://snortwebtechnology.com" />
+        <meta property="og:url" content="https://snortwebtechnology.com/" />
         <meta property="og:image" content="https://snortwebtechnology.com/logo.png" />
 
         {/* Twitter Card Tags */}

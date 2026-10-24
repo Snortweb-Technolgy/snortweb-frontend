@@ -1,18 +1,29 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-export default function SEO({ title, description, canonical, type, image, schema }) {
+export default function SEO({ title, description, canonical, type, image, schema, noindex = false }) {
   const siteUrl = 'https://snortwebtechnology.com';
-  const fullUrl = canonical ? `${siteUrl}${canonical}` : siteUrl;
+  let fullUrl = `${siteUrl}/`;
+
+  if (canonical) {
+    if (canonical.startsWith('http://') || canonical.startsWith('https://')) {
+      fullUrl = canonical;
+    } else {
+      const cleanPath = canonical.startsWith('/') ? canonical : `/${canonical}`;
+      fullUrl = cleanPath === '/' ? `${siteUrl}/` : `${siteUrl}${cleanPath}`;
+    }
+  }
+
   const imageUrl = image || `${siteUrl}/og-image.png`;
+  const robotsDirective = noindex ? 'noindex, nofollow' : 'index, follow';
   
   return (
     <Helmet>
       {/* Basic HTML Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="robots" content="index, follow" />
-      <link rel="canonical" href={fullUrl} />
+      <meta name="robots" content={robotsDirective} />
+      {!noindex && <link rel="canonical" href={fullUrl} />}
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type || 'website'} />

@@ -12,6 +12,13 @@ async function submitToIndexNow() {
     urlList: [
       `https://${host}/`,
       `https://${host}/services`,
+      `https://${host}/services/website-development`,
+      `https://${host}/services/web-app-development`,
+      `https://${host}/services/cyber-security-assessment`,
+      `https://${host}/services/security-testing-analysis`,
+      `https://${host}/services/bug-hunting-vulnerability`,
+      `https://${host}/services/social-media-management`,
+      `https://${host}/blogs`,
       `https://${host}/contact`
     ]
   };

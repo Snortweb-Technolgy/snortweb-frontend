@@ -212,43 +212,45 @@ export default function Hero() {
           <div className="lg:col-span-6 flex flex-col items-start text-left z-20">
             {/* Staggered Word Headlines */}
             <div className="space-y-1 sm:space-y-2">
-              {/* Line 1: We Build */}
-              <div className="overflow-hidden flex flex-wrap gap-x-3">
-                {wordsLine1.map((word, i) => {
-                  const idx = getGlobalIndex(1, i);
-                  return (
-                    <div key={idx} className="overflow-hidden">
-                      <motion.h1
-                        variants={wordVariants(idx)}
-                        initial="hidden"
-                        animate="visible"
-                        className="font-sans-heading text-hero font-black text-text-primary leading-[0.95] tracking-tight uppercase"
-                      >
-                        {word}
-                      </motion.h1>
-                    </div>
-                  );
-                })}
-              </div>
+              <h1 className="space-y-1 sm:space-y-2 m-0 p-0 text-left">
+                {/* Line 1: We Build */}
+                <span className="overflow-hidden flex flex-wrap gap-x-3">
+                  {wordsLine1.map((word, i) => {
+                    const idx = getGlobalIndex(1, i);
+                    return (
+                      <span key={idx} className="overflow-hidden inline-block">
+                        <motion.span
+                          variants={wordVariants(idx)}
+                          initial="hidden"
+                          animate="visible"
+                          className="inline-block font-sans-heading text-hero font-black text-text-primary leading-[0.95] tracking-tight uppercase"
+                        >
+                          {word}
+                        </motion.span>
+                      </span>
+                    );
+                  })}
+                </span>
 
-              {/* Line 2: We Secure */}
-              <div className="overflow-hidden flex flex-wrap gap-x-3">
-                {wordsLine2.map((word, i) => {
-                  const idx = getGlobalIndex(2, i);
-                  return (
-                    <div key={idx} className="overflow-hidden">
-                      <motion.h1
-                        variants={wordVariants(idx)}
-                        initial="hidden"
-                        animate="visible"
-                        className="font-sans-heading text-hero font-black leading-[0.95] tracking-tight text-text-primary pb-1 uppercase"
-                      >
-                        {word}
-                      </motion.h1>
-                    </div>
-                  );
-                })}
-              </div>
+                {/* Line 2: We Secure */}
+                <span className="overflow-hidden flex flex-wrap gap-x-3">
+                  {wordsLine2.map((word, i) => {
+                    const idx = getGlobalIndex(2, i);
+                    return (
+                      <span key={idx} className="overflow-hidden inline-block">
+                        <motion.span
+                          variants={wordVariants(idx)}
+                          initial="hidden"
+                          animate="visible"
+                          className="inline-block font-sans-heading text-hero font-black leading-[0.95] tracking-tight text-text-primary pb-1 uppercase"
+                        >
+                          {word}
+                        </motion.span>
+                      </span>
+                    );
+                  })}
+                </span>
+              </h1>
 
               {/* Line 3: They Can't Break It */}
               <div className="overflow-hidden flex flex-wrap gap-x-2">

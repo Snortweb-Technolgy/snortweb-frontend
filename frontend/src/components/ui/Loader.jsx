@@ -201,7 +201,7 @@ export default function Loader() {
               transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
               className="flex flex-col items-center mb-8 relative overflow-hidden px-4"
             >
-              <h1 className="font-sans-heading font-black text-white text-[1.4rem] tracking-[0.25em] uppercase leading-none relative z-10">
+              <div role="heading" aria-level="2" className="font-sans-heading font-black text-white text-[1.4rem] tracking-[0.25em] uppercase leading-none relative z-10">
                 SNORT<span className="text-[#C8A15A]">WEB</span>
                 {/* Premium Text Shimmer Effect */}
                 <motion.div
@@ -209,7 +209,7 @@ export default function Loader() {
                   animate={{ left: ["-150%", "250%"] }}
                   transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: 0.5 }}
                 />
-              </h1>
+              </div>
               <span className="font-sans-body uppercase font-light tracking-[0.55em] text-[#C8A15A] text-[0.58rem] mt-2.5 z-10">
                 TECHNOLOGY
               </span>

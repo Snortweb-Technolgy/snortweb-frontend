@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { services } from "../../data/services";
 import { useApp } from "../../context/AppContext";
 import { Globe, Layers, ShieldAlert, Scan, Bug, TrendingUp } from "lucide-react";
@@ -29,19 +29,16 @@ export function ServiceIcon({ name, className, size = 22 }) {
 
 // Service Card component with premium design and animations
 export function ServiceCard({ service, index }) {
-  const navigate = useNavigate();
   const { t } = useApp();
-
-  const handleCardClick = () => {
-    navigate(`/services/${service.slug}`);
-  };
-
   const keySlug = service.slug.replace(/-/g, "_");
 
   return (
-    <motion.div
-      onClick={handleCardClick}
-      initial={{ opacity: 0, y: 30 }}
+    <Link
+      to={`/services/${service.slug}`}
+      className="block h-full no-underline text-inherit focus:outline-none"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       whileHover={{ y: -4 }}
@@ -96,6 +93,7 @@ export function ServiceCard({ service, index }) {
         <span className="text-xs transform group-hover:translate-x-1 transition-transform duration-105">&rarr;</span>
       </div>
     </motion.div>
+  </Link>
   );
 }
 

@@ -24,7 +24,10 @@
         { "source": "/projects", "destination": "/#projects", "permanent": true },
         { "source": "/portfolio", "destination": "/#projects", "permanent": true },
         { "source": "/review", "destination": "/#review", "permanent": true },
-        { "source": "/process", "destination": "/#process", "permanent": true }
+        { "source": "/process", "destination": "/#process", "permanent": true },
+        { "source": "/services/web-development", "destination": "/services/website-development", "permanent": true },
+        { "source": "/services/cyber-security", "destination": "/services/cyber-security-assessment", "permanent": true },
+        { "source": "/services/mobile-app-development", "destination": "/services/web-app-development", "permanent": true }
     ],
     "rewrites": [
         {

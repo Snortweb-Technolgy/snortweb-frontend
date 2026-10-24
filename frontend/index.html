@@ -38,16 +38,55 @@
   <meta name="keywords" content="Website Development, Cybersecurity, Web Applications, Cloud Solutions, Performance Optimization, Snortweb Technology" />
   <meta name="author" content="Snortweb Technology" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://snortwebtechnology.com" />
+  <link rel="canonical" href="https://snortwebtechnology.com/" />
   <meta property="og:title" content="Snortweb Technology | Build. Secure. Grow." />
   <meta property="og:description" content="Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization." />
   <meta property="og:image" content="https://snortwebtechnology.com/og-image.png" />
-  <meta property="og:url" content="https://snortwebtechnology.com" />
+  <meta property="og:url" content="https://snortwebtechnology.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Snortweb Technology | Build. Secure. Grow." />
   <meta name="twitter:description" content="Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization." />
   <meta name="twitter:image" content="https://snortwebtechnology.com/og-image.png" />
+
+  <!-- Structured Data: Organization & WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://snortwebtechnology.com/#organization",
+        "name": "Snortweb Technology",
+        "url": "https://snortwebtechnology.com/",
+        "logo": "https://snortwebtechnology.com/logo.webp",
+        "sameAs": [
+          "https://www.linkedin.com/company/snortweb-technology/",
+          "https://www.instagram.com/snortweb.technology"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91-9860596829",
+            "contactType": "customer service",
+            "email": "snortwebtechnology@gmail.com",
+            "availableLanguage": ["English", "Hindi"]
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://snortwebtechnology.com/#website",
+        "url": "https://snortwebtechnology.com/",
+        "name": "Snortweb Technology",
+        "description": "Modern websites with security and performance built-in. Web development and cybersecurity solutions for growing businesses.",
+        "publisher": {
+          "@id": "https://snortwebtechnology.com/#organization"
+        }
+      }
+    ]
+  }
+  </script>
   <!-- Preconnect & DNS Prefetch -->
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -98,10 +137,10 @@
     <!-- Center Hero -->
     <div style="position:relative; z-index:10; max-width:36rem; width:100%; margin:auto auto; text-align:center; padding:1rem 0;">
       <span style="font-family:monospace; font-size:0.65rem; font-weight:bold; letter-spacing:0.3em; color:#C8A15A; text-transform:uppercase; display:block; margin-bottom:0.5rem;">CRAFTING DIGITAL EXCELLENCE</span>
-      <h1 style="font-size:2.2rem; font-weight:900; color:#F8FAFC; text-transform:uppercase; letter-spacing:-0.02em; line-height:1.15; margin-bottom:0.75rem;">
+      <div role="heading" aria-level="2" style="font-size:2.2rem; font-weight:900; color:#F8FAFC; text-transform:uppercase; letter-spacing:-0.02em; line-height:1.15; margin-bottom:0.75rem;">
         SOMETHING EXTRAORDINARY <br />
         <span style="color:#C8A15A; font-style:italic; font-weight:400;">IS IN THE WORKS.</span>
-      </h1>
+      </div>
       <p style="color:#94A3B8; font-size:0.85rem; line-height:1.5; max-width:28rem; margin:0 auto 1.25rem auto;">
         Our platform is undergoing scheduled enhancements to deliver unmatched speed, security, and aesthetics.
       </p>
@@ -158,7 +197,24 @@
       } catch(e){}
     })();
   </script>
-  <div id="root"></div>
+  <div id="root">
+    <noscript>
+      <div style="padding: 2rem; max-width: 800px; margin: 0 auto; color: #F5F3EF; font-family: sans-serif;">
+        <h1 style="color: #C8A15A;">Snortweb Technology | Build. Secure. Grow.</h1>
+        <p>Premium Website Development, Cybersecurity Assessments, Web Applications, Cloud Solutions and Performance Optimization.</p>
+        <p>Explore our core services:</p>
+        <ul>
+          <li><a href="/services/web-app-development" style="color: #C8A15A;">Web App Development</a></li>
+          <li><a href="/services/bug-hunting-vulnerability" style="color: #C8A15A;">Bug Hunting &amp; Vulnerability Disclosure</a></li>
+          <li><a href="/services/website-development" style="color: #C8A15A;">Website Development</a></li>
+          <li><a href="/services/cyber-security-assessment" style="color: #C8A15A;">Cybersecurity Assessment</a></li>
+          <li><a href="/services/security-testing-analysis" style="color: #C8A15A;">Security Testing &amp; Analysis</a></li>
+          <li><a href="/services/social-media-management" style="color: #C8A15A;">Social Media Management</a></li>
+          <li><a href="/contact" style="color: #C8A15A;">Contact Our Team</a></li>
+        </ul>
+      </div>
+    </noscript>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
